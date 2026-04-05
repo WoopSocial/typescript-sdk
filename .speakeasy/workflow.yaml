@@ -1,0 +1,19 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    WoopSocial API:
+        inputs:
+            - location: ../../externalapi/openapi/openapi.yaml
+        output: .speakeasy/out.openapi.yaml
+        registry:
+            location: registry.speakeasyapi.dev/woopsocial/woopsocial/woop-social-api
+targets:
+    woop-social:
+        target: typescript
+        source: WoopSocial API
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/woopsocial/woopsocial/woop-social-api-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

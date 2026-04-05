@@ -1,0 +1,1361 @@
+openapi: 3.1.0
+info:
+  title: WoopSocial API
+  version: 1.0.0
+  summary: API for WoopSocial integrations.
+  description: |
+    This is the public-facing OpenAPI contract for WoopSocial. It supports scheduling posts for various social media platforms such as Facebook, Instagram, LinkedIn, LinkedIn Pages, Pinterest, TikTok, X (formerly Twitter) and YouTube.
+servers:
+  - url: https://api.woopsocial.com/v1
+    description: WoopSocial API URL.
+tags:
+  - name: Posts
+    description: Post scheduling endpoints.
+  - name: Projects
+    description: Project discovery endpoints.
+  - name: Social Accounts
+    description: Connected social account discovery endpoints.
+  - name: Media
+    description: Media upload endpoints.
+  - name: Health
+    description: Basic connectivity endpoints.
+paths:
+  /posts/list:
+    post:
+      operationId: listPosts
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      summary: List posts
+      description: |
+        Returns outbound posts that were scheduled within various projects.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListPostsRequest"
+      responses:
+        "200":
+          description: Outbound posts for the projects the API key has access to.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListPostsResponse"
+  /posts/delete:
+    post:
+      operationId: deletePosts
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      summary: Delete posts
+      description: |
+        Deletes one or more scheduled posts by post ID.
+
+        Only posts with `deliveryStatus` `NOT_STARTED` can be deleted.
+
+        Results are returned in the same order as the provided `ids`.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items:
+                type: string
+      responses:
+        "200":
+          description: Batched post deletion results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletePostsResponse"
+  /posts/create:
+    post:
+      operationId: createPosts
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      summary: Create posts
+      description: |
+        Creates one or more scheduled posts.
+
+        Each item in the request body creates one scheduled post for a single connected social account. Each item must target a specific project.
+
+        Each item must provide an `idempotencyKey`. Reusing the same `idempotencyKey` for the same API key replays the original result for that item. This is to help you prevent accidentally publishing the same post multiple times, in case you need to retry due to network failures.
+
+        Results are returned in the same order as the input array.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/CreatePostItem"
+      responses:
+        "200":
+          description: Batched post creation results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePostsResponse"
+  /posts/update:
+    post:
+      operationId: updatePosts
+      tags:
+        - Posts
+      security:
+        - BearerAuth: []
+      summary: Update posts
+      description: |
+        Updates one or more scheduled posts by post ID.
+
+        Only posts with `deliveryStatus` `NOT_STARTED` can be updated. It performs a full replacement of the specified posts, so omitted properties are cleared.
+
+        Results are returned in the same order as the input array.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              minItems: 1
+              items:
+                $ref: "#/components/schemas/UpdatePostItem"
+      responses:
+        "200":
+          description: Batched post update results.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePostsResponse"
+  /projects:
+    get:
+      operationId: listProjects
+      tags:
+        - Projects
+      security:
+        - BearerAuth: []
+      summary: List projects
+      description: Returns projects that belong to the same organization as the API key. A project corresponds to a "Business Profile" in the UI.
+      responses:
+        "200":
+          description: Projects available for media upload and post creation.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Project"
+  /social-accounts/authorization-url:
+    post:
+      operationId: createOAuthAuthorization
+      tags:
+        - Social Accounts
+      security:
+        - BearerAuth: []
+      summary: Generate OAuth URL
+      description: |
+        Generates a browser authorization URL for connecting a new social account to a project. Open the returned `url` in a browser to complete the platform-specific OAuth flow.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOAuthAuthorizationRequest"
+      responses:
+        "200":
+          description: OAuth authorization URL created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateOAuthAuthorizationResponse"
+  /social-accounts:
+    get:
+      operationId: listSocialAccounts
+      tags:
+        - Social Accounts
+      security:
+        - BearerAuth: []
+      summary: List social accounts
+      description: |
+        Returns social accounts that can currently be used for publishing.
+
+        When `projectId` is provided, only social accounts usable within that project are returned.
+      parameters:
+        - $ref: "#/components/parameters/ProjectIdFilter"
+      responses:
+        "200":
+          description: Social accounts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SocialAccount"
+  /social-accounts/{socialAccountId}/platform-inputs:
+    get:
+      operationId: getSocialAccountPlatformInputs
+      tags:
+        - Social Accounts
+      security:
+        - BearerAuth: []
+      summary: Get platform-specific input options
+      description: |
+        Returns platform-specific input options for a connected social account.
+
+        Use this endpoint to discover valid values for fields inside `platformSpecifics` when creating posts for Pinterest and TikTok.
+      parameters:
+        - $ref: "#/components/parameters/SocialAccountId"
+      responses:
+        "200":
+          description: Social-account-specific platform input options.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SocialAccountPlatformInputs"
+  /media:
+    post:
+      operationId: createMedia
+      tags:
+        - Media
+      security:
+        - BearerAuth: []
+      summary: Upload media
+      description: |
+        Uploads a media file in a single request and creates a media item.
+
+        The server determines the media MIME type from the uploaded file.
+
+        Use this endpoint for straightforward uploads up to 600 MB.
+
+        For larger files, or when you need presigned part URLs, use the upload
+        session flow under `/media/upload-sessions`.
+      parameters:
+        - $ref: "#/components/parameters/ProjectId"
+      requestBody:
+        required: true
+        content:
+          application/octet-stream:
+            schema:
+              type: string
+              format: binary
+              description: Media file to upload. Maximum size is 600 MB. The server determines the media MIME type from the uploaded file.
+      responses:
+        "200":
+          description: Media uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreateMediaResponse"
+  /media/upload-sessions:
+    post:
+      operationId: createUploadSession
+      tags:
+        - Media
+      security:
+        - BearerAuth: []
+      summary: Start media upload session
+      description: |
+        Creates an upload session and returns presigned URLs for uploading the file in parts.
+
+        This flow is intended for larger files where a single-request upload via the simpler `/media` endpoint is less practical.
+
+        Upload the file in `partCount` parts, using the matching
+        `parts[n].uploadUrl` for each part number.
+
+        Every part except the last must be exactly `partSizeInBytes` bytes. The
+        last part may be smaller. After all parts have been uploaded, call
+        `/media/upload-sessions/{uploadSessionId}/complete` to finalize the upload
+        and create the media item.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUploadSessionRequest"
+      responses:
+        "200":
+          description: Upload session created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadSession"
+  /media/upload-sessions/{uploadSessionId}:
+    get:
+      operationId: getUploadSession
+      tags:
+        - Media
+      security:
+        - BearerAuth: []
+      summary: Get media upload session status
+      parameters:
+        - $ref: "#/components/parameters/UploadSessionId"
+      responses:
+        "200":
+          description: Current upload status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadSessionStatus"
+  /media/upload-sessions/{uploadSessionId}/complete:
+    post:
+      operationId: completeUploadSession
+      tags:
+        - Media
+      security:
+        - BearerAuth: []
+      summary: Complete media upload session
+      parameters:
+        - $ref: "#/components/parameters/UploadSessionId"
+      responses:
+        "200":
+          description: Upload completion accepted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UploadSessionStatus"
+  /health:
+    get:
+      operationId: getHealth
+      tags:
+        - Health
+      security:
+        - BearerAuth: []
+      summary: Health check 
+      description: Returns a minimal response proving the WoopSocial API is reachable.
+      responses:
+        "200":
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthResponse"
+components:
+  parameters:
+    ProjectIdFilter:
+      name: projectId
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Filter to resources that belong to a specific project.
+    ProjectId:
+      name: projectId
+      in: query
+      required: true
+      schema:
+        type: string
+      description: Project that will own the uploaded media.
+    SocialAccountId:
+      name: socialAccountId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Connected social account identifier.
+    UploadSessionId:
+      name: uploadSessionId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Media upload session identifier.
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API key
+  schemas:
+    Project:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Project identifier.
+        name:
+          type: string
+          description: Human-readable project name.
+    SocialAccountStatus:
+      type: string
+      enum:
+        - CONNECTED
+        - DISCONNECTED
+    SocialPlatform:
+      type: string
+      enum:
+        - PINTEREST
+        - LINKEDIN
+        - LINKEDIN_PAGES
+        - INSTAGRAM
+        - FACEBOOK
+        - TIKTOK
+        - X
+        - YOUTUBE
+      description: Social platform supported by WoopSocial.
+    CreateOAuthAuthorizationRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - projectId
+        - platform
+      properties:
+        projectId:
+          type: string
+          description: Project identifier.
+        platform:
+          $ref: "#/components/schemas/SocialPlatform"
+    CreateOAuthAuthorizationResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - url
+      properties:
+        url:
+          type: string
+          format: uri
+          description: Browser URL that starts the OAuth authorization flow.
+    SocialAccount:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - platform
+        - username
+        - imageUrl
+        - status
+      properties:
+        id:
+          type: string
+          description: Social account identifier.
+        platform:
+          $ref: "#/components/schemas/SocialPlatform"
+          description: Social platform for the connected account.
+        username:
+          type: string
+          description: Display name or username for the connected account.
+        imageUrl:
+          type: string
+          description: Profile image URL for the connected account.
+        status:
+          $ref: "#/components/schemas/SocialAccountStatus"
+          description: Connection status of the account.
+    SocialAccountPlatformInputs:
+      type: object
+      additionalProperties: false
+      required:
+        - socialAccountId
+        - platform
+        - platformSpecificInputs
+      properties:
+        socialAccountId:
+          type: string
+          description: Connected social account identifier.
+        platform:
+          $ref: "#/components/schemas/SocialPlatform"
+          description: Social platform for the connected account.
+        platformSpecificInputs:
+          $ref: "#/components/schemas/SocialAccountPlatformSpecificInputs"
+    SocialAccountPlatformSpecificInputs:
+      oneOf:
+        - $ref: "#/components/schemas/PinterestSocialAccountPlatformSpecificInputs"
+        - $ref: "#/components/schemas/TikTokSocialAccountPlatformSpecificInputs"
+      discriminator:
+        propertyName: platform
+        mapping:
+          PINTEREST: "#/components/schemas/PinterestSocialAccountPlatformSpecificInputs"
+          TIKTOK: "#/components/schemas/TikTokSocialAccountPlatformSpecificInputs"
+    PinterestSocialAccountPlatformSpecificInputs:
+      title: Pinterest Social Account Platform Specific Inputs
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - pinterest
+      properties:
+        platform:
+          type: string
+          enum: [PINTEREST]
+        pinterest:
+          $ref: "#/components/schemas/PinterestAccountPlatformInputs"
+    TikTokSocialAccountPlatformSpecificInputs:
+      title: TikTok Social Account Platform Specific Inputs
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - tiktok
+      properties:
+        platform:
+          type: string
+          enum: [TIKTOK]
+        tiktok:
+          $ref: "#/components/schemas/TikTokAccountPlatformInputs"
+    PinterestAccountPlatformInputs:
+      type: object
+      additionalProperties: false
+      required:
+        - boards
+      properties:
+        boards:
+          type: array
+          description: |
+            Available Pinterest boards for this account.
+
+            Each `id` value can be sent as
+            `platformSpecifics.pinterestBoardId` when creating a post.
+          items:
+            $ref: "#/components/schemas/PinterestBoardOption"
+    PinterestBoardOption:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: Pinterest board identifier.
+        name:
+          type: string
+          description: Human-readable Pinterest board name.
+    TikTokAccountPlatformInputs:
+      type: object
+      additionalProperties: false
+      required:
+        - privacyLevelOptions
+        - commentDisabled
+        - duetDisabled
+        - stitchDisabled
+        - maxVideoPostDurationSec
+      properties:
+        privacyLevelOptions:
+          type: array
+          description: |
+            Privacy values currently allowed for this TikTok account.
+
+            Each value can be sent as `platformSpecifics.privacyLevel`
+            when creating a post.
+          items:
+            $ref: "#/components/schemas/TikTokPrivacyLevel"
+        commentDisabled:
+          type: boolean
+          description: Whether TikTok currently disables comments for this account.
+        duetDisabled:
+          type: boolean
+          description: Whether TikTok currently disables duets for this account.
+        stitchDisabled:
+          type: boolean
+          description: Whether TikTok currently disables stitches for this account.
+        maxVideoPostDurationSec:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Maximum TikTok video duration currently allowed for this account.
+    DeliveryStatus:
+      type: string
+      description: |
+        Delivery lifecycle status for a post.
+
+        `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
+        `SENDING`: Delivery is currently in progress.
+        `SENT`: Delivery completed successfully.
+        `FAILED`: Delivery completed unsuccessfully.
+      enum:
+        - NOT_STARTED
+        - SENDING
+        - SENT
+        - FAILED
+    PostMedia:
+      type: object
+      additionalProperties: false
+      required:
+        - mediaId
+        - type
+        - url
+        - thumbnailUrl
+      properties:
+        mediaId:
+          type: string
+          description: Media identifier.
+        type:
+          type: string
+          enum:
+            - IMAGE
+            - VIDEO
+        url:
+          type: string
+          description: Canonical media URL.
+        thumbnailUrl:
+          type: string
+          description: Thumbnail or preview URL for the media item.
+    Post:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - projectId
+        - socialAccountId
+        - platform
+        - username
+        - deliveryStatus
+        - scheduledForUTC
+        - platformSpecifics
+      properties:
+        id:
+          type: string
+          description: Post identifier.
+        projectId:
+          type: string
+          description: Project identifier.
+        socialAccountId:
+          type: string
+          description: Connected social account identifier.
+        platform:
+          $ref: "#/components/schemas/SocialPlatform"
+        username:
+          type: string
+          description: Display name or username for the connected account.
+        deliveryStatus:
+          $ref: "#/components/schemas/DeliveryStatus"
+          description: Current delivery status for the post.
+        scheduledForUTC:
+          type: string
+          format: date-time
+          description: Effective UTC time when the post is or was scheduled to publish.
+        sentAt:
+          type: string
+          format: date-time
+          description: UTC time when delivery completed successfully or failed.
+        title:
+          type: string
+        description:
+          type: string
+        firstComment:
+          type: string
+        media:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostMedia"
+        platformSpecifics:
+          $ref: "#/components/schemas/PlatformSpecifics"
+        externalPostId:
+          type: string
+          description: ID of the published post on the external social media platform.
+        externalPostUrl:
+          type: string
+          description: URL of the published post on the external social media platform.
+        errorMessage:
+          type: string
+    ListPostsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - posts
+      properties:
+        posts:
+          type: array
+          items:
+            $ref: "#/components/schemas/Post"
+        nextCursor:
+          type: string
+          description: Opaque cursor for the next page of results. Omitted when there are no more results.
+    CreateMediaResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - mediaId
+      properties:
+        mediaId:
+          type: string
+          description: Media identifier.
+    CreateUploadSessionRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - projectId
+        - fileSizeInBytes
+      properties:
+        projectId:
+          type: string
+          description: Project that will own the uploaded media.
+        fileSizeInBytes:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Total size of the file that will be uploaded.
+    UploadSessionPart:
+      type: object
+      additionalProperties: false
+      required:
+        - partNumber
+        - uploadUrl
+      properties:
+        partNumber:
+          type: integer
+          format: int32
+          minimum: 1
+          description: 1-based part number to upload to this URL.
+        uploadUrl:
+          type: string
+          description: Presigned URL that accepts the bytes for `partNumber`.
+    UploadSession:
+      type: object
+      additionalProperties: false
+      required:
+        - uploadSessionId
+        - partSizeInBytes
+        - partCount
+        - expiresAt
+        - parts
+      properties:
+        uploadSessionId:
+          type: string
+          description: Media upload session identifier.
+        partSizeInBytes:
+          type: integer
+          format: int64
+          description: |
+            Maximum chunk size to use when slicing the file into parts.
+
+            For uploads with more than one part, every part except the last must
+            be exactly this size. The last part may be smaller. For a single-part
+            upload, the only part may be smaller than this size.
+        partCount:
+          type: integer
+          format: int32
+          description: Number of parts that must be uploaded before completion.
+        expiresAt:
+          type: string
+          format: date-time
+          description: Time when the presigned part upload URLs expire.
+        parts:
+          type: array
+          description: Presigned upload targets, in part-number order.
+          items:
+            $ref: "#/components/schemas/UploadSessionPart"
+            description: Presigned URL and part number for uploading one chunk of the file.
+    UploadSessionStatusValue:
+      type: string
+      enum:
+        - INITIATED
+        - UPLOADED
+        - READY
+        - FAILED
+        - ABORTED
+    UploadSessionStatus:
+      type: object
+      additionalProperties: false
+      required:
+        - uploadSessionId
+        - status
+      properties:
+        uploadSessionId:
+          type: string
+          description: Media upload session identifier.
+        status:
+          $ref: "#/components/schemas/UploadSessionStatusValue"
+        mediaId:
+          type: string
+        failureCode:
+          type: string
+        failureMessage:
+          type: string
+    ListPostsRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        projectId:
+          type: string
+          description: Filter to resources that belong to a specific project.
+        deliveryStatus:
+          $ref: "#/components/schemas/DeliveryStatus"
+          description: Filter to a single delivery status.
+        limit:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 100
+          default: 50
+          description: Number of items to return. Defaults to 50. Maximum 100.
+        cursor:
+          type: string
+          description: Opaque cursor for the next page of results.
+        ids:
+          type: array
+          description: Filter to specific post IDs. When provided, only posts with matching IDs are returned.
+          items:
+            type: string
+    CreatePostItem:
+      type: object
+      additionalProperties: false
+      required:
+        - idempotencyKey
+        - projectId
+        - socialAccountId
+        - scheduledForUTC
+        - platformSpecifics
+      properties:
+        idempotencyKey:
+          type: string
+          minLength: 1
+          description: Client-provided item idempotency key.
+        projectId:
+          type: string
+          description: Project identifier.
+        socialAccountId:
+          type: string
+          description: Connected social account identifier.
+        scheduledForUTC:
+          type: string
+          format: date-time
+          description: UTC time when this post should be published.
+        title:
+          type: string
+        description:
+          type: string
+        firstComment:
+          type: string
+        mediaIds:
+          type: array
+          items:
+            type: string
+          description: Media identifiers previously created via the external media upload flow.
+        platformSpecifics:
+          $ref: "#/components/schemas/PlatformSpecifics"
+    CreatePostsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          description: Results in the same order as the request items.
+          items:
+            $ref: "#/components/schemas/CreatePostResult"
+    PostMutationResultStatus:
+      type: string
+      enum:
+        - SUCCESS
+        - FAILURE
+    CreatePostResult:
+      oneOf:
+        - $ref: "#/components/schemas/CreatePostSuccessResult"
+        - $ref: "#/components/schemas/CreatePostFailureResult"
+      discriminator:
+        propertyName: status
+        mapping:
+          SUCCESS: "#/components/schemas/CreatePostSuccessResult"
+          FAILURE: "#/components/schemas/CreatePostFailureResult"
+    CreatePostSuccessResult:
+      title: Create Post Success
+      type: object
+      additionalProperties: false
+      required:
+        - idempotencyKey
+        - status
+        - id
+        - validationWarnings
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - SUCCESS
+        idempotencyKey:
+          type: string
+          description: Item idempotency key echoed from the request.
+        id:
+          type: string
+          description: Created post identifier.
+        validationWarnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
+          description: Structured validation warnings for this item. Empty when there are no warnings.
+    CreatePostFailureResult:
+      title: Create Post Failure
+      type: object
+      additionalProperties: false
+      required:
+        - idempotencyKey
+        - status
+        - code
+        - message
+        - validationErrors
+        - validationWarnings
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - FAILURE
+        idempotencyKey:
+          type: string
+          description: Item idempotency key echoed from the request.
+        code:
+          $ref: "#/components/schemas/CreatePostFailureCode"
+        message:
+          type: string
+          description: |
+            Human-readable summary of the failure.
+            When `code` is `VALIDATION_FAILED`, inspect `validationErrors` for the specific field-level errors.
+        validationErrors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+          description: Structured validation errors for this item. Empty when there are no validation errors.
+        validationWarnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
+          description: Structured validation warnings for this item. Empty when there are no warnings.
+    CreatePostFailureCode:
+      type: string
+      enum:
+        - INVALID_PROJECT_ID
+        - PROJECT_NOT_FOUND
+        - INVALID_SOCIAL_ACCOUNT_ID
+        - SOCIAL_ACCOUNT_NOT_CONNECTED
+        - INVALID_MEDIA_ID
+        - INVALID_PLATFORM_SPECIFIC_DATA
+        - VALIDATION_FAILED
+        - INTERNAL_ERROR
+    UpdatePostItem:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - scheduledForUTC
+        - platformSpecifics
+      properties:
+        id:
+          type: string
+          description: Post to update.
+        scheduledForUTC:
+          type: string
+          format: date-time
+          description: UTC time when this post should be published.
+        title:
+          type: string
+        description:
+          type: string
+        firstComment:
+          type: string
+        mediaIds:
+          type: array
+          items:
+            type: string
+          description: Media identifiers previously created via the media upload flow.
+        platformSpecifics:
+          $ref: "#/components/schemas/PlatformSpecifics"
+    UpdatePostsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          description: Results in the same order as the request items.
+          items:
+            $ref: "#/components/schemas/UpdatePostResult"
+    UpdatePostResult:
+      oneOf:
+        - $ref: "#/components/schemas/UpdatePostSuccessResult"
+        - $ref: "#/components/schemas/UpdatePostFailureResult"
+      discriminator:
+        propertyName: status
+        mapping:
+          SUCCESS: "#/components/schemas/UpdatePostSuccessResult"
+          FAILURE: "#/components/schemas/UpdatePostFailureResult"
+    UpdatePostSuccessResult:
+      title: Update Post Success
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - id
+        - validationWarnings
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - SUCCESS
+        id:
+          type: string
+          description: Post id echoed from the request.
+        validationWarnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
+          description: Structured validation warnings for this item. Empty when there are no warnings.
+    UpdatePostFailureResult:
+      title: Update Post Failure
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - id
+        - code
+        - message
+        - validationErrors
+        - validationWarnings
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - FAILURE
+        id:
+          type: string
+          description: Post id echoed from the request.
+        code:
+          $ref: "#/components/schemas/UpdatePostFailureCode"
+        message:
+          type: string
+          description: |
+            Human-readable summary of the failure.
+            When `code` is `VALIDATION_FAILED`, inspect `validationErrors` for the specific field-level errors.
+        validationErrors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+          description: Structured validation errors for this item. Empty when there are no validation errors.
+        validationWarnings:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
+          description: Structured validation warnings for this item. Empty when there are no warnings.
+    UpdatePostFailureCode:
+      type: string
+      enum:
+        - POST_NOT_FOUND
+        - POST_NOT_UPDATABLE
+        - INVALID_MEDIA_ID
+        - INVALID_PLATFORM_SPECIFIC_DATA
+        - VALIDATION_FAILED
+        - INTERNAL_ERROR
+    ValidationField:
+      type: string
+      enum:
+        - DESCRIPTION
+        - MEDIA
+        - PINTEREST_BOARD
+        - CONTENT
+        - TITLE
+        - FIRST_COMMENT
+        - TIKTOK_PRIVACY_LEVEL
+        - TIKTOK_CONTENT_DISCLOSURE
+        - YOUTUBE_PRIVACY
+        - YOUTUBE_CATEGORY
+        - YOUTUBE_TAGS
+        - SCHEDULE
+    ValidationError:
+      type: object
+      additionalProperties: false
+      required:
+        - field
+        - message
+      properties:
+        field:
+          $ref: "#/components/schemas/ValidationField"
+        message:
+          type: string
+    ValidationWarning:
+      type: object
+      additionalProperties: false
+      required:
+        - field
+        - message
+      properties:
+        field:
+          $ref: "#/components/schemas/ValidationField"
+        message:
+          type: string
+    DeletePostsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - results
+      properties:
+        results:
+          type: array
+          description: Results in the same order as the request items.
+          items:
+            $ref: "#/components/schemas/DeletePostResult"
+    DeletePostResult:
+      oneOf:
+        - $ref: "#/components/schemas/DeletePostSuccessResult"
+        - $ref: "#/components/schemas/DeletePostFailureResult"
+      discriminator:
+        propertyName: status
+        mapping:
+          SUCCESS: "#/components/schemas/DeletePostSuccessResult"
+          FAILURE: "#/components/schemas/DeletePostFailureResult"
+    DeletePostSuccessResult:
+      title: Delete Post Success
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - id
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - SUCCESS
+        id:
+          type: string
+          description: Post id echoed from the request.
+    DeletePostFailureResult:
+      title: Delete Post Failure
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - id
+        - code
+        - message
+      properties:
+        status:
+          allOf:
+            - $ref: "#/components/schemas/PostMutationResultStatus"
+            - type: string
+              enum:
+                - FAILURE
+        id:
+          type: string
+          description: Post id echoed from the request.
+        code:
+          $ref: "#/components/schemas/DeletePostFailureCode"
+        message:
+          type: string
+    DeletePostFailureCode:
+      type: string
+      enum:
+        - POST_NOT_FOUND
+        - POST_NOT_DELETABLE
+        - INTERNAL_ERROR
+    PlatformSpecifics:
+      description: Platform-specific publishing options. The `platform` value must match the publishing account's platform.
+      oneOf:
+        - $ref: "#/components/schemas/PinterestSpecifics"
+        - $ref: "#/components/schemas/InstagramSpecifics"
+        - $ref: "#/components/schemas/FacebookSpecifics"
+        - $ref: "#/components/schemas/TikTokSpecifics"
+        - $ref: "#/components/schemas/YouTubeSpecifics"
+        - $ref: "#/components/schemas/XSpecifics"
+        - $ref: "#/components/schemas/LinkedInSpecifics"
+        - $ref: "#/components/schemas/LinkedInPagesSpecifics"
+      discriminator:
+        propertyName: platform
+        mapping:
+          PINTEREST:      "#/components/schemas/PinterestSpecifics"
+          INSTAGRAM:      "#/components/schemas/InstagramSpecifics"
+          FACEBOOK:       "#/components/schemas/FacebookSpecifics"
+          TIKTOK:         "#/components/schemas/TikTokSpecifics"
+          YOUTUBE:        "#/components/schemas/YouTubeSpecifics"
+          X:              "#/components/schemas/XSpecifics"
+          LINKEDIN:       "#/components/schemas/LinkedInSpecifics"
+          LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesSpecifics"
+    PinterestSpecifics:
+      title: Pinterest
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - pinterestBoardId
+      properties:
+        platform:
+          type: string
+          enum: [PINTEREST]
+        pinterestBoardId:
+          type: string
+    InstagramPostType:
+      type: string
+      enum:
+        - POST
+        - REEL
+        - STORY
+    InstagramSpecifics:
+      title: Instagram
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - postType
+      properties:
+        platform:
+          type: string
+          enum: [INSTAGRAM]
+        postType:
+          $ref: "#/components/schemas/InstagramPostType"
+    FacebookPostType:
+      type: string
+      enum:
+        - TEXT_ONLY
+        - IMAGE
+        - VIDEO
+        - REEL
+    FacebookSpecifics:
+      title: Facebook
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - postType
+      properties:
+        platform:
+          type: string
+          enum: [FACEBOOK]
+        link:
+          type: string
+        postType:
+          $ref: "#/components/schemas/FacebookPostType"
+    TikTokPrivacyLevel:
+      type: string
+      enum:
+        - PUBLIC_TO_EVERYONE
+        - SELF_ONLY
+        - MUTUAL_FOLLOW_FRIENDS
+        - FOLLOWER_OF_CREATOR
+    TikTokPostType:
+      type: string
+      enum:
+        - VIDEO
+        - PHOTO
+    TikTokSpecifics:
+      title: TikTok
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+        - postType
+        - privacyLevel
+        - allowComment
+        - allowDuet
+        - allowStitch
+        - contentDisclosureEnabled
+        - isYourBrand
+        - isBrandedContent
+        - autoAddMusic
+      properties:
+        platform:
+          type: string
+          enum: [TIKTOK]
+        postType:
+          $ref: "#/components/schemas/TikTokPostType"
+        privacyLevel:
+          $ref: "#/components/schemas/TikTokPrivacyLevel"
+        allowComment:
+          type: boolean
+        allowDuet:
+          type: boolean
+        allowStitch:
+          type: boolean
+        contentDisclosureEnabled:
+          type: boolean
+        isYourBrand:
+          type: boolean
+        isBrandedContent:
+          type: boolean
+        autoAddMusic:
+          type: boolean
+    YouTubePrivacy:
+      type: string
+      enum:
+        - public
+        - private
+        - unlisted
+    YouTubeSpecifics:
+      title: YouTube
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+      properties:
+        platform:
+          type: string
+          enum: [YOUTUBE]
+        privacy:
+          $ref: "#/components/schemas/YouTubePrivacy"
+        category:
+          type: string
+        tags:
+          type: array
+          items:
+            type: string
+        madeForKids:
+          type: boolean
+    XSpecifics:
+      title: X (Twitter)
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+      properties:
+        platform:
+          type: string
+          enum: [X]
+    LinkedInSpecifics:
+      title: LinkedIn
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+      properties:
+        platform:
+          type: string
+          enum: [LINKEDIN]
+    LinkedInPagesSpecifics:
+      title: LinkedIn Pages
+      type: object
+      additionalProperties: false
+      required:
+        - platform
+      properties:
+        platform:
+          type: string
+          enum: [LINKEDIN_PAGES]
+    HealthResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - message
+        - timestampUTC
+        - version
+      properties:
+        message:
+          type: string
+          description: Human-readable message.
+          examples:
+            - Hello from WoopSocial API
+        timestampUTC:
+          type: string
+          description: Current server time in UTC with millisecond precision.
+          examples:
+            - "2026-03-28T09:30:26.123Z"
+        version:
+          type: string
+          description: API version that produced the response.
+          examples:
+            - v1

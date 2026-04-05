@@ -1,0 +1,37 @@
+speakeasyVersion: 1.761.1
+sources:
+    WoopSocial API:
+        sourceNamespace: woop-social-api
+        sourceRevisionDigest: sha256:a28f899634ee80fed5b371c20705e9241da358394a58250c6e94f771d7cbba49
+        sourceBlobDigest: sha256:b5689ead01824e836c08d91f80c58b38b38cbcad70012c387ce9816e805260f5
+        tags:
+            - latest
+            - 1.0.0
+targets:
+    woop-social:
+        source: WoopSocial API
+        sourceNamespace: woop-social-api
+        sourceRevisionDigest: sha256:a28f899634ee80fed5b371c20705e9241da358394a58250c6e94f771d7cbba49
+        sourceBlobDigest: sha256:b5689ead01824e836c08d91f80c58b38b38cbcad70012c387ce9816e805260f5
+        codeSamplesNamespace: woop-social-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:b2f9c4b833b0fab6c960bc27cea64f47c7fa6f807cd65eb8f09fc4cd40d2f0f5
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        WoopSocial API:
+            inputs:
+                - location: ../../externalapi/openapi/openapi.yaml
+            output: .speakeasy/out.openapi.yaml
+            registry:
+                location: registry.speakeasyapi.dev/woopsocial/woopsocial/woop-social-api
+    targets:
+        woop-social:
+            target: typescript
+            source: WoopSocial API
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/woopsocial/woopsocial/woop-social-api-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false
