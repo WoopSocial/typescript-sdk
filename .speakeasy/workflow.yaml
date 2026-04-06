@@ -3,7 +3,7 @@ speakeasyVersion: latest
 sources:
     WoopSocial API:
         inputs:
-            - location: ../../externalapi/openapi/openapi.yaml
+            - location: ../../../externalapi/openapi/openapi.yaml
         output: .speakeasy/out.openapi.yaml
         registry:
             location: registry.speakeasyapi.dev/woopsocial/woopsocial/woop-social-api
