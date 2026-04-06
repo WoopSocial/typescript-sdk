@@ -38,10 +38,6 @@ This is the public-facing OpenAPI contract for WoopSocial. It supports schedulin
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
 ### NPM
@@ -71,7 +67,7 @@ yarn add @woopsocial/typescript-sdk
 > [!NOTE]
 > This package is published as an ES Module (ESM) only. For applications using
 > CommonJS, use `await import()` to import and use this package.
-<!-- End SDK Installation [installation] -->
+<!-- No SDK Installation [installation] -->
 
 <!-- Start Requirements [requirements] -->
 ## Requirements
