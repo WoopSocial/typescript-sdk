@@ -1,14 +1,9 @@
-# woopsocial
+# @woopsocial/typescript-sdk
 
 Developer-friendly & type-safe Typescript SDK specifically catered to leverage *woopsocial* API.
 
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=woopsocial&utm_campaign=typescript)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
-
-
-<br /><br />
-> [!IMPORTANT]
-> This SDK is not yet ready for production use. To complete setup please follow the steps outlined in your [workspace](https://app.speakeasy.com/org/woopsocial/woopsocial). Delete this section before > publishing to a package manager.
 
 <!-- Start Summary [summary] -->
 ## Summary
@@ -43,34 +38,30 @@ This is the public-facing OpenAPI contract for WoopSocial. It supports schedulin
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
 ### NPM
 
 ```bash
-npm add <UNSET>
+npm add @woopsocial/typescript-sdk
 ```
 
 ### PNPM
 
 ```bash
-pnpm add <UNSET>
+pnpm add @woopsocial/typescript-sdk
 ```
 
 ### Bun
 
 ```bash
-bun add <UNSET>
+bun add @woopsocial/typescript-sdk
 ```
 
 ### Yarn
 
 ```bash
-yarn add <UNSET>
+yarn add @woopsocial/typescript-sdk
 ```
 
 > [!NOTE]
