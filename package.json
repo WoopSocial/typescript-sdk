@@ -1,6 +1,6 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "author": "Speakeasy",
   "files": [
     "esm",
@@ -11,6 +11,7 @@
     "package.json",
     "jsr.json"
   ],
+  "license": "MIT",
   "publishConfig": {
     "access": "public"
   },

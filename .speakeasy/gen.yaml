@@ -34,7 +34,7 @@ generation:
     generateNewTests: true
     skipResponseBodyAssertions: false
 typescript:
-  version: 0.0.6
+  version: 0.0.7
   acceptHeaderEnum: false
   additionalDependencies:
     dependencies: {}
@@ -49,6 +49,7 @@ typescript:
       - RUNTIMES.md
       - package.json
       - jsr.json
+    license: MIT
     publishConfig:
       access: public
   additionalScripts: {}
