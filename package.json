@@ -1,7 +1,10 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "author": "Speakeasy",
+  "bugs": {
+    "url": "https://github.com/WoopSocial/typescript-sdk/issues"
+  },
   "files": [
     "esm",
     "src",
@@ -11,9 +14,14 @@
     "package.json",
     "jsr.json"
   ],
+  "homepage": "https://github.com/WoopSocial/typescript-sdk",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
+  },
+  "repository": {
+    "url": "git+https://github.com/WoopSocial/typescript-sdk.git",
+    "type": "git"
   },
   "type": "module",
   "main": "./esm/index.js",
