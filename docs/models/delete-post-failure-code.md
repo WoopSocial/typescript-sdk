@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { DeletePostFailureCode } from "woopsocial/models";
+import { DeletePostFailureCode } from "@woopsocial/typescript-sdk/models";
 
 let value: DeletePostFailureCode = "POST_NOT_FOUND";
 

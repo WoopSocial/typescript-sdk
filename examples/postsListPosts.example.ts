@@ -5,13 +5,13 @@
 import dotenv from "dotenv";
 dotenv.config();
 /**
- * Example usage of the woopsocial SDK
+ * Example usage of the @woopsocial/typescript-sdk SDK
  *
  * To run this example from the examples directory:
  * npm run build && npx tsx postsListPosts.example.ts
  */
 
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",

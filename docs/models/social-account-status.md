@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SocialAccountStatus } from "woopsocial/models";
+import { SocialAccountStatus } from "@woopsocial/typescript-sdk/models";
 
 let value: SocialAccountStatus = "DISCONNECTED";
 

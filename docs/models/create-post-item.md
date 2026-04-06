@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreatePostItem } from "woopsocial/models";
+import { CreatePostItem } from "@woopsocial/typescript-sdk/models";
 
 let value: CreatePostItem = {
   idempotencyKey: "<value>",

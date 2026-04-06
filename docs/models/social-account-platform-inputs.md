@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SocialAccountPlatformInputs } from "woopsocial/models";
+import { SocialAccountPlatformInputs } from "@woopsocial/typescript-sdk/models";
 
 let value: SocialAccountPlatformInputs = {
   socialAccountId: "<id>",

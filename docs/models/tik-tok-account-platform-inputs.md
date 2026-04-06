@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TikTokAccountPlatformInputs } from "woopsocial/models";
+import { TikTokAccountPlatformInputs } from "@woopsocial/typescript-sdk/models";
 
 let value: TikTokAccountPlatformInputs = {
   privacyLevelOptions: [],

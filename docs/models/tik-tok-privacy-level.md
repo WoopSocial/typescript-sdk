@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TikTokPrivacyLevel } from "woopsocial/models";
+import { TikTokPrivacyLevel } from "@woopsocial/typescript-sdk/models";
 
 let value: TikTokPrivacyLevel = "PUBLIC_TO_EVERYONE";
 

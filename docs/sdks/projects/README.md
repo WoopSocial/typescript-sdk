@@ -16,7 +16,7 @@ Returns projects that belong to the same organization as the API key. A project 
 
 <!-- UsageSnippet language="typescript" operationID="listProjects" method="get" path="/projects" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -36,8 +36,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { projectsListProjects } from "woopsocial/funcs/projects-list-projects.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { projectsListProjects } from "@woopsocial/typescript-sdk/funcs/projects-list-projects.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

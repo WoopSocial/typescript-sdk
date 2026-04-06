@@ -20,7 +20,7 @@ Returns outbound posts that were scheduled within various projects.
 
 <!-- UsageSnippet language="typescript" operationID="listPosts" method="post" path="/posts/list" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -40,8 +40,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { postsListPosts } from "woopsocial/funcs/posts-list-posts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsListPosts } from "@woopsocial/typescript-sdk/funcs/posts-list-posts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -94,7 +94,7 @@ Results are returned in the same order as the provided `ids`.
 
 <!-- UsageSnippet language="typescript" operationID="deletePosts" method="post" path="/posts/delete" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -117,8 +117,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { postsDeletePosts } from "woopsocial/funcs/posts-delete-posts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsDeletePosts } from "@woopsocial/typescript-sdk/funcs/posts-delete-posts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -176,7 +176,7 @@ Results are returned in the same order as the input array.
 
 <!-- UsageSnippet language="typescript" operationID="createPosts" method="post" path="/posts/create" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -206,8 +206,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { postsCreatePosts } from "woopsocial/funcs/posts-create-posts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsCreatePosts } from "@woopsocial/typescript-sdk/funcs/posts-create-posts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -270,7 +270,7 @@ Results are returned in the same order as the input array.
 
 <!-- UsageSnippet language="typescript" operationID="updatePosts" method="post" path="/posts/update" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -290,8 +290,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { postsUpdatePosts } from "woopsocial/funcs/posts-update-posts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsUpdatePosts } from "@woopsocial/typescript-sdk/funcs/posts-update-posts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

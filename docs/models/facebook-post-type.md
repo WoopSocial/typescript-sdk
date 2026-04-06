@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { FacebookPostType } from "woopsocial/models";
+import { FacebookPostType } from "@woopsocial/typescript-sdk/models";
 
 let value: FacebookPostType = "REEL";
 

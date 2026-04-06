@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateMediaRequest } from "woopsocial/models/operations";
+import { CreateMediaRequest } from "@woopsocial/typescript-sdk/models/operations";
 
 // No examples available for this model
 ```

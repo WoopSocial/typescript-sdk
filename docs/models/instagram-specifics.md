@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { InstagramSpecifics } from "woopsocial/models";
+import { InstagramSpecifics } from "@woopsocial/typescript-sdk/models";
 
 let value: InstagramSpecifics = {
   platform: "INSTAGRAM",

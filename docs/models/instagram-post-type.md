@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { InstagramPostType } from "woopsocial/models";
+import { InstagramPostType } from "@woopsocial/typescript-sdk/models";
 
 let value: InstagramPostType = "STORY";
 

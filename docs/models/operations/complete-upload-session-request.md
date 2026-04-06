@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CompleteUploadSessionRequest } from "woopsocial/models/operations";
+import { CompleteUploadSessionRequest } from "@woopsocial/typescript-sdk/models/operations";
 
 let value: CompleteUploadSessionRequest = {
   uploadSessionId: "<id>",

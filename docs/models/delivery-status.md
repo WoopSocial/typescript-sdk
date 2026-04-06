@@ -11,7 +11,7 @@ Delivery lifecycle status for a post.
 ## Example Usage
 
 ```typescript
-import { DeliveryStatus } from "woopsocial/models";
+import { DeliveryStatus } from "@woopsocial/typescript-sdk/models";
 
 let value: DeliveryStatus = "NOT_STARTED";
 

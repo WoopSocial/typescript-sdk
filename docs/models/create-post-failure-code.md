@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreatePostFailureCode } from "woopsocial/models";
+import { CreatePostFailureCode } from "@woopsocial/typescript-sdk/models";
 
 let value: CreatePostFailureCode = "SOCIAL_ACCOUNT_NOT_CONNECTED";
 

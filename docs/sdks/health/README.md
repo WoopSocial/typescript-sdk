@@ -16,7 +16,7 @@ Returns a minimal response proving the WoopSocial API is reachable.
 
 <!-- UsageSnippet language="typescript" operationID="getHealth" method="get" path="/health" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -36,8 +36,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { healthGetHealth } from "woopsocial/funcs/health-get-health.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { healthGetHealth } from "@woopsocial/typescript-sdk/funcs/health-get-health.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

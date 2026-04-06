@@ -19,7 +19,7 @@ Generates a browser authorization URL for connecting a new social account to a p
 
 <!-- UsageSnippet language="typescript" operationID="createOAuthAuthorization" method="post" path="/social-accounts/authorization-url" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -42,8 +42,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { socialAccountsCreateOAuthAuthorization } from "woopsocial/funcs/social-accounts-create-o-auth-authorization.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { socialAccountsCreateOAuthAuthorization } from "@woopsocial/typescript-sdk/funcs/social-accounts-create-o-auth-authorization.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -97,7 +97,7 @@ When `projectId` is provided, only social accounts usable within that project ar
 
 <!-- UsageSnippet language="typescript" operationID="listSocialAccounts" method="get" path="/social-accounts" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -117,8 +117,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { socialAccountsListSocialAccounts } from "woopsocial/funcs/social-accounts-list-social-accounts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { socialAccountsListSocialAccounts } from "@woopsocial/typescript-sdk/funcs/social-accounts-list-social-accounts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -169,7 +169,7 @@ Use this endpoint to discover valid values for fields inside `platformSpecifics`
 
 <!-- UsageSnippet language="typescript" operationID="getSocialAccountPlatformInputs" method="get" path="/social-accounts/{socialAccountId}/platform-inputs" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -191,8 +191,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { socialAccountsGetSocialAccountPlatformInputs } from "woopsocial/funcs/social-accounts-get-social-account-platform-inputs.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { socialAccountsGetSocialAccountPlatformInputs } from "@woopsocial/typescript-sdk/funcs/social-accounts-get-social-account-platform-inputs.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

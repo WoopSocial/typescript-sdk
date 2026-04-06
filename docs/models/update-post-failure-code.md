@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UpdatePostFailureCode } from "woopsocial/models";
+import { UpdatePostFailureCode } from "@woopsocial/typescript-sdk/models";
 
 let value: UpdatePostFailureCode = "VALIDATION_FAILED";
 

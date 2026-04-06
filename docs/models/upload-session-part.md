@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UploadSessionPart } from "woopsocial/models";
+import { UploadSessionPart } from "@woopsocial/typescript-sdk/models";
 
 let value: UploadSessionPart = {
   partNumber: 330387,

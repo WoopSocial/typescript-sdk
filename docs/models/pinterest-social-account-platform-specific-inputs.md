@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PinterestSocialAccountPlatformSpecificInputs } from "woopsocial/models";
+import { PinterestSocialAccountPlatformSpecificInputs } from "@woopsocial/typescript-sdk/models";
 
 let value: PinterestSocialAccountPlatformSpecificInputs = {
   platform: "PINTEREST",

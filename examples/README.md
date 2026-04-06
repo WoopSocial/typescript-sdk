@@ -1,6 +1,6 @@
-# woopsocial Examples
+# @woopsocial/typescript-sdk Examples
 
-This directory contains example scripts demonstrating how to use the woopsocial SDK.
+This directory contains example scripts demonstrating how to use the @woopsocial/typescript-sdk SDK.
 
 ## Prerequisites
 

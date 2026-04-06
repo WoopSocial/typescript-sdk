@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ValidationWarning } from "woopsocial/models";
+import { ValidationWarning } from "@woopsocial/typescript-sdk/models";
 
 let value: ValidationWarning = {
   field: "YOUTUBE_CATEGORY",

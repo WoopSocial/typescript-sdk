@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { YouTubePrivacy } from "woopsocial/models";
+import { YouTubePrivacy } from "@woopsocial/typescript-sdk/models";
 
 let value: YouTubePrivacy = "private";
 

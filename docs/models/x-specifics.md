@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { XSpecifics } from "woopsocial/models";
+import { XSpecifics } from "@woopsocial/typescript-sdk/models";
 
 let value: XSpecifics = {
   platform: "X",

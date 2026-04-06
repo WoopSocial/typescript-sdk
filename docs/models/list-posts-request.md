@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ListPostsRequest } from "woopsocial/models";
+import { ListPostsRequest } from "@woopsocial/typescript-sdk/models";
 
 let value: ListPostsRequest = {};
 ```

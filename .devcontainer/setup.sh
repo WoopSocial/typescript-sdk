@@ -10,7 +10,7 @@ mkdir samples
 npm install --ignore-scripts
 npm install -g ts-node --ignore-scripts
 npm link
-npm link woopsocial
+npm link @woopsocial/typescript-sdk
 TS_CONFIG_CONTENT=$(cat <<EOL
 {
   "compilerOptions": {

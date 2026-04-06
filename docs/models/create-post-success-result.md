@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreatePostSuccessResult } from "woopsocial/models";
+import { CreatePostSuccessResult } from "@woopsocial/typescript-sdk/models";
 
 let value: CreatePostSuccessResult = {
   status: "SUCCESS",

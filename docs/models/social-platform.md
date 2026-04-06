@@ -5,7 +5,7 @@ Social platform supported by WoopSocial.
 ## Example Usage
 
 ```typescript
-import { SocialPlatform } from "woopsocial/models";
+import { SocialPlatform } from "@woopsocial/typescript-sdk/models";
 
 let value: SocialPlatform = "PINTEREST";
 

@@ -27,8 +27,8 @@ session flow under `/media/upload-sessions`.
 
 <!-- UsageSnippet language="typescript" operationID="createMedia" method="post" path="/media" -->
 ```typescript
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 import { openAsBlob } from "node:fs";
-import { WoopSocial } from "woopsocial";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -51,9 +51,9 @@ run();
 The standalone function version of this method:
 
 ```typescript
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { mediaCreateMedia } from "@woopsocial/typescript-sdk/funcs/media-create-media.js";
 import { openAsBlob } from "node:fs";
-import { WoopSocialCore } from "woopsocial/core.js";
-import { mediaCreateMedia } from "woopsocial/funcs/media-create-media.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -115,7 +115,7 @@ and create the media item.
 
 <!-- UsageSnippet language="typescript" operationID="createUploadSession" method="post" path="/media/upload-sessions" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -138,8 +138,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { mediaCreateUploadSession } from "woopsocial/funcs/media-create-upload-session.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { mediaCreateUploadSession } from "@woopsocial/typescript-sdk/funcs/media-create-upload-session.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -190,7 +190,7 @@ Get media upload session status
 
 <!-- UsageSnippet language="typescript" operationID="getUploadSession" method="get" path="/media/upload-sessions/{uploadSessionId}" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -212,8 +212,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { mediaGetUploadSession } from "woopsocial/funcs/media-get-upload-session.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { mediaGetUploadSession } from "@woopsocial/typescript-sdk/funcs/media-get-upload-session.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -263,7 +263,7 @@ Complete media upload session
 
 <!-- UsageSnippet language="typescript" operationID="completeUploadSession" method="post" path="/media/upload-sessions/{uploadSessionId}/complete" -->
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -285,8 +285,8 @@ run();
 The standalone function version of this method:
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { mediaCompleteUploadSession } from "woopsocial/funcs/media-complete-upload-session.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { mediaCompleteUploadSession } from "@woopsocial/typescript-sdk/funcs/media-complete-upload-session.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

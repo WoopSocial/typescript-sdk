@@ -19,8 +19,8 @@ specific category of applications.
 ## Example
 
 ```typescript
-import { WoopSocialCore } from "woopsocial/core.js";
-import { postsListPosts } from "woopsocial/funcs/posts-list-posts.js";
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsListPosts } from "@woopsocial/typescript-sdk/funcs/posts-list-posts.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.

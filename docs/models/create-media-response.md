@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateMediaResponse } from "woopsocial/models";
+import { CreateMediaResponse } from "@woopsocial/typescript-sdk/models";
 
 let value: CreateMediaResponse = {
   mediaId: "<id>",

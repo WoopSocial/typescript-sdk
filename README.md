@@ -90,7 +90,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 ### Example
 
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -120,7 +120,7 @@ This SDK supports the following security scheme globally:
 
 To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -221,8 +221,8 @@ Certain SDK methods accept files as part of a multi-part request. It is possible
 > - **Node.js v18:** A file stream can be created using the `fileFrom` helper from [`fetch-blob/from.js`](https://www.npmjs.com/package/fetch-blob).
 
 ```typescript
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 import { openAsBlob } from "node:fs";
-import { WoopSocial } from "woopsocial";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -249,7 +249,7 @@ Some of the endpoints in this SDK support retries.  If you use the SDK without a
 
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -278,7 +278,7 @@ run();
 
 If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   retryConfig: {
@@ -320,8 +320,8 @@ run();
 
 ### Example
 ```typescript
-import { WoopSocial } from "woopsocial";
-import * as errors from "woopsocial/models/errors";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
+import * as errors from "@woopsocial/typescript-sdk/models/errors";
 
 const woopSocial = new WoopSocial({
   bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
@@ -375,7 +375,7 @@ run();
 
 The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   serverURL: "https://api.woopsocial.com/v1",
@@ -412,9 +412,9 @@ The following example shows how to:
 - use the `"requestError"` hook to log errors
 
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 import { ProxyAgent } from "undici";
-import { HTTPClient } from "woopsocial/lib/http";
+import { HTTPClient } from "@woopsocial/typescript-sdk/lib/http";
 
 const dispatcher = new ProxyAgent("http://proxy.example.com:8080");
 
@@ -457,7 +457,7 @@ You can pass a logger that matches `console`'s interface as an SDK option.
 > Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
 
 ```typescript
-import { WoopSocial } from "woopsocial";
+import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const sdk = new WoopSocial({ debugLogger: console });
 ```

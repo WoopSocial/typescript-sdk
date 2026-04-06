@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TikTokPostType } from "woopsocial/models";
+import { TikTokPostType } from "@woopsocial/typescript-sdk/models";
 
 let value: TikTokPostType = "PHOTO";
 

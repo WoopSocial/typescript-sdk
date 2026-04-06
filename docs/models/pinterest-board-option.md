@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PinterestBoardOption } from "woopsocial/models";
+import { PinterestBoardOption } from "@woopsocial/typescript-sdk/models";
 
 let value: PinterestBoardOption = {
   id: "<id>",
