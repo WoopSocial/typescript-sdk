@@ -41,6 +41,8 @@ typescript:
     devDependencies: {}
     peerDependencies: {}
   additionalPackageJSON:
+    bugs:
+      url: https://github.com/WoopSocial/typescript-sdk/issues
     files:
       - esm
       - src
@@ -49,9 +51,13 @@ typescript:
       - RUNTIMES.md
       - package.json
       - jsr.json
+    homepage: https://github.com/WoopSocial/typescript-sdk
     license: MIT
     publishConfig:
       access: public
+    repository:
+      type: git
+      url: git+https://github.com/WoopSocial/typescript-sdk.git
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
   author: Speakeasy
