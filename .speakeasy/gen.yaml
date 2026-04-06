@@ -40,7 +40,9 @@ typescript:
     dependencies: {}
     devDependencies: {}
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    publishConfig:
+      access: public
   additionalScripts: {}
   alwaysIncludeInboundAndOutbound: false
   author: Speakeasy
@@ -81,7 +83,7 @@ typescript:
   moduleFormat: esm
   multipartArrayFormat: standard
   outputModelSuffix: output
-  packageName: woopsocial
+  packageName: '@woopsocial/typescript-sdk'
   preApplyUnionDiscriminators: true
   preserveModelFieldNames: false
   responseFormat: flat
