@@ -1,7 +1,16 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Speakeasy",
+  "files": [
+    "esm",
+    "src",
+    "README.md",
+    "FUNCTIONS.md",
+    "RUNTIMES.md",
+    "package.json",
+    "jsr.json"
+  ],
   "publishConfig": {
     "access": "public"
   },
