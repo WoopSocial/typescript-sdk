@@ -6,20 +6,16 @@ import * as z from "zod/v4-mini";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
-import {
-  DeliveryStatus,
-  DeliveryStatus$inboundSchema,
-} from "./delivery-status.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 import {
-  PlatformSpecifics,
-  PlatformSpecifics$inboundSchema,
-} from "./platform-specifics.js";
-import { PostMedia, PostMedia$inboundSchema } from "./post-media.js";
+  PostContentItem,
+  PostContentItem$inboundSchema,
+} from "./post-content-item.js";
+import { PostSchedule, PostSchedule$inboundSchema } from "./post-schedule.js";
 import {
-  SocialPlatform,
-  SocialPlatform$inboundSchema,
-} from "./social-platform.js";
+  SocialAccountPost,
+  SocialAccountPost$inboundSchema,
+} from "./social-account-post.js";
 
 export type Post = {
   /**
@@ -27,77 +23,39 @@ export type Post = {
    */
   id: string;
   /**
-   * Project identifier.
+   * Project identifier derived from the selected social accounts.
    */
   projectId: string;
   /**
-   * Connected social account identifier.
-   */
-  socialAccountId: string;
-  /**
-   * Social platform supported by WoopSocial.
-   */
-  platform: SocialPlatform;
-  /**
-   * Display name or username for the connected account.
-   */
-  username: string;
-  /**
-   * Delivery lifecycle status for a post.
+   * Post content expressed as thread items.
    *
    * @remarks
    *
-   * `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
-   * `SENDING`: Delivery is currently in progress.
-   * `SENT`: Delivery completed successfully.
-   * `FAILED`: Delivery completed unsuccessfully.
+   * The array exists for future thread support. Currently exactly one item
+   * is returned.
    */
-  deliveryStatus: DeliveryStatus;
+  content: Array<PostContentItem>;
+  schedule: PostSchedule;
+  socialAccounts: Array<SocialAccountPost>;
   /**
-   * Effective UTC time when the post is or was scheduled to publish.
+   * UTC time when the post was created.
    */
-  scheduledForUTC: Date;
+  createdAt: Date;
   /**
-   * UTC time when delivery completed successfully or failed.
+   * UTC time when the post was last updated.
    */
-  sentAt?: Date | undefined;
-  title?: string | undefined;
-  description?: string | undefined;
-  firstComment?: string | undefined;
-  media?: Array<PostMedia> | undefined;
-  /**
-   * Platform-specific publishing options. The `platform` value must match the publishing account's platform.
-   */
-  platformSpecifics: PlatformSpecifics;
-  /**
-   * ID of the published post on the external social media platform.
-   */
-  externalPostId?: string | undefined;
-  /**
-   * URL of the published post on the external social media platform.
-   */
-  externalPostUrl?: string | undefined;
-  errorMessage?: string | undefined;
+  updatedAt: Date;
 };
 
 /** @internal */
 export const Post$inboundSchema: z.ZodMiniType<Post, unknown> = z.object({
   id: types.string(),
   projectId: types.string(),
-  socialAccountId: types.string(),
-  platform: SocialPlatform$inboundSchema,
-  username: types.string(),
-  deliveryStatus: DeliveryStatus$inboundSchema,
-  scheduledForUTC: types.date(),
-  sentAt: types.optional(types.date()),
-  title: types.optional(types.string()),
-  description: types.optional(types.string()),
-  firstComment: types.optional(types.string()),
-  media: types.optional(z.array(PostMedia$inboundSchema)),
-  platformSpecifics: PlatformSpecifics$inboundSchema,
-  externalPostId: types.optional(types.string()),
-  externalPostUrl: types.optional(types.string()),
-  errorMessage: types.optional(types.string()),
+  content: z.array(PostContentItem$inboundSchema),
+  schedule: PostSchedule$inboundSchema,
+  socialAccounts: z.array(SocialAccountPost$inboundSchema),
+  createdAt: types.date(),
+  updatedAt: types.date(),
 });
 
 export function postFromJSON(

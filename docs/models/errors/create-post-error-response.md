@@ -1,0 +1,18 @@
+# CreatePostErrorResponse
+
+## Example Usage
+
+```typescript
+import { CreatePostErrorResponse } from "@woopsocial/typescript-sdk/models/errors";
+
+// No examples available for this model
+```
+
+## Fields
+
+| Field                                                                                                                              | Type                                                                                                                               | Required                                                                                                                           | Description                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `code`                                                                                                                             | [models.CreatePostErrorCode](../../models/create-post-error-code.md)                                                               | :heavy_check_mark:                                                                                                                 | N/A                                                                                                                                |
+| `message`                                                                                                                          | *string*                                                                                                                           | :heavy_check_mark:                                                                                                                 | N/A                                                                                                                                |
+| `validationErrors`                                                                                                                 | [models.ValidationError](../../models/validation-error.md)[]                                                                       | :heavy_minus_sign:                                                                                                                 | Field-level validation failures. Omitted when not applicable.                                                                      |
+| `conflictingSocialAccountIds`                                                                                                      | *string*[]                                                                                                                         | :heavy_minus_sign:                                                                                                                 | Two social account IDs that belong to different projects.<br/><br/>Returned when `code` is<br/>`SOCIAL_ACCOUNTS_MUST_BELONG_TO_SAME_PROJECT`.<br/> |

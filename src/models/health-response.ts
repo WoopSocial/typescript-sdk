@@ -16,7 +16,7 @@ export type HealthResponse = {
   /**
    * Current server time in UTC with millisecond precision.
    */
-  timestampUTC: string;
+  timestampUTC: Date;
   /**
    * API version that produced the response.
    */
@@ -29,7 +29,7 @@ export const HealthResponse$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   message: types.string(),
-  timestampUTC: types.string(),
+  timestampUTC: types.date(),
   version: types.string(),
 });
 

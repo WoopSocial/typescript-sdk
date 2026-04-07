@@ -7,25 +7,16 @@ import { SocialAccountPlatformInputs } from "@woopsocial/typescript-sdk/models";
 
 let value: SocialAccountPlatformInputs = {
   socialAccountId: "<id>",
-  platform: "LINKEDIN_PAGES",
   platformSpecificInputs: {
     platform: "PINTEREST",
-    pinterest: {
-      boards: [
-        {
-          id: "<id>",
-          name: "<value>",
-        },
-      ],
-    },
+    boards: [],
   },
 };
 ```
 
 ## Fields
 
-| Field                                                 | Type                                                  | Required                                              | Description                                           |
-| ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- | ----------------------------------------------------- |
-| `socialAccountId`                                     | *string*                                              | :heavy_check_mark:                                    | Connected social account identifier.                  |
-| `platform`                                            | [models.SocialPlatform](../models/social-platform.md) | :heavy_check_mark:                                    | Social platform supported by WoopSocial.              |
-| `platformSpecificInputs`                              | *models.SocialAccountPlatformSpecificInputs*          | :heavy_check_mark:                                    | N/A                                                   |
+| Field                                        | Type                                         | Required                                     | Description                                  |
+| -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
+| `socialAccountId`                            | *string*                                     | :heavy_check_mark:                           | Connected social account identifier.         |
+| `platformSpecificInputs`                     | *models.SocialAccountPlatformSpecificInputs* | :heavy_check_mark:                           | N/A                                          |

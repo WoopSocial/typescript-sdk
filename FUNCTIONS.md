@@ -20,7 +20,7 @@ specific category of applications.
 
 ```typescript
 import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
-import { postsListPosts } from "@woopsocial/typescript-sdk/funcs/posts-list-posts.js";
+import { postsCreatePost } from "@woopsocial/typescript-sdk/funcs/posts-create-post.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -29,12 +29,18 @@ const woopSocial = new WoopSocialCore({
 });
 
 async function run() {
-  const res = await postsListPosts(woopSocial);
+  const res = await postsCreatePost(woopSocial, {
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("postsListPosts failed:", res.error);
+    console.log("postsCreatePost failed:", res.error);
   }
 }
 

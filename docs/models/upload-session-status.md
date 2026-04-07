@@ -1,22 +1,53 @@
 # UploadSessionStatus
 
-## Example Usage
+
+## Supported Types
+
+### `models.UploadSessionInitiatedStatus`
 
 ```typescript
-import { UploadSessionStatus } from "@woopsocial/typescript-sdk/models";
-
-let value: UploadSessionStatus = {
+const value: models.UploadSessionInitiatedStatus = {
   uploadSessionId: "<id>",
-  status: "FAILED",
+  status: "INITIATED",
 };
 ```
 
-## Fields
+### `models.UploadSessionUploadedStatus`
 
-| Field                                                                       | Type                                                                        | Required                                                                    | Description                                                                 |
-| --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `uploadSessionId`                                                           | *string*                                                                    | :heavy_check_mark:                                                          | Media upload session identifier.                                            |
-| `status`                                                                    | [models.UploadSessionStatusValue](../models/upload-session-status-value.md) | :heavy_check_mark:                                                          | N/A                                                                         |
-| `mediaId`                                                                   | *string*                                                                    | :heavy_minus_sign:                                                          | N/A                                                                         |
-| `failureCode`                                                               | *string*                                                                    | :heavy_minus_sign:                                                          | N/A                                                                         |
-| `failureMessage`                                                            | *string*                                                                    | :heavy_minus_sign:                                                          | N/A                                                                         |
+```typescript
+const value: models.UploadSessionUploadedStatus = {
+  uploadSessionId: "<id>",
+  status: "UPLOADED",
+};
+```
+
+### `models.UploadSessionReadyStatus`
+
+```typescript
+const value: models.UploadSessionReadyStatus = {
+  uploadSessionId: "<id>",
+  status: "READY",
+  mediaId: "<id>",
+};
+```
+
+### `models.UploadSessionFailedStatus`
+
+```typescript
+const value: models.UploadSessionFailedStatus = {
+  uploadSessionId: "<id>",
+  status: "FAILED",
+  failureCode: "<value>",
+  failureMessage: "<value>",
+};
+```
+
+### `models.UploadSessionAbortedStatus`
+
+```typescript
+const value: models.UploadSessionAbortedStatus = {
+  uploadSessionId: "<id>",
+  status: "ABORTED",
+};
+```
+

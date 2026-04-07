@@ -20,121 +20,112 @@ tags:
   - name: Health
     description: Basic connectivity endpoints.
 paths:
-  /posts/list:
+  /posts:
     post:
-      operationId: listPosts
+      operationId: createPost
       tags:
         - Posts
       security:
         - BearerAuth: []
-      summary: List posts
+      summary: Create post
       description: |
-        Returns outbound posts that were scheduled within various projects.
-      requestBody:
-        required: false
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ListPostsRequest"
-      responses:
-        "200":
-          description: Outbound posts for the projects the API key has access to.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ListPostsResponse"
-  /posts/delete:
-    post:
-      operationId: deletePosts
-      tags:
-        - Posts
-      security:
-        - BearerAuth: []
-      summary: Delete posts
-      description: |
-        Deletes one or more scheduled posts by post ID.
+        Creates one post resource with one or more social-account targets.
 
-        Only posts with `deliveryStatus` `NOT_STARTED` can be deleted.
+        All referenced social accounts must belong to the same project.
 
-        Results are returned in the same order as the provided `ids`.
+        The request is validated atomically. If any social-account target fails
+        validation, the post is not created.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: array
-              minItems: 1
-              items:
-                type: string
+              $ref: "#/components/schemas/CreatePostRequest"
       responses:
-        "200":
-          description: Batched post deletion results.
+        "201":
+          description: Post created.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/DeletePostsResponse"
-  /posts/create:
-    post:
-      operationId: createPosts
+                $ref: "#/components/schemas/Post"
+        "422":
+          description: Request validation failed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePostErrorResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePostErrorResponse"
+  /posts/{postId}:
+    get:
+      operationId: getPost
       tags:
         - Posts
       security:
         - BearerAuth: []
-      summary: Create posts
+      summary: Get post
       description: |
-        Creates one or more scheduled posts.
-
-        Each item in the request body creates one scheduled post for a single connected social account. Each item must target a specific project.
-
-        Each item must provide an `idempotencyKey`. Reusing the same `idempotencyKey` for the same API key replays the original result for that item. This is to help you prevent accidentally publishing the same post multiple times, in case you need to retry due to network failures.
-
-        Results are returned in the same order as the input array.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: "#/components/schemas/CreatePostItem"
+        Returns one post with its social-account children inline.
+      parameters:
+        - $ref: "#/components/parameters/PostId"
       responses:
         "200":
-          description: Batched post creation results.
+          description: Post found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/CreatePostsResponse"
-  /posts/update:
-    post:
-      operationId: updatePosts
+                $ref: "#/components/schemas/Post"
+        "404":
+          description: Post not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPostErrorResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetPostErrorResponse"
+    delete:
+      operationId: deletePost
       tags:
         - Posts
       security:
         - BearerAuth: []
-      summary: Update posts
+      summary: Delete post
       description: |
-        Updates one or more scheduled posts by post ID.
+        Deletes one scheduled post by post ID.
 
-        Only posts with `deliveryStatus` `NOT_STARTED` can be updated. It performs a full replacement of the specified posts, so omitted properties are cleared.
-
-        Results are returned in the same order as the input array.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              minItems: 1
-              items:
-                $ref: "#/components/schemas/UpdatePostItem"
+        A post can only be deleted when all of its social-account deliveries are
+        still `NOT_STARTED`.
+      parameters:
+        - $ref: "#/components/parameters/PostId"
       responses:
-        "200":
-          description: Batched post update results.
+        "204":
+          description: Post deleted.
+        "404":
+          description: Post not found.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UpdatePostsResponse"
+                $ref: "#/components/schemas/DeletePostErrorResponse"
+        "409":
+          description: Post cannot be deleted in its current state.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletePostErrorResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletePostErrorResponse"
   /projects:
     get:
       operationId: listProjects
@@ -210,7 +201,8 @@ paths:
       description: |
         Returns platform-specific input options for a connected social account.
 
-        Use this endpoint to discover valid values for fields inside `platformSpecifics` when creating posts for Pinterest and TikTok.
+        Use this endpoint to discover valid values for flattened post-target
+        fields such as `pinterestBoardId` and `privacyLevel`.
       parameters:
         - $ref: "#/components/parameters/SocialAccountId"
       responses:
@@ -360,6 +352,13 @@ components:
       schema:
         type: string
       description: Connected social account identifier.
+    PostId:
+      name: postId
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Post identifier.
     UploadSessionId:
       name: uploadSessionId
       in: path
@@ -446,6 +445,7 @@ components:
           description: Display name or username for the connected account.
         imageUrl:
           type: string
+          format: uri
           description: Profile image URL for the connected account.
         status:
           $ref: "#/components/schemas/SocialAccountStatus"
@@ -455,15 +455,11 @@ components:
       additionalProperties: false
       required:
         - socialAccountId
-        - platform
         - platformSpecificInputs
       properties:
         socialAccountId:
           type: string
           description: Connected social account identifier.
-        platform:
-          $ref: "#/components/schemas/SocialPlatform"
-          description: Social platform for the connected account.
         platformSpecificInputs:
           $ref: "#/components/schemas/SocialAccountPlatformSpecificInputs"
     SocialAccountPlatformSpecificInputs:
@@ -481,41 +477,64 @@ components:
       additionalProperties: false
       required:
         - platform
-        - pinterest
+        - boards
       properties:
         platform:
-          type: string
-          enum: [PINTEREST]
-        pinterest:
-          $ref: "#/components/schemas/PinterestAccountPlatformInputs"
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - PINTEREST
+        boards:
+          type: array
+          description: |
+            Available Pinterest boards for this account.
+
+            Each `id` value can be sent as `pinterestBoardId` when creating a
+            post for a Pinterest social-account target.
+          items:
+            $ref: "#/components/schemas/PinterestBoardOption"
     TikTokSocialAccountPlatformSpecificInputs:
       title: TikTok Social Account Platform Specific Inputs
       type: object
       additionalProperties: false
       required:
         - platform
-        - tiktok
+        - privacyLevelOptions
+        - commentAvailable
+        - duetAvailable
+        - stitchAvailable
+        - maxVideoPostDurationSec
       properties:
         platform:
-          type: string
-          enum: [TIKTOK]
-        tiktok:
-          $ref: "#/components/schemas/TikTokAccountPlatformInputs"
-    PinterestAccountPlatformInputs:
-      type: object
-      additionalProperties: false
-      required:
-        - boards
-      properties:
-        boards:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - TIKTOK
+        privacyLevelOptions:
           type: array
           description: |
-            Available Pinterest boards for this account.
+            Privacy values currently allowed for this TikTok account.
 
-            Each `id` value can be sent as
-            `platformSpecifics.pinterestBoardId` when creating a post.
+            Each value can be sent as `privacyLevel` when creating a post for a
+            TikTok social-account target.
           items:
-            $ref: "#/components/schemas/PinterestBoardOption"
+            $ref: "#/components/schemas/TikTokPrivacyLevel"
+        commentAvailable:
+          type: boolean
+          description: Whether comments can currently be allowed for this TikTok account.
+        duetAvailable:
+          type: boolean
+          description: Whether duets can currently be allowed for video posts on this TikTok account.
+        stitchAvailable:
+          type: boolean
+          description: Whether stitches can currently be allowed for video posts on this TikTok account.
+        maxVideoPostDurationSec:
+          type: integer
+          format: int32
+          minimum: 1
+          description: Maximum TikTok video duration currently allowed for this account.
     PinterestBoardOption:
       type: object
       additionalProperties: false
@@ -529,39 +548,6 @@ components:
         name:
           type: string
           description: Human-readable Pinterest board name.
-    TikTokAccountPlatformInputs:
-      type: object
-      additionalProperties: false
-      required:
-        - privacyLevelOptions
-        - commentDisabled
-        - duetDisabled
-        - stitchDisabled
-        - maxVideoPostDurationSec
-      properties:
-        privacyLevelOptions:
-          type: array
-          description: |
-            Privacy values currently allowed for this TikTok account.
-
-            Each value can be sent as `platformSpecifics.privacyLevel`
-            when creating a post.
-          items:
-            $ref: "#/components/schemas/TikTokPrivacyLevel"
-        commentDisabled:
-          type: boolean
-          description: Whether TikTok currently disables comments for this account.
-        duetDisabled:
-          type: boolean
-          description: Whether TikTok currently disables duets for this account.
-        stitchDisabled:
-          type: boolean
-          description: Whether TikTok currently disables stitches for this account.
-        maxVideoPostDurationSec:
-          type: integer
-          format: int32
-          minimum: 1
-          description: Maximum TikTok video duration currently allowed for this account.
     DeliveryStatus:
       type: string
       description: |
@@ -576,100 +562,222 @@ components:
         - SENDING
         - SENT
         - FAILED
-    PostMedia:
+    PostContentMediaInput:
+      description: |
+        Content media reference.
+      oneOf:
+        - $ref: "#/components/schemas/MediaLibraryPostContentMediaInput"
+      discriminator:
+        propertyName: type
+        mapping:
+          MEDIA_LIBRARY: "#/components/schemas/MediaLibraryPostContentMediaInput"
+    MediaLibraryPostContentMediaInput:
+      title: Media Library Input
       type: object
       additionalProperties: false
       required:
-        - mediaId
         - type
+        - mediaId
+      properties:
+        type:
+          type: string
+          enum:
+            - MEDIA_LIBRARY
+        mediaId:
+          type: string
+          description: Media identifier from the media library.
+    PostContentMedia:
+      description: |
+        Resolved content media.
+      oneOf:
+        - $ref: "#/components/schemas/MediaLibraryPostContentMedia"
+      discriminator:
+        propertyName: type
+        mapping:
+          MEDIA_LIBRARY: "#/components/schemas/MediaLibraryPostContentMedia"
+    MediaLibraryPostContentMedia:
+      title: Media Library Post Content Media
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - mediaId
+        - mediaType
         - url
         - thumbnailUrl
       properties:
+        type:
+          type: string
+          enum:
+            - MEDIA_LIBRARY
         mediaId:
           type: string
-          description: Media identifier.
-        type:
+          description: Media identifier from the media library.
+        mediaType:
           type: string
           enum:
             - IMAGE
             - VIDEO
         url:
           type: string
+          format: uri
           description: Canonical media URL.
         thumbnailUrl:
           type: string
+          format: uri
           description: Thumbnail or preview URL for the media item.
+    PostContentItemInput:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        text:
+          type: string
+          description: Text content for this thread item.
+        media:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostContentMediaInput"
+    PostContentItem:
+      type: object
+      additionalProperties: false
+      minProperties: 1
+      properties:
+        text:
+          type: string
+          description: Text content for this thread item.
+        media:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostContentMedia"
+    PostContentInput:
+      type: array
+      minItems: 1
+      maxItems: 1
+      description: |
+        Post content expressed as thread items.
+
+        The array exists for future thread support. Currently exactly one item
+        is supported.
+      items:
+        $ref: "#/components/schemas/PostContentItemInput"
+    PostContent:
+      type: array
+      minItems: 1
+      maxItems: 1
+      description: |
+        Post content expressed as thread items.
+
+        The array exists for future thread support. Currently exactly one item
+        is returned.
+      items:
+        $ref: "#/components/schemas/PostContentItem"
+    PostSchedule:
+      oneOf:
+        - $ref: "#/components/schemas/DraftPostSchedule"
+        - $ref: "#/components/schemas/PublishNowPostSchedule"
+        - $ref: "#/components/schemas/ScheduleForLaterPostSchedule"
+      discriminator:
+        propertyName: type
+        mapping:
+          DRAFT: "#/components/schemas/DraftPostSchedule"
+          PUBLISH_NOW: "#/components/schemas/PublishNowPostSchedule"
+          SCHEDULE_FOR_LATER: "#/components/schemas/ScheduleForLaterPostSchedule"
+    DraftPostSchedule:
+      title: Draft
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - DRAFT
+    PublishNowPostSchedule:
+      title: Publish Now
+      type: object
+      additionalProperties: false
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum:
+            - PUBLISH_NOW
+    ScheduleForLaterPostSchedule:
+      title: Schedule For Later
+      type: object
+      additionalProperties: false
+      required:
+        - type
+        - scheduledForUTC
+      properties:
+        type:
+          type: string
+          enum:
+            - SCHEDULE_FOR_LATER
+        scheduledForUTC:
+          type: string
+          format: date-time
+          description: UTC time when the post should be published.
+    CreatePostRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - content
+        - schedule
+        - socialAccounts
+      properties:
+        content:
+          $ref: "#/components/schemas/PostContentInput"
+        schedule:
+          $ref: "#/components/schemas/PostSchedule"
+        socialAccounts:
+          type: array
+          minItems: 1
+          description: |
+            Social-account targets for this post.
+
+            All referenced social accounts must belong to the same project.
+            Duplicate `socialAccountId` values are invalid.
+          items:
+            $ref: "#/components/schemas/SocialAccountTargetInput"
     Post:
       type: object
       additionalProperties: false
       required:
         - id
         - projectId
-        - socialAccountId
-        - platform
-        - username
-        - deliveryStatus
-        - scheduledForUTC
-        - platformSpecifics
+        - content
+        - schedule
+        - socialAccounts
+        - createdAt
+        - updatedAt
       properties:
         id:
           type: string
           description: Post identifier.
         projectId:
           type: string
-          description: Project identifier.
-        socialAccountId:
-          type: string
-          description: Connected social account identifier.
-        platform:
-          $ref: "#/components/schemas/SocialPlatform"
-        username:
-          type: string
-          description: Display name or username for the connected account.
-        deliveryStatus:
-          $ref: "#/components/schemas/DeliveryStatus"
-          description: Current delivery status for the post.
-        scheduledForUTC:
+          description: Project identifier derived from the selected social accounts.
+        content:
+          $ref: "#/components/schemas/PostContent"
+        schedule:
+          $ref: "#/components/schemas/PostSchedule"
+        socialAccounts:
+          type: array
+          minItems: 1
+          items:
+            $ref: "#/components/schemas/SocialAccountPost"
+        createdAt:
           type: string
           format: date-time
-          description: Effective UTC time when the post is or was scheduled to publish.
-        sentAt:
+          description: UTC time when the post was created.
+        updatedAt:
           type: string
           format: date-time
-          description: UTC time when delivery completed successfully or failed.
-        title:
-          type: string
-        description:
-          type: string
-        firstComment:
-          type: string
-        media:
-          type: array
-          items:
-            $ref: "#/components/schemas/PostMedia"
-        platformSpecifics:
-          $ref: "#/components/schemas/PlatformSpecifics"
-        externalPostId:
-          type: string
-          description: ID of the published post on the external social media platform.
-        externalPostUrl:
-          type: string
-          description: URL of the published post on the external social media platform.
-        errorMessage:
-          type: string
-    ListPostsResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - posts
-      properties:
-        posts:
-          type: array
-          items:
-            $ref: "#/components/schemas/Post"
-        nextCursor:
-          type: string
-          description: Opaque cursor for the next page of results. Omitted when there are no more results.
+          description: UTC time when the post was last updated.
     CreateMediaResponse:
       type: object
       additionalProperties: false
@@ -708,6 +816,7 @@ components:
           description: 1-based part number to upload to this URL.
         uploadUrl:
           type: string
+          format: uri
           description: Presigned URL that accepts the bytes for `partNumber`.
     UploadSession:
       type: object
@@ -745,15 +854,23 @@ components:
           items:
             $ref: "#/components/schemas/UploadSessionPart"
             description: Presigned URL and part number for uploading one chunk of the file.
-    UploadSessionStatusValue:
-      type: string
-      enum:
-        - INITIATED
-        - UPLOADED
-        - READY
-        - FAILED
-        - ABORTED
     UploadSessionStatus:
+      oneOf:
+        - $ref: "#/components/schemas/UploadSessionInitiatedStatus"
+        - $ref: "#/components/schemas/UploadSessionUploadedStatus"
+        - $ref: "#/components/schemas/UploadSessionReadyStatus"
+        - $ref: "#/components/schemas/UploadSessionFailedStatus"
+        - $ref: "#/components/schemas/UploadSessionAbortedStatus"
+      discriminator:
+        propertyName: status
+        mapping:
+          INITIATED: "#/components/schemas/UploadSessionInitiatedStatus"
+          UPLOADED: "#/components/schemas/UploadSessionUploadedStatus"
+          READY: "#/components/schemas/UploadSessionReadyStatus"
+          FAILED: "#/components/schemas/UploadSessionFailedStatus"
+          ABORTED: "#/components/schemas/UploadSessionAbortedStatus"
+    UploadSessionInitiatedStatus:
+      title: Upload Session Initiated Status
       type: object
       additionalProperties: false
       required:
@@ -764,431 +881,508 @@ components:
           type: string
           description: Media upload session identifier.
         status:
-          $ref: "#/components/schemas/UploadSessionStatusValue"
-        mediaId:
           type: string
-        failureCode:
-          type: string
-        failureMessage:
-          type: string
-    ListPostsRequest:
-      type: object
-      additionalProperties: false
-      properties:
-        projectId:
-          type: string
-          description: Filter to resources that belong to a specific project.
-        deliveryStatus:
-          $ref: "#/components/schemas/DeliveryStatus"
-          description: Filter to a single delivery status.
-        limit:
-          type: integer
-          format: int32
-          minimum: 1
-          maximum: 100
-          default: 50
-          description: Number of items to return. Defaults to 50. Maximum 100.
-        cursor:
-          type: string
-          description: Opaque cursor for the next page of results.
-        ids:
-          type: array
-          description: Filter to specific post IDs. When provided, only posts with matching IDs are returned.
-          items:
-            type: string
-    CreatePostItem:
+          enum:
+            - INITIATED
+    UploadSessionUploadedStatus:
+      title: Upload Session Uploaded Status
       type: object
       additionalProperties: false
       required:
-        - idempotencyKey
-        - projectId
-        - socialAccountId
-        - scheduledForUTC
-        - platformSpecifics
+        - uploadSessionId
+        - status
       properties:
-        idempotencyKey:
+        uploadSessionId:
           type: string
-          minLength: 1
-          description: Client-provided item idempotency key.
-        projectId:
+          description: Media upload session identifier.
+        status:
           type: string
-          description: Project identifier.
+          enum:
+            - UPLOADED
+    UploadSessionReadyStatus:
+      title: Upload Session Ready Status
+      type: object
+      additionalProperties: false
+      required:
+        - uploadSessionId
+        - status
+        - mediaId
+      properties:
+        uploadSessionId:
+          type: string
+          description: Media upload session identifier.
+        status:
+          type: string
+          enum:
+            - READY
+        mediaId:
+          type: string
+          description: Media identifier created by the completed upload.
+    UploadSessionFailedStatus:
+      title: Upload Session Failed Status
+      type: object
+      additionalProperties: false
+      required:
+        - uploadSessionId
+        - status
+        - failureCode
+        - failureMessage
+      properties:
+        uploadSessionId:
+          type: string
+          description: Media upload session identifier.
+        status:
+          type: string
+          enum:
+            - FAILED
+        failureCode:
+          type: string
+          description: Machine-readable failure code for the upload session.
+        failureMessage:
+          type: string
+          description: Human-readable summary of why the upload session failed.
+    UploadSessionAbortedStatus:
+      title: Upload Session Aborted Status
+      type: object
+      additionalProperties: false
+      required:
+        - uploadSessionId
+        - status
+      properties:
+        uploadSessionId:
+          type: string
+          description: Media upload session identifier.
+        status:
+          type: string
+          enum:
+            - ABORTED
+    SocialAccountTargetInput:
+      oneOf:
+        - $ref: "#/components/schemas/PinterestInput"
+        - $ref: "#/components/schemas/InstagramInput"
+        - $ref: "#/components/schemas/FacebookInput"
+        - $ref: "#/components/schemas/TikTokInput"
+        - $ref: "#/components/schemas/YouTubeInput"
+        - $ref: "#/components/schemas/XInput"
+        - $ref: "#/components/schemas/LinkedInInput"
+        - $ref: "#/components/schemas/LinkedInPagesInput"
+      discriminator:
+        propertyName: platform
+        mapping:
+          PINTEREST: "#/components/schemas/PinterestInput"
+          INSTAGRAM: "#/components/schemas/InstagramInput"
+          FACEBOOK: "#/components/schemas/FacebookInput"
+          TIKTOK: "#/components/schemas/TikTokInput"
+          YOUTUBE: "#/components/schemas/YouTubeInput"
+          X: "#/components/schemas/XInput"
+          LINKEDIN: "#/components/schemas/LinkedInInput"
+          LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesInput"
+    SocialAccountInputBase:
+      type: object
+      required:
+        - socialAccountId
+      properties:
         socialAccountId:
           type: string
           description: Connected social account identifier.
-        scheduledForUTC:
+        contentOverride:
+          $ref: "#/components/schemas/PostContentInput"
+    SocialAccountPostBase:
+      type: object
+      required:
+        - socialAccountId
+        - deliveryStatus
+      properties:
+        socialAccountId:
+          type: string
+          description: Connected social account identifier.
+        deliveryStatus:
+          $ref: "#/components/schemas/DeliveryStatus"
+        contentOverride:
+          $ref: "#/components/schemas/PostContent"
+        sentAt:
           type: string
           format: date-time
-          description: UTC time when this post should be published.
-        title:
+        externalPostId:
           type: string
-        description:
+        externalPostUrl:
           type: string
-        firstComment:
+          format: uri
+        errorMessage:
           type: string
-        mediaIds:
+    PinterestPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - PINTEREST
+    InstagramPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - INSTAGRAM
+    FacebookPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - FACEBOOK
+    TikTokPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - TIKTOK
+    YouTubePlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - YOUTUBE
+    XPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - X
+    LinkedInPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - LINKEDIN
+    LinkedInPagesPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - LINKEDIN_PAGES
+    PinterestFields:
+      type: object
+      required:
+        - pinterestBoardId
+      properties:
+        pinterestBoardId:
+          type: string
+    InstagramFields:
+      type: object
+      required:
+        - postType
+      properties:
+        postType:
+          $ref: "#/components/schemas/InstagramPostType"
+    FacebookFields:
+      type: object
+      required:
+        - postType
+      properties:
+        link:
+          type: string
+        postType:
+          $ref: "#/components/schemas/FacebookPostType"
+    TikTokFields:
+      type: object
+      required:
+        - postType
+        - privacyLevel
+        - allowComment
+        - allowDuet
+        - allowStitch
+        - contentDisclosureEnabled
+        - isYourBrand
+        - isBrandedContent
+        - autoAddMusic
+      properties:
+        postType:
+          $ref: "#/components/schemas/TikTokPostType"
+        privacyLevel:
+          $ref: "#/components/schemas/TikTokPrivacyLevel"
+        allowComment:
+          type: boolean
+          description: Whether comments should be allowed for this TikTok post.
+        allowDuet:
+          type: boolean
+          description: |
+            Whether duets should be allowed for this TikTok post.
+
+            This field applies to `postType=VIDEO`.
+
+            When `postType=PHOTO`, this field is required by the API contract
+            but is not used by TikTok.
+        allowStitch:
+          type: boolean
+          description: |
+            Whether stitches should be allowed for this TikTok post.
+
+            This field applies to `postType=VIDEO`.
+
+            When `postType=PHOTO`, this field is required by the API contract
+            but is not used by TikTok.
+        contentDisclosureEnabled:
+          type: boolean
+          description: Whether TikTok content disclosure should be enabled for this post.
+        isYourBrand:
+          type: boolean
+          description: Whether the post should be disclosed as "Your brand" content on TikTok.
+        isBrandedContent:
+          type: boolean
+          description: Whether the post should be disclosed as branded content on TikTok.
+        autoAddMusic:
+          type: boolean
+          description: |
+            Whether TikTok should automatically add music to this post.
+
+            This field applies to `postType=PHOTO`.
+
+            When `postType=VIDEO`, this field is required by the API contract
+            but is not used by TikTok.
+    YouTubeFields:
+      type: object
+      properties:
+        privacy:
+          $ref: "#/components/schemas/YouTubePrivacy"
+        category:
+          type: string
+        tags:
           type: array
           items:
             type: string
-          description: Media identifiers previously created via the external media upload flow.
-        platformSpecifics:
-          $ref: "#/components/schemas/PlatformSpecifics"
-    CreatePostsResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - results
-      properties:
-        results:
-          type: array
-          description: Results in the same order as the request items.
-          items:
-            $ref: "#/components/schemas/CreatePostResult"
-    PostMutationResultStatus:
-      type: string
-      enum:
-        - SUCCESS
-        - FAILURE
-    CreatePostResult:
+        madeForKids:
+          type: boolean
+    PinterestInput:
+      title: Pinterest Input
+      allOf:
+        - $ref: "#/components/schemas/PinterestPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/PinterestFields"
+    InstagramInput:
+      title: Instagram Input
+      allOf:
+        - $ref: "#/components/schemas/InstagramPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/InstagramFields"
+    FacebookInput:
+      title: Facebook Input
+      allOf:
+        - $ref: "#/components/schemas/FacebookPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/FacebookFields"
+    TikTokInput:
+      title: TikTok Input
+      allOf:
+        - $ref: "#/components/schemas/TikTokPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/TikTokFields"
+    YouTubeInput:
+      title: YouTube Input
+      allOf:
+        - $ref: "#/components/schemas/YouTubePlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/YouTubeFields"
+    XInput:
+      title: X Input
+      allOf:
+        - $ref: "#/components/schemas/XPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+    LinkedInInput:
+      title: LinkedIn Input
+      allOf:
+        - $ref: "#/components/schemas/LinkedInPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+    LinkedInPagesInput:
+      title: LinkedIn Pages Input
+      allOf:
+        - $ref: "#/components/schemas/LinkedInPagesPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+    SocialAccountPost:
       oneOf:
-        - $ref: "#/components/schemas/CreatePostSuccessResult"
-        - $ref: "#/components/schemas/CreatePostFailureResult"
+        - $ref: "#/components/schemas/PinterestPost"
+        - $ref: "#/components/schemas/InstagramPost"
+        - $ref: "#/components/schemas/FacebookPost"
+        - $ref: "#/components/schemas/TikTokPost"
+        - $ref: "#/components/schemas/YouTubePost"
+        - $ref: "#/components/schemas/XPost"
+        - $ref: "#/components/schemas/LinkedInPost"
+        - $ref: "#/components/schemas/LinkedInPagesPost"
       discriminator:
-        propertyName: status
+        propertyName: platform
         mapping:
-          SUCCESS: "#/components/schemas/CreatePostSuccessResult"
-          FAILURE: "#/components/schemas/CreatePostFailureResult"
-    CreatePostSuccessResult:
-      title: Create Post Success
-      type: object
-      additionalProperties: false
-      required:
-        - idempotencyKey
-        - status
-        - id
-        - validationWarnings
-      properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - SUCCESS
-        idempotencyKey:
-          type: string
-          description: Item idempotency key echoed from the request.
-        id:
-          type: string
-          description: Created post identifier.
-        validationWarnings:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationWarning"
-          description: Structured validation warnings for this item. Empty when there are no warnings.
-    CreatePostFailureResult:
-      title: Create Post Failure
-      type: object
-      additionalProperties: false
-      required:
-        - idempotencyKey
-        - status
-        - code
-        - message
-        - validationErrors
-        - validationWarnings
-      properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - FAILURE
-        idempotencyKey:
-          type: string
-          description: Item idempotency key echoed from the request.
-        code:
-          $ref: "#/components/schemas/CreatePostFailureCode"
-        message:
-          type: string
-          description: |
-            Human-readable summary of the failure.
-            When `code` is `VALIDATION_FAILED`, inspect `validationErrors` for the specific field-level errors.
-        validationErrors:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationError"
-          description: Structured validation errors for this item. Empty when there are no validation errors.
-        validationWarnings:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationWarning"
-          description: Structured validation warnings for this item. Empty when there are no warnings.
-    CreatePostFailureCode:
-      type: string
-      enum:
-        - INVALID_PROJECT_ID
-        - PROJECT_NOT_FOUND
-        - INVALID_SOCIAL_ACCOUNT_ID
-        - SOCIAL_ACCOUNT_NOT_CONNECTED
-        - INVALID_MEDIA_ID
-        - INVALID_PLATFORM_SPECIFIC_DATA
-        - VALIDATION_FAILED
-        - INTERNAL_ERROR
-    UpdatePostItem:
-      type: object
-      additionalProperties: false
-      required:
-        - id
-        - scheduledForUTC
-        - platformSpecifics
-      properties:
-        id:
-          type: string
-          description: Post to update.
-        scheduledForUTC:
-          type: string
-          format: date-time
-          description: UTC time when this post should be published.
-        title:
-          type: string
-        description:
-          type: string
-        firstComment:
-          type: string
-        mediaIds:
-          type: array
-          items:
-            type: string
-          description: Media identifiers previously created via the media upload flow.
-        platformSpecifics:
-          $ref: "#/components/schemas/PlatformSpecifics"
-    UpdatePostsResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - results
-      properties:
-        results:
-          type: array
-          description: Results in the same order as the request items.
-          items:
-            $ref: "#/components/schemas/UpdatePostResult"
-    UpdatePostResult:
-      oneOf:
-        - $ref: "#/components/schemas/UpdatePostSuccessResult"
-        - $ref: "#/components/schemas/UpdatePostFailureResult"
-      discriminator:
-        propertyName: status
-        mapping:
-          SUCCESS: "#/components/schemas/UpdatePostSuccessResult"
-          FAILURE: "#/components/schemas/UpdatePostFailureResult"
-    UpdatePostSuccessResult:
-      title: Update Post Success
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - id
-        - validationWarnings
-      properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - SUCCESS
-        id:
-          type: string
-          description: Post id echoed from the request.
-        validationWarnings:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationWarning"
-          description: Structured validation warnings for this item. Empty when there are no warnings.
-    UpdatePostFailureResult:
-      title: Update Post Failure
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - id
-        - code
-        - message
-        - validationErrors
-        - validationWarnings
-      properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - FAILURE
-        id:
-          type: string
-          description: Post id echoed from the request.
-        code:
-          $ref: "#/components/schemas/UpdatePostFailureCode"
-        message:
-          type: string
-          description: |
-            Human-readable summary of the failure.
-            When `code` is `VALIDATION_FAILED`, inspect `validationErrors` for the specific field-level errors.
-        validationErrors:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationError"
-          description: Structured validation errors for this item. Empty when there are no validation errors.
-        validationWarnings:
-          type: array
-          items:
-            $ref: "#/components/schemas/ValidationWarning"
-          description: Structured validation warnings for this item. Empty when there are no warnings.
-    UpdatePostFailureCode:
-      type: string
-      enum:
-        - POST_NOT_FOUND
-        - POST_NOT_UPDATABLE
-        - INVALID_MEDIA_ID
-        - INVALID_PLATFORM_SPECIFIC_DATA
-        - VALIDATION_FAILED
-        - INTERNAL_ERROR
-    ValidationField:
-      type: string
-      enum:
-        - DESCRIPTION
-        - MEDIA
-        - PINTEREST_BOARD
-        - CONTENT
-        - TITLE
-        - FIRST_COMMENT
-        - TIKTOK_PRIVACY_LEVEL
-        - TIKTOK_CONTENT_DISCLOSURE
-        - YOUTUBE_PRIVACY
-        - YOUTUBE_CATEGORY
-        - YOUTUBE_TAGS
-        - SCHEDULE
+          PINTEREST: "#/components/schemas/PinterestPost"
+          INSTAGRAM: "#/components/schemas/InstagramPost"
+          FACEBOOK: "#/components/schemas/FacebookPost"
+          TIKTOK: "#/components/schemas/TikTokPost"
+          YOUTUBE: "#/components/schemas/YouTubePost"
+          X: "#/components/schemas/XPost"
+          LINKEDIN: "#/components/schemas/LinkedInPost"
+          LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesPost"
+    PinterestPost:
+      title: Pinterest Post
+      allOf:
+        - $ref: "#/components/schemas/PinterestPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/PinterestFields"
+    InstagramPost:
+      title: Instagram Post
+      allOf:
+        - $ref: "#/components/schemas/InstagramPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/InstagramFields"
+    FacebookPost:
+      title: Facebook Post
+      allOf:
+        - $ref: "#/components/schemas/FacebookPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/FacebookFields"
+    TikTokPost:
+      title: TikTok Post
+      allOf:
+        - $ref: "#/components/schemas/TikTokPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/TikTokFields"
+    YouTubePost:
+      title: YouTube Post
+      allOf:
+        - $ref: "#/components/schemas/YouTubePlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/YouTubeFields"
+    XPost:
+      title: X Post
+      allOf:
+        - $ref: "#/components/schemas/XPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+    LinkedInPost:
+      title: LinkedIn Post
+      allOf:
+        - $ref: "#/components/schemas/LinkedInPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+    LinkedInPagesPost:
+      title: LinkedIn Pages Post
+      allOf:
+        - $ref: "#/components/schemas/LinkedInPagesPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
     ValidationError:
       type: object
       additionalProperties: false
       required:
-        - field
+        - path
         - message
       properties:
-        field:
-          $ref: "#/components/schemas/ValidationField"
+        path:
+          type: string
+          description: JSON path to the invalid input.
         message:
           type: string
-    ValidationWarning:
+    CreatePostErrorCode:
+      type: string
+      enum:
+        - INVALID_SOCIAL_ACCOUNT_ID
+        - SOCIAL_ACCOUNT_NOT_CONNECTED
+        - SOCIAL_ACCOUNTS_MUST_BELONG_TO_SAME_PROJECT
+        - DUPLICATE_SOCIAL_ACCOUNT_ID
+        - INVALID_MEDIA_ID
+        - INVALID_PLATFORM_SPECIFIC_DATA
+        - VALIDATION_FAILED
+        - INTERNAL_ERROR
+    CreatePostErrorResponse:
       type: object
       additionalProperties: false
       required:
-        - field
-        - message
-      properties:
-        field:
-          $ref: "#/components/schemas/ValidationField"
-        message:
-          type: string
-    DeletePostsResponse:
-      type: object
-      additionalProperties: false
-      required:
-        - results
-      properties:
-        results:
-          type: array
-          description: Results in the same order as the request items.
-          items:
-            $ref: "#/components/schemas/DeletePostResult"
-    DeletePostResult:
-      oneOf:
-        - $ref: "#/components/schemas/DeletePostSuccessResult"
-        - $ref: "#/components/schemas/DeletePostFailureResult"
-      discriminator:
-        propertyName: status
-        mapping:
-          SUCCESS: "#/components/schemas/DeletePostSuccessResult"
-          FAILURE: "#/components/schemas/DeletePostFailureResult"
-    DeletePostSuccessResult:
-      title: Delete Post Success
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - id
-      properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - SUCCESS
-        id:
-          type: string
-          description: Post id echoed from the request.
-    DeletePostFailureResult:
-      title: Delete Post Failure
-      type: object
-      additionalProperties: false
-      required:
-        - status
-        - id
         - code
         - message
       properties:
-        status:
-          allOf:
-            - $ref: "#/components/schemas/PostMutationResultStatus"
-            - type: string
-              enum:
-                - FAILURE
-        id:
-          type: string
-          description: Post id echoed from the request.
         code:
-          $ref: "#/components/schemas/DeletePostFailureCode"
+          $ref: "#/components/schemas/CreatePostErrorCode"
         message:
           type: string
-    DeletePostFailureCode:
+        validationErrors:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValidationError"
+          description: Field-level validation failures. Omitted when not applicable.
+        conflictingSocialAccountIds:
+          type: array
+          minItems: 2
+          maxItems: 2
+          description: |
+            Two social account IDs that belong to different projects.
+
+            Returned when `code` is
+            `SOCIAL_ACCOUNTS_MUST_BELONG_TO_SAME_PROJECT`.
+          items:
+            type: string
+    GetPostErrorCode:
+      type: string
+      enum:
+        - POST_NOT_FOUND
+        - INTERNAL_ERROR
+    GetPostErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+      properties:
+        code:
+          $ref: "#/components/schemas/GetPostErrorCode"
+        message:
+          type: string
+    DeletePostErrorCode:
       type: string
       enum:
         - POST_NOT_FOUND
         - POST_NOT_DELETABLE
         - INTERNAL_ERROR
-    PlatformSpecifics:
-      description: Platform-specific publishing options. The `platform` value must match the publishing account's platform.
-      oneOf:
-        - $ref: "#/components/schemas/PinterestSpecifics"
-        - $ref: "#/components/schemas/InstagramSpecifics"
-        - $ref: "#/components/schemas/FacebookSpecifics"
-        - $ref: "#/components/schemas/TikTokSpecifics"
-        - $ref: "#/components/schemas/YouTubeSpecifics"
-        - $ref: "#/components/schemas/XSpecifics"
-        - $ref: "#/components/schemas/LinkedInSpecifics"
-        - $ref: "#/components/schemas/LinkedInPagesSpecifics"
-      discriminator:
-        propertyName: platform
-        mapping:
-          PINTEREST:      "#/components/schemas/PinterestSpecifics"
-          INSTAGRAM:      "#/components/schemas/InstagramSpecifics"
-          FACEBOOK:       "#/components/schemas/FacebookSpecifics"
-          TIKTOK:         "#/components/schemas/TikTokSpecifics"
-          YOUTUBE:        "#/components/schemas/YouTubeSpecifics"
-          X:              "#/components/schemas/XSpecifics"
-          LINKEDIN:       "#/components/schemas/LinkedInSpecifics"
-          LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesSpecifics"
-    PinterestSpecifics:
-      title: Pinterest
+    DeletePostErrorResponse:
       type: object
       additionalProperties: false
       required:
-        - platform
-        - pinterestBoardId
+        - code
+        - message
       properties:
-        platform:
-          type: string
-          enum: [PINTEREST]
-        pinterestBoardId:
+        code:
+          $ref: "#/components/schemas/DeletePostErrorCode"
+        message:
           type: string
     InstagramPostType:
       type: string
@@ -1196,19 +1390,6 @@ components:
         - POST
         - REEL
         - STORY
-    InstagramSpecifics:
-      title: Instagram
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-        - postType
-      properties:
-        platform:
-          type: string
-          enum: [INSTAGRAM]
-        postType:
-          $ref: "#/components/schemas/InstagramPostType"
     FacebookPostType:
       type: string
       enum:
@@ -1216,21 +1397,6 @@ components:
         - IMAGE
         - VIDEO
         - REEL
-    FacebookSpecifics:
-      title: Facebook
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-        - postType
-      properties:
-        platform:
-          type: string
-          enum: [FACEBOOK]
-        link:
-          type: string
-        postType:
-          $ref: "#/components/schemas/FacebookPostType"
     TikTokPrivacyLevel:
       type: string
       enum:
@@ -1243,99 +1409,12 @@ components:
       enum:
         - VIDEO
         - PHOTO
-    TikTokSpecifics:
-      title: TikTok
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-        - postType
-        - privacyLevel
-        - allowComment
-        - allowDuet
-        - allowStitch
-        - contentDisclosureEnabled
-        - isYourBrand
-        - isBrandedContent
-        - autoAddMusic
-      properties:
-        platform:
-          type: string
-          enum: [TIKTOK]
-        postType:
-          $ref: "#/components/schemas/TikTokPostType"
-        privacyLevel:
-          $ref: "#/components/schemas/TikTokPrivacyLevel"
-        allowComment:
-          type: boolean
-        allowDuet:
-          type: boolean
-        allowStitch:
-          type: boolean
-        contentDisclosureEnabled:
-          type: boolean
-        isYourBrand:
-          type: boolean
-        isBrandedContent:
-          type: boolean
-        autoAddMusic:
-          type: boolean
     YouTubePrivacy:
       type: string
       enum:
         - public
         - private
         - unlisted
-    YouTubeSpecifics:
-      title: YouTube
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-      properties:
-        platform:
-          type: string
-          enum: [YOUTUBE]
-        privacy:
-          $ref: "#/components/schemas/YouTubePrivacy"
-        category:
-          type: string
-        tags:
-          type: array
-          items:
-            type: string
-        madeForKids:
-          type: boolean
-    XSpecifics:
-      title: X (Twitter)
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-      properties:
-        platform:
-          type: string
-          enum: [X]
-    LinkedInSpecifics:
-      title: LinkedIn
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-      properties:
-        platform:
-          type: string
-          enum: [LINKEDIN]
-    LinkedInPagesSpecifics:
-      title: LinkedIn Pages
-      type: object
-      additionalProperties: false
-      required:
-        - platform
-      properties:
-        platform:
-          type: string
-          enum: [LINKEDIN_PAGES]
     HealthResponse:
       type: object
       additionalProperties: false
@@ -1351,6 +1430,7 @@ components:
             - Hello from WoopSocial API
         timestampUTC:
           type: string
+          format: date-time
           description: Current server time in UTC with millisecond precision.
           examples:
             - "2026-03-28T09:30:26.123Z"

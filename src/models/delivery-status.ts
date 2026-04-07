@@ -39,8 +39,3 @@ export const DeliveryStatus$inboundSchema: z.ZodMiniType<
   DeliveryStatus,
   unknown
 > = openEnums.inboundSchema(DeliveryStatus);
-/** @internal */
-export const DeliveryStatus$outboundSchema: z.ZodMiniType<
-  string,
-  DeliveryStatus
-> = openEnums.outboundSchema(DeliveryStatus);

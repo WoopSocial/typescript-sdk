@@ -8,13 +8,21 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 import {
-  PinterestAccountPlatformInputs,
-  PinterestAccountPlatformInputs$inboundSchema,
-} from "./pinterest-account-platform-inputs.js";
+  PinterestBoardOption,
+  PinterestBoardOption$inboundSchema,
+} from "./pinterest-board-option.js";
 
 export type PinterestSocialAccountPlatformSpecificInputs = {
   platform: "PINTEREST";
-  pinterest: PinterestAccountPlatformInputs;
+  /**
+   * Available Pinterest boards for this account.
+   *
+   * @remarks
+   *
+   * Each `id` value can be sent as `pinterestBoardId` when creating a
+   * post for a Pinterest social-account target.
+   */
+  boards: Array<PinterestBoardOption>;
 };
 
 /** @internal */
@@ -22,7 +30,7 @@ export const PinterestSocialAccountPlatformSpecificInputs$inboundSchema:
   z.ZodMiniType<PinterestSocialAccountPlatformSpecificInputs, unknown> = z
     .object({
       platform: types.literal("PINTEREST"),
-      pinterest: PinterestAccountPlatformInputs$inboundSchema,
+      boards: z.array(PinterestBoardOption$inboundSchema),
     });
 
 export function pinterestSocialAccountPlatformSpecificInputsFromJSON(

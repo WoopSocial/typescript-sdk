@@ -88,7 +88,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts();
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
 
   console.log(result);
 }
@@ -118,7 +124,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts();
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
 
   console.log(result);
 }
@@ -147,10 +159,9 @@ run();
 
 ### [Posts](docs/sdks/posts/README.md)
 
-* [listPosts](docs/sdks/posts/README.md#listposts) - List posts
-* [deletePosts](docs/sdks/posts/README.md#deleteposts) - Delete posts
-* [createPosts](docs/sdks/posts/README.md#createposts) - Create posts
-* [updatePosts](docs/sdks/posts/README.md#updateposts) - Update posts
+* [createPost](docs/sdks/posts/README.md#createpost) - Create post
+* [getPost](docs/sdks/posts/README.md#getpost) - Get post
+* [deletePost](docs/sdks/posts/README.md#deletepost) - Delete post
 
 ### [Projects](docs/sdks/projects/README.md)
 
@@ -185,10 +196,9 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`mediaCreateMedia`](docs/sdks/media/README.md#createmedia) - Upload media
 - [`mediaCreateUploadSession`](docs/sdks/media/README.md#createuploadsession) - Start media upload session
 - [`mediaGetUploadSession`](docs/sdks/media/README.md#getuploadsession) - Get media upload session status
-- [`postsCreatePosts`](docs/sdks/posts/README.md#createposts) - Create posts
-- [`postsDeletePosts`](docs/sdks/posts/README.md#deleteposts) - Delete posts
-- [`postsListPosts`](docs/sdks/posts/README.md#listposts) - List posts
-- [`postsUpdatePosts`](docs/sdks/posts/README.md#updateposts) - Update posts
+- [`postsCreatePost`](docs/sdks/posts/README.md#createpost) - Create post
+- [`postsDeletePost`](docs/sdks/posts/README.md#deletepost) - Delete post
+- [`postsGetPost`](docs/sdks/posts/README.md#getpost) - Get post
 - [`projectsListProjects`](docs/sdks/projects/README.md#listprojects) - List projects
 - [`socialAccountsCreateOAuthAuthorization`](docs/sdks/socialaccounts/README.md#createoauthauthorization) - Generate OAuth URL
 - [`socialAccountsGetSocialAccountPlatformInputs`](docs/sdks/socialaccounts/README.md#getsocialaccountplatforminputs) - Get platform-specific input options
@@ -247,7 +257,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts(undefined, {
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  }, {
     retries: {
       strategy: "backoff",
       backoff: {
@@ -286,7 +302,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts();
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
 
   console.log(result);
 }
@@ -301,13 +323,14 @@ run();
 
 [`WoopSocialError`](./src/models/errors/woop-social-error.ts) is the base class for all HTTP error responses. It has the following properties:
 
-| Property            | Type       | Description                                            |
-| ------------------- | ---------- | ------------------------------------------------------ |
-| `error.message`     | `string`   | Error message                                          |
-| `error.statusCode`  | `number`   | HTTP response status code eg `404`                     |
-| `error.headers`     | `Headers`  | HTTP response headers                                  |
-| `error.body`        | `string`   | HTTP body. Can be empty string if no body is returned. |
-| `error.rawResponse` | `Response` | Raw HTTP response                                      |
+| Property            | Type       | Description                                                                             |
+| ------------------- | ---------- | --------------------------------------------------------------------------------------- |
+| `error.message`     | `string`   | Error message                                                                           |
+| `error.statusCode`  | `number`   | HTTP response status code eg `404`                                                      |
+| `error.headers`     | `Headers`  | HTTP response headers                                                                   |
+| `error.body`        | `string`   | HTTP body. Can be empty string if no body is returned.                                  |
+| `error.rawResponse` | `Response` | Raw HTTP response                                                                       |
+| `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
 ### Example
 ```typescript
@@ -320,15 +343,30 @@ const woopSocial = new WoopSocial({
 
 async function run() {
   try {
-    const result = await woopSocial.posts.listPosts();
+    const result = await woopSocial.posts.createPost({
+      content: [],
+      schedule: {
+        type: "DRAFT",
+      },
+      socialAccounts: [],
+    });
 
     console.log(result);
   } catch (error) {
+    // The base class for HTTP error responses
     if (error instanceof errors.WoopSocialError) {
       console.log(error.message);
       console.log(error.statusCode);
       console.log(error.body);
       console.log(error.headers);
+
+      // Depending on the method different errors may be thrown
+      if (error instanceof errors.CreatePostErrorResponse) {
+        console.log(error.data$.code); // models.CreatePostErrorCode
+        console.log(error.data$.message); // string
+        console.log(error.data$.validationErrors); // ValidationError[]
+        console.log(error.data$.conflictingSocialAccountIds); // string[]
+      }
     }
   }
 }
@@ -341,7 +379,7 @@ run();
 **Primary error:**
 * [`WoopSocialError`](./src/models/errors/woop-social-error.ts): The base class for HTTP error responses.
 
-<details><summary>Less common errors (6)</summary>
+<details><summary>Less common errors (9)</summary>
 
 <br />
 
@@ -354,9 +392,14 @@ run();
 
 
 **Inherit from [`WoopSocialError`](./src/models/errors/woop-social-error.ts)**:
+* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 12 methods.*
+* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 12 methods.*
+* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 12 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
 <!-- Start Server Selection [server] -->
@@ -374,7 +417,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts();
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
 
   console.log(result);
 }

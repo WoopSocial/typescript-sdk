@@ -11,20 +11,12 @@ import {
   SocialAccountPlatformSpecificInputs,
   SocialAccountPlatformSpecificInputs$inboundSchema,
 } from "./social-account-platform-specific-inputs.js";
-import {
-  SocialPlatform,
-  SocialPlatform$inboundSchema,
-} from "./social-platform.js";
 
 export type SocialAccountPlatformInputs = {
   /**
    * Connected social account identifier.
    */
   socialAccountId: string;
-  /**
-   * Social platform supported by WoopSocial.
-   */
-  platform: SocialPlatform;
   platformSpecificInputs: SocialAccountPlatformSpecificInputs;
 };
 
@@ -34,7 +26,6 @@ export const SocialAccountPlatformInputs$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   socialAccountId: types.string(),
-  platform: SocialPlatform$inboundSchema,
   platformSpecificInputs: SocialAccountPlatformSpecificInputs$inboundSchema,
 });
 

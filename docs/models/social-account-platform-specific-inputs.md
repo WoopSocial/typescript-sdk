@@ -8,14 +8,12 @@
 ```typescript
 const value: models.PinterestSocialAccountPlatformSpecificInputs = {
   platform: "PINTEREST",
-  pinterest: {
-    boards: [
-      {
-        id: "<id>",
-        name: "<value>",
-      },
-    ],
-  },
+  boards: [
+    {
+      id: "<id>",
+      name: "<value>",
+    },
+  ],
 };
 ```
 
@@ -24,13 +22,11 @@ const value: models.PinterestSocialAccountPlatformSpecificInputs = {
 ```typescript
 const value: models.TikTokSocialAccountPlatformSpecificInputs = {
   platform: "TIKTOK",
-  tiktok: {
-    privacyLevelOptions: [],
-    commentDisabled: false,
-    duetDisabled: false,
-    stitchDisabled: false,
-    maxVideoPostDurationSec: 712341,
-  },
+  privacyLevelOptions: [],
+  commentAvailable: false,
+  duetAvailable: false,
+  stitchAvailable: false,
+  maxVideoPostDurationSec: 712341,
 };
 ```
 

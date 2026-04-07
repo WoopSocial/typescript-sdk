@@ -8,20 +8,48 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 import {
-  TikTokAccountPlatformInputs,
-  TikTokAccountPlatformInputs$inboundSchema,
-} from "./tik-tok-account-platform-inputs.js";
+  TikTokPrivacyLevel,
+  TikTokPrivacyLevel$inboundSchema,
+} from "./tik-tok-privacy-level.js";
 
 export type TikTokSocialAccountPlatformSpecificInputs = {
   platform: "TIKTOK";
-  tiktok: TikTokAccountPlatformInputs;
+  /**
+   * Privacy values currently allowed for this TikTok account.
+   *
+   * @remarks
+   *
+   * Each value can be sent as `privacyLevel` when creating a post for a
+   * TikTok social-account target.
+   */
+  privacyLevelOptions: Array<TikTokPrivacyLevel>;
+  /**
+   * Whether comments can currently be allowed for this TikTok account.
+   */
+  commentAvailable: boolean;
+  /**
+   * Whether duets can currently be allowed for video posts on this TikTok account.
+   */
+  duetAvailable: boolean;
+  /**
+   * Whether stitches can currently be allowed for video posts on this TikTok account.
+   */
+  stitchAvailable: boolean;
+  /**
+   * Maximum TikTok video duration currently allowed for this account.
+   */
+  maxVideoPostDurationSec: number;
 };
 
 /** @internal */
 export const TikTokSocialAccountPlatformSpecificInputs$inboundSchema:
   z.ZodMiniType<TikTokSocialAccountPlatformSpecificInputs, unknown> = z.object({
     platform: types.literal("TIKTOK"),
-    tiktok: TikTokAccountPlatformInputs$inboundSchema,
+    privacyLevelOptions: z.array(TikTokPrivacyLevel$inboundSchema),
+    commentAvailable: types.boolean(),
+    duetAvailable: types.boolean(),
+    stitchAvailable: types.boolean(),
+    maxVideoPostDurationSec: types.number(),
   });
 
 export function tikTokSocialAccountPlatformSpecificInputsFromJSON(

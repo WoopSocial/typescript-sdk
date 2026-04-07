@@ -7,13 +7,12 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
-import {
-  ValidationField,
-  ValidationField$inboundSchema,
-} from "./validation-field.js";
 
 export type ValidationError = {
-  field: ValidationField;
+  /**
+   * JSON path to the invalid input.
+   */
+  path: string;
   message: string;
 };
 
@@ -22,7 +21,7 @@ export const ValidationError$inboundSchema: z.ZodMiniType<
   ValidationError,
   unknown
 > = z.object({
-  field: ValidationField$inboundSchema,
+  path: types.string(),
   message: types.string(),
 });
 

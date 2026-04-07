@@ -4,35 +4,49 @@
 
 import * as z from "zod/v4-mini";
 import { safeParse } from "../lib/schemas.js";
+import * as discriminatedUnionTypes from "../types/discriminated-union.js";
+import { discriminatedUnion } from "../types/discriminated-union.js";
 import { Result as SafeParseResult } from "../types/fp.js";
-import * as types from "../types/primitives.js";
 import { SDKValidationError } from "./errors/sdk-validation-error.js";
 import {
-  UploadSessionStatusValue,
-  UploadSessionStatusValue$inboundSchema,
-} from "./upload-session-status-value.js";
+  UploadSessionAbortedStatus,
+  UploadSessionAbortedStatus$inboundSchema,
+} from "./upload-session-aborted-status.js";
+import {
+  UploadSessionFailedStatus,
+  UploadSessionFailedStatus$inboundSchema,
+} from "./upload-session-failed-status.js";
+import {
+  UploadSessionInitiatedStatus,
+  UploadSessionInitiatedStatus$inboundSchema,
+} from "./upload-session-initiated-status.js";
+import {
+  UploadSessionReadyStatus,
+  UploadSessionReadyStatus$inboundSchema,
+} from "./upload-session-ready-status.js";
+import {
+  UploadSessionUploadedStatus,
+  UploadSessionUploadedStatus$inboundSchema,
+} from "./upload-session-uploaded-status.js";
 
-export type UploadSessionStatus = {
-  /**
-   * Media upload session identifier.
-   */
-  uploadSessionId: string;
-  status: UploadSessionStatusValue;
-  mediaId?: string | undefined;
-  failureCode?: string | undefined;
-  failureMessage?: string | undefined;
-};
+export type UploadSessionStatus =
+  | UploadSessionInitiatedStatus
+  | UploadSessionUploadedStatus
+  | UploadSessionReadyStatus
+  | UploadSessionFailedStatus
+  | UploadSessionAbortedStatus
+  | discriminatedUnionTypes.Unknown<"status">;
 
 /** @internal */
 export const UploadSessionStatus$inboundSchema: z.ZodMiniType<
   UploadSessionStatus,
   unknown
-> = z.object({
-  uploadSessionId: types.string(),
-  status: UploadSessionStatusValue$inboundSchema,
-  mediaId: types.optional(types.string()),
-  failureCode: types.optional(types.string()),
-  failureMessage: types.optional(types.string()),
+> = discriminatedUnion("status", {
+  INITIATED: UploadSessionInitiatedStatus$inboundSchema,
+  UPLOADED: UploadSessionUploadedStatus$inboundSchema,
+  READY: UploadSessionReadyStatus$inboundSchema,
+  FAILED: UploadSessionFailedStatus$inboundSchema,
+  ABORTED: UploadSessionAbortedStatus$inboundSchema,
 });
 
 export function uploadSessionStatusFromJSON(

@@ -7,7 +7,13 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.posts.listPosts();
+  const result = await woopSocial.posts.createPost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
 
   console.log(result);
 }

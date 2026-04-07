@@ -7,20 +7,18 @@ import { PinterestSocialAccountPlatformSpecificInputs } from "@woopsocial/typesc
 
 let value: PinterestSocialAccountPlatformSpecificInputs = {
   platform: "PINTEREST",
-  pinterest: {
-    boards: [
-      {
-        id: "<id>",
-        name: "<value>",
-      },
-    ],
-  },
+  boards: [
+    {
+      id: "<id>",
+      name: "<value>",
+    },
+  ],
 };
 ```
 
 ## Fields
 
-| Field                                                                                   | Type                                                                                    | Required                                                                                | Description                                                                             |
-| --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `platform`                                                                              | *"PINTEREST"*                                                                           | :heavy_check_mark:                                                                      | N/A                                                                                     |
-| `pinterest`                                                                             | [models.PinterestAccountPlatformInputs](../models/pinterest-account-platform-inputs.md) | :heavy_check_mark:                                                                      | N/A                                                                                     |
+| Field                                                                                                                                                        | Type                                                                                                                                                         | Required                                                                                                                                                     | Description                                                                                                                                                  |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `platform`                                                                                                                                                   | *"PINTEREST"*                                                                                                                                                | :heavy_check_mark:                                                                                                                                           | N/A                                                                                                                                                          |
+| `boards`                                                                                                                                                     | [models.PinterestBoardOption](../models/pinterest-board-option.md)[]                                                                                         | :heavy_check_mark:                                                                                                                                           | Available Pinterest boards for this account.<br/><br/>Each `id` value can be sent as `pinterestBoardId` when creating a<br/>post for a Pinterest social-account target.<br/> |

@@ -1,0 +1,24 @@
+# YouTubeInput
+
+## Example Usage
+
+```typescript
+import { YouTubeInput } from "@woopsocial/typescript-sdk/models";
+
+let value: YouTubeInput = {
+  platform: "YOUTUBE",
+  socialAccountId: "<id>",
+};
+```
+
+## Fields
+
+| Field                                                                                                                          | Type                                                                                                                           | Required                                                                                                                       | Description                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `platform`                                                                                                                     | *"YOUTUBE"*                                                                                                                    | :heavy_check_mark:                                                                                                             | N/A                                                                                                                            |
+| `socialAccountId`                                                                                                              | *string*                                                                                                                       | :heavy_check_mark:                                                                                                             | Connected social account identifier.                                                                                           |
+| `contentOverride`                                                                                                              | [models.PostContentItemInput](../models/post-content-item-input.md)[]                                                          | :heavy_minus_sign:                                                                                                             | Post content expressed as thread items.<br/><br/>The array exists for future thread support. Currently exactly one item<br/>is supported.<br/> |
+| `privacy`                                                                                                                      | [models.YouTubePrivacy](../models/you-tube-privacy.md)                                                                         | :heavy_minus_sign:                                                                                                             | N/A                                                                                                                            |
+| `category`                                                                                                                     | *string*                                                                                                                       | :heavy_minus_sign:                                                                                                             | N/A                                                                                                                            |
+| `tags`                                                                                                                         | *string*[]                                                                                                                     | :heavy_minus_sign:                                                                                                             | N/A                                                                                                                            |
+| `madeForKids`                                                                                                                  | *boolean*                                                                                                                      | :heavy_minus_sign:                                                                                                             | N/A                                                                                                                            |

@@ -32,7 +32,8 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Returns platform-specific input options for a connected social account.
  *
- * Use this endpoint to discover valid values for fields inside `platformSpecifics` when creating posts for Pinterest and TikTok.
+ * Use this endpoint to discover valid values for flattened post-target
+ * fields such as `pinterestBoardId` and `privacyLevel`.
  */
 export function socialAccountsGetSocialAccountPlatformInputs(
   client: WoopSocialCore,
