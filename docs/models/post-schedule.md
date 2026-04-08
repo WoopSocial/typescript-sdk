@@ -24,7 +24,7 @@ const value: models.PublishNowPostSchedule = {
 ```typescript
 const value: models.ScheduleForLaterPostSchedule = {
   type: "SCHEDULE_FOR_LATER",
-  scheduledForUTC: new Date("2026-04-18T11:59:16.658Z"),
+  scheduledFor: new Date("2026-04-18T11:59:16.658Z"),
 };
 ```
 

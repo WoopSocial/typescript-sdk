@@ -13,7 +13,7 @@ let value: Post = {
   ],
   schedule: {
     type: "SCHEDULE_FOR_LATER",
-    scheduledForUTC: new Date("2024-12-26T00:34:47.906Z"),
+    scheduledFor: new Date("2024-12-26T00:34:47.906Z"),
   },
   socialAccounts: [],
   createdAt: new Date("2024-06-03T02:22:32.135Z"),

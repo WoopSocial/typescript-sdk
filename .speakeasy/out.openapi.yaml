@@ -711,16 +711,16 @@ components:
       additionalProperties: false
       required:
         - type
-        - scheduledForUTC
+        - scheduledFor
       properties:
         type:
           type: string
           enum:
             - SCHEDULE_FOR_LATER
-        scheduledForUTC:
+        scheduledFor:
           type: string
           format: date-time
-          description: UTC time when the post should be published.
+          description: UTC time (ISO 8601) when the post should be published.
     CreatePostRequest:
       type: object
       additionalProperties: false
@@ -1191,47 +1191,47 @@ components:
         madeForKids:
           type: boolean
     PinterestInput:
-      title: Pinterest Input
+      title: Pinterest
       allOf:
         - $ref: "#/components/schemas/PinterestPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
         - $ref: "#/components/schemas/PinterestFields"
     InstagramInput:
-      title: Instagram Input
+      title: Instagram
       allOf:
         - $ref: "#/components/schemas/InstagramPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
         - $ref: "#/components/schemas/InstagramFields"
     FacebookInput:
-      title: Facebook Input
+      title: Facebook
       allOf:
         - $ref: "#/components/schemas/FacebookPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
         - $ref: "#/components/schemas/FacebookFields"
     TikTokInput:
-      title: TikTok Input
+      title: TikTok
       allOf:
         - $ref: "#/components/schemas/TikTokPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
         - $ref: "#/components/schemas/TikTokFields"
     YouTubeInput:
-      title: YouTube Input
+      title: YouTube
       allOf:
         - $ref: "#/components/schemas/YouTubePlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
         - $ref: "#/components/schemas/YouTubeFields"
     XInput:
-      title: X Input
+      title: X
       allOf:
         - $ref: "#/components/schemas/XPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
     LinkedInInput:
-      title: LinkedIn Input
+      title: LinkedIn
       allOf:
         - $ref: "#/components/schemas/LinkedInPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
     LinkedInPagesInput:
-      title: LinkedIn Pages Input
+      title: LinkedIn Pages
       allOf:
         - $ref: "#/components/schemas/LinkedInPagesPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
@@ -1257,47 +1257,47 @@ components:
           LINKEDIN: "#/components/schemas/LinkedInPost"
           LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesPost"
     PinterestPost:
-      title: Pinterest Post
+      title: Pinterest
       allOf:
         - $ref: "#/components/schemas/PinterestPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
         - $ref: "#/components/schemas/PinterestFields"
     InstagramPost:
-      title: Instagram Post
+      title: Instagram
       allOf:
         - $ref: "#/components/schemas/InstagramPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
         - $ref: "#/components/schemas/InstagramFields"
     FacebookPost:
-      title: Facebook Post
+      title: Facebook
       allOf:
         - $ref: "#/components/schemas/FacebookPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
         - $ref: "#/components/schemas/FacebookFields"
     TikTokPost:
-      title: TikTok Post
+      title: TikTok
       allOf:
         - $ref: "#/components/schemas/TikTokPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
         - $ref: "#/components/schemas/TikTokFields"
     YouTubePost:
-      title: YouTube Post
+      title: YouTube
       allOf:
         - $ref: "#/components/schemas/YouTubePlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
         - $ref: "#/components/schemas/YouTubeFields"
     XPost:
-      title: X Post
+      title: X
       allOf:
         - $ref: "#/components/schemas/XPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
     LinkedInPost:
-      title: LinkedIn Post
+      title: LinkedIn
       allOf:
         - $ref: "#/components/schemas/LinkedInPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
     LinkedInPagesPost:
-      title: LinkedIn Pages Post
+      title: LinkedIn Pages
       allOf:
         - $ref: "#/components/schemas/LinkedInPagesPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
@@ -1420,7 +1420,7 @@ components:
       additionalProperties: false
       required:
         - message
-        - timestampUTC
+        - timestamp
         - version
       properties:
         message:
@@ -1428,10 +1428,10 @@ components:
           description: Human-readable message.
           examples:
             - Hello from WoopSocial API
-        timestampUTC:
+        timestamp:
           type: string
           format: date-time
-          description: Current server time in UTC with millisecond precision.
+          description: Current server time in UTC (ISO 8601) with millisecond precision.
           examples:
             - "2026-03-28T09:30:26.123Z"
         version:

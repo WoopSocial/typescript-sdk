@@ -11,9 +11,9 @@ import { SDKValidationError } from "./errors/sdk-validation-error.js";
 export type ScheduleForLaterPostSchedule = {
   type: "SCHEDULE_FOR_LATER";
   /**
-   * UTC time when the post should be published.
+   * UTC time (ISO 8601) when the post should be published.
    */
-  scheduledForUTC: Date;
+  scheduledFor: Date;
 };
 
 /** @internal */
@@ -22,12 +22,12 @@ export const ScheduleForLaterPostSchedule$inboundSchema: z.ZodMiniType<
   unknown
 > = z.object({
   type: types.literal("SCHEDULE_FOR_LATER"),
-  scheduledForUTC: types.date(),
+  scheduledFor: types.date(),
 });
 /** @internal */
 export type ScheduleForLaterPostSchedule$Outbound = {
   type: "SCHEDULE_FOR_LATER";
-  scheduledForUTC: string;
+  scheduledFor: string;
 };
 
 /** @internal */
@@ -36,7 +36,7 @@ export const ScheduleForLaterPostSchedule$outboundSchema: z.ZodMiniType<
   ScheduleForLaterPostSchedule
 > = z.object({
   type: z.literal("SCHEDULE_FOR_LATER"),
-  scheduledForUTC: z.pipe(z.date(), z.transform(v => v.toISOString())),
+  scheduledFor: z.pipe(z.date(), z.transform(v => v.toISOString())),
 });
 
 export function scheduleForLaterPostScheduleToJSON(

@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: 90d0e465-4638-4110-9f8d-cad0dfd43e38
 management:
-  docChecksum: 4aa12d0dbade78c1851e6dcab7a67906
+  docChecksum: 7774da2533b340f52110f1d5ac98fb48
   docVersion: 1.0.0
   speakeasyVersion: 1.761.1
   generationVersion: 2.879.6
-  releaseVersion: 0.1.0
-  configChecksum: 4c751308f97b1958a6b9fc87f2468170
+  releaseVersion: 0.1.1
+  configChecksum: 1d0ebe60035cb914475548c67aa17046
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: 46348397-69dd-4a52-a676-35f70c801b09
-  pristine_commit_hash: 02aaae17e65246fadcf841ef6ab4bab3aa09f486
-  pristine_tree_hash: 234ba2f079e21fcf21eea32279a47a4028aff90d
+  generation_id: 31a5d498-781a-4b27-97f0-694f5b7eb26d
+  pristine_commit_hash: 6f4ce1a1a231ccd9d81132dcfdd8115319468043
+  pristine_tree_hash: eb2355fabb28ca6dcb25205e44f07f6d9b3774cf
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -137,8 +137,8 @@ trackedFiles:
     pristine_git_object: a7e240390b36041c10d6357d5856a66216f35069
   docs/models/health-response.md:
     id: 76ea3fbe6d66
-    last_write_checksum: sha1:620b3662ecd31468eef1111ca54ece34ef218118
-    pristine_git_object: 26f1183b506939b2bb8fd5a010890bc7b864c2ab
+    last_write_checksum: sha1:384d8049abea5e48e0e1d85b14a9dfbbbbf6eba0
+    pristine_git_object: fbe01c411232fe71732cbd1355a897e4c3a9af8a
   docs/models/instagram-input.md:
     id: 1bdeeb76d414
     last_write_checksum: sha1:33b23607cac0e13c732d8cf3b1fa9a96045e4980
@@ -241,12 +241,12 @@ trackedFiles:
     pristine_git_object: e701d7efc695618ca4a4e7e0122dae0e14186853
   docs/models/post-schedule.md:
     id: 390acd6497c3
-    last_write_checksum: sha1:6b7e51426e2c483015a65c6b20eaa8325bbfe010
-    pristine_git_object: 771922abdbdf7afbf5bc58ddc15027899951bb92
+    last_write_checksum: sha1:3fec4f14d51e806eed4191dc4564bcee37a77596
+    pristine_git_object: bdbb0068cf4e25cd993ec1e78649bbf259d2b296
   docs/models/post.md:
     id: 6a612582ecd0
-    last_write_checksum: sha1:f892eccf2930b84f7b6eed32021ade5a34544b5d
-    pristine_git_object: 6f92137670ccc89722eaeb4c621306f4b7614aa4
+    last_write_checksum: sha1:b7af5927ace4306c3490401a9a24218a6f407240
+    pristine_git_object: c1f3f1e5346dcd531b758b3adccece6dd2761e5b
   docs/models/project.md:
     id: 90bdd121a0a9
     last_write_checksum: sha1:5cab1a8e9f2c26e283c59ed1f696754be5bb2fcc
@@ -257,8 +257,8 @@ trackedFiles:
     pristine_git_object: 2d20bd9fe5a7340618a28a4b2cd6c6463d9a5483
   docs/models/schedule-for-later-post-schedule.md:
     id: 03a0910b2b68
-    last_write_checksum: sha1:96507cdae9ba4dd41e6fa8641769f57b4043cd9d
-    pristine_git_object: 2cc02d3f4d4b0dceb89dcfea52aa4cc8d313ce7e
+    last_write_checksum: sha1:72b9255be512a31b3ca329926e067ebc8eeeabca
+    pristine_git_object: 006a3fc6c9d335816b22a774f1c515e04bb9af7d
   docs/models/security.md:
     id: 452e4d4eb67a
     last_write_checksum: sha1:3b87e7db02b433dd9d5a90cacb86cd35523fab4a
@@ -405,12 +405,12 @@ trackedFiles:
     pristine_git_object: 4a39c09257246da33022541ca98c179075b8f27d
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:78e2d4346f8a098daf314a085bad3cc888413a57
-    pristine_git_object: 70959093529c71040384a51a501664b8296aafa9
+    last_write_checksum: sha1:fbac6b4277f1c1a93f3a4e5255743d6645002d39
+    pristine_git_object: 4e1aeb63d44fd758955c8b0d6e8085a281f7d0e9
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:32bbc7821b4070df34d9ccc0952dfd730f89fc5b
-    pristine_git_object: a5c3fcb558521bf8eb374c540aa1c2e98fe088c7
+    last_write_checksum: sha1:251a1d715b2655ff0969ccac28b662bd018f740f
+    pristine_git_object: 6f6edd700f7f33f65ef294f2f0f69e8fc42499be
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -485,8 +485,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:f1946eae20c7ea75a9a0288849688a8055a57440
-    pristine_git_object: 403a27c5aca6456d3b152387913045722bf4c84f
+    last_write_checksum: sha1:c79c7aba1f211d04f4989c71ef13098bc8b0da0f
+    pristine_git_object: f64eb9c2a930fb0214b7846d06def7d0394cb254
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -633,8 +633,8 @@ trackedFiles:
     pristine_git_object: 725f048119a582c0247e468cba26157198c5851b
   src/models/health-response.ts:
     id: b46db3da75f9
-    last_write_checksum: sha1:e44ff65797e4870b1680098d12d565a4e0be7673
-    pristine_git_object: 7ed44007d7c1d27d652bc5d4414c174fcbda4d68
+    last_write_checksum: sha1:ee09033f54afdd8dab5552bccad45e0e2ae19976
+    pristine_git_object: dca41d48220824458f2d7cd0d5022c2cbb144ad0
   src/models/index.ts:
     id: f93644b0f37e
     last_write_checksum: sha1:b602cd7ca1eb0b0571187a1f4803b1538c6160cb
@@ -757,8 +757,8 @@ trackedFiles:
     pristine_git_object: f2df186d6dad0e15cca6ef422baf7be13ef99bd4
   src/models/schedule-for-later-post-schedule.ts:
     id: 35c45beb0119
-    last_write_checksum: sha1:de6050ed0fc84f9776bbf17cb77864a04be9324a
-    pristine_git_object: 1979acebe36e027d80b9e7885faa4e9bde449084
+    last_write_checksum: sha1:cfb96ba78c94755a315043537619013d97b04c70
+    pristine_git_object: 67729ad2ae47597fd16423b074bab14e4a315c3e
   src/models/security.ts:
     id: d90c6c784ca5
     last_write_checksum: sha1:6c4a5e24407a47690dd025f130693bb2354fea11
@@ -1044,7 +1044,7 @@ examples:
     speakeasy-default-get-health:
       responses:
         "200":
-          application/json: {"message": "Hello from WoopSocial API", "timestampUTC": "2026-03-28T09:30:26.123Z", "version": "v1"}
+          application/json: {"message": "Hello from WoopSocial API", "timestamp": "2026-03-28T09:30:26.123Z", "version": "v1"}
   createPost:
     speakeasy-default-create-post:
       requestBody:
