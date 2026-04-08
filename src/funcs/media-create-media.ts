@@ -103,7 +103,7 @@ async function $do(
   });
 
   const headers = new Headers(compactMap({
-    "Content-Type": "application/octet-stream",
+    "Content-Type": body instanceof Blob && body.type ? body.type : undefined,
     Accept: "application/json",
   }));
 

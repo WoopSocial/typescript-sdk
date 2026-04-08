@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: 90d0e465-4638-4110-9f8d-cad0dfd43e38
 management:
-  docChecksum: 7774da2533b340f52110f1d5ac98fb48
+  docChecksum: 837f0eb4b4f661fbd77f52f4590c86d7
   docVersion: 1.0.0
   speakeasyVersion: 1.761.1
   generationVersion: 2.879.6
-  releaseVersion: 0.1.1
-  configChecksum: 1d0ebe60035cb914475548c67aa17046
+  releaseVersion: 0.1.2
+  configChecksum: 873eadf1c7ba2eaa3f839297eda20290
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: 31a5d498-781a-4b27-97f0-694f5b7eb26d
-  pristine_commit_hash: 6f4ce1a1a231ccd9d81132dcfdd8115319468043
-  pristine_tree_hash: eb2355fabb28ca6dcb25205e44f07f6d9b3774cf
+  generation_id: 00499e04-1b79-4bcd-8d40-2c51a33746f1
+  pristine_commit_hash: 1c70785f714673ac405319f1f1f2e8f38f54fdc2
+  pristine_tree_hash: 7b7f3e108f65db0caa039ff74751edac3daec390
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -405,12 +405,12 @@ trackedFiles:
     pristine_git_object: 4a39c09257246da33022541ca98c179075b8f27d
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:fbac6b4277f1c1a93f3a4e5255743d6645002d39
-    pristine_git_object: 4e1aeb63d44fd758955c8b0d6e8085a281f7d0e9
+    last_write_checksum: sha1:aa1341157b273b82391fe1f463002ffc7b1c3ee6
+    pristine_git_object: f172914f311d72aa95260b31a455771ea7c4a4e0
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:251a1d715b2655ff0969ccac28b662bd018f740f
-    pristine_git_object: 6f6edd700f7f33f65ef294f2f0f69e8fc42499be
+    last_write_checksum: sha1:41d7fad16a4e660b0648b11407e3cfd4083b051b
+    pristine_git_object: da4553e84b8e49498b7c2b286f1ddc8005b24c3c
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -425,8 +425,8 @@ trackedFiles:
     pristine_git_object: 0f2dd09d6d13433411fd7ee137544bc12ae85fd0
   src/funcs/media-create-media.ts:
     id: 2ada89d81a89
-    last_write_checksum: sha1:d268ba08f26d2c1aaaa6f393395778c4cfb4b1ed
-    pristine_git_object: 1fcf71198ba0505ed1350633c66d9bcb081a4826
+    last_write_checksum: sha1:509738448c061412cb2c5bf18997d7f8a42d469c
+    pristine_git_object: 7ad03d4c33372423bdfb86e8bdf649f1e3cf8200
   src/funcs/media-create-upload-session.ts:
     id: a85f4ff5acaf
     last_write_checksum: sha1:9a4460d6e1772311ed55b492a1d3ca5d427b8523
@@ -485,8 +485,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:c79c7aba1f211d04f4989c71ef13098bc8b0da0f
-    pristine_git_object: f64eb9c2a930fb0214b7846d06def7d0394cb254
+    last_write_checksum: sha1:e7bc99b1bbcaf4cb510572ed7299be006ec3f632
+    pristine_git_object: 2f9c44a702bf2de9901cea87d05ec01eb334e882
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -1014,6 +1014,7 @@ examples:
           projectId: "<id>"
       requestBody:
         application/octet-stream: "x-file: example.file"
+        '*/*': "x-file: example.file"
       responses:
         "200":
           application/json: {"mediaId": "<id>"}

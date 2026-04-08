@@ -234,11 +234,15 @@ paths:
       requestBody:
         required: true
         content:
-          application/octet-stream:
+          "*/*":
             schema:
               type: string
               format: binary
-              description: Media file to upload. Maximum size is 600 MB. The server determines the media MIME type from the uploaded file.
+              description: |
+                Media file to upload. Maximum size is 600 MB.
+
+                The `Content-Type` header is ignored — the server determines the
+                actual media MIME type from the file contents.
       responses:
         "200":
           description: Media uploaded.

@@ -1,6 +1,6 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Speakeasy",
   "bugs": {
     "url": "https://github.com/WoopSocial/typescript-sdk/issues"
