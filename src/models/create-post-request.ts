@@ -14,10 +14,10 @@ import {
   PostSchedule$outboundSchema,
 } from "./post-schedule.js";
 import {
-  SocialAccountTargetInput,
-  SocialAccountTargetInput$Outbound,
-  SocialAccountTargetInput$outboundSchema,
-} from "./social-account-target-input.js";
+  SocialAccountInput,
+  SocialAccountInput$Outbound,
+  SocialAccountInput$outboundSchema,
+} from "./social-account-input.js";
 
 export type CreatePostRequest = {
   /**
@@ -38,14 +38,14 @@ export type CreatePostRequest = {
    * All referenced social accounts must belong to the same project.
    * Duplicate `socialAccountId` values are invalid.
    */
-  socialAccounts: Array<SocialAccountTargetInput>;
+  socialAccounts: Array<SocialAccountInput>;
 };
 
 /** @internal */
 export type CreatePostRequest$Outbound = {
   content: Array<PostContentItemInput$Outbound>;
   schedule: PostSchedule$Outbound;
-  socialAccounts: Array<SocialAccountTargetInput$Outbound>;
+  socialAccounts: Array<SocialAccountInput$Outbound>;
 };
 
 /** @internal */
@@ -55,7 +55,7 @@ export const CreatePostRequest$outboundSchema: z.ZodMiniType<
 > = z.object({
   content: z.array(PostContentItemInput$outboundSchema),
   schedule: PostSchedule$outboundSchema,
-  socialAccounts: z.array(SocialAccountTargetInput$outboundSchema),
+  socialAccounts: z.array(SocialAccountInput$outboundSchema),
 });
 
 export function createPostRequestToJSON(

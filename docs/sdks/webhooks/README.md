@@ -1,43 +1,43 @@
-# Media
+# Webhooks
 
 ## Overview
 
-Media upload endpoints.
+Webhook endpoint management.
 
 ### Available Operations
 
-* [createMedia](#createmedia) - Upload media
-* [createUploadSession](#createuploadsession) - Start media upload session
-* [getUploadSession](#getuploadsession) - Get media upload session status
-* [completeUploadSession](#completeuploadsession) - Complete media upload session
+* [createWebhookEndpoint](#createwebhookendpoint) - Register webhook endpoint
+* [listWebhookEndpoints](#listwebhookendpoints) - List webhook endpoints
+* [deleteWebhookEndpoint](#deletewebhookendpoint) - Delete webhook endpoint
 
-## createMedia
+## createWebhookEndpoint
 
-Uploads a media file in a single request and creates a media item.
+Registers a URL to receive webhook events for the specified event types.
 
-The server determines the media MIME type from the uploaded file.
+The response includes a `signingSecret` (base64-encoded, 32 bytes) that is
+returned **once only**. Use it to verify the `X-Woop-Signature` header on
+incoming webhook payloads.
 
-Use this endpoint for straightforward uploads up to 600 MB.
-
-For larger files, or when you need presigned part URLs, use the upload
-session flow under `/media/upload-sessions`.
+**Signature format:** `t=<unix>,v1=<hmac-sha256-hex>`
+**Signed payload:** `<unix>.<json-body>`
 
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createMedia" method="post" path="/media" -->
+<!-- UsageSnippet language="typescript" operationID="createWebhookEndpoint" method="post" path="/webhooks" -->
 ```typescript
 import { WoopSocial } from "@woopsocial/typescript-sdk";
-import { openAsBlob } from "node:fs";
 
 const woopSocial = new WoopSocial({
   apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
-  const result = await woopSocial.media.createMedia({
-    projectId: "<id>",
-    body: await openAsBlob("example.file"),
+  const result = await woopSocial.webhooks.createWebhookEndpoint({
+    url: "https://cautious-litter.net/",
+    eventTypes: [
+      "socialAccountPost.delivery.succeeded",
+    ],
   });
 
   console.log(result);
@@ -52,8 +52,7 @@ The standalone function version of this method:
 
 ```typescript
 import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
-import { mediaCreateMedia } from "@woopsocial/typescript-sdk/funcs/media-create-media.js";
-import { openAsBlob } from "node:fs";
+import { webhooksCreateWebhookEndpoint } from "@woopsocial/typescript-sdk/funcs/webhooks-create-webhook-endpoint.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -62,15 +61,17 @@ const woopSocial = new WoopSocialCore({
 });
 
 async function run() {
-  const res = await mediaCreateMedia(woopSocial, {
-    projectId: "<id>",
-    body: await openAsBlob("example.file"),
+  const res = await webhooksCreateWebhookEndpoint(woopSocial, {
+    url: "https://cautious-litter.net/",
+    eventTypes: [
+      "socialAccountPost.delivery.succeeded",
+    ],
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("mediaCreateMedia failed:", res.error);
+    console.log("webhooksCreateWebhookEndpoint failed:", res.error);
   }
 }
 
@@ -81,14 +82,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.CreateMediaRequest](../../models/operations/create-media-request.md)                                                                                               | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [models.CreateWebhookEndpointRequest](../../models/create-webhook-endpoint-request.md)                                                                                         | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.CreateMediaResponse](../../models/create-media-response.md)\>**
+**Promise\<[models.WebhookEndpoint](../../models/webhook-endpoint.md)\>**
 
 ### Errors
 
@@ -96,24 +97,13 @@ run();
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.WoopSocialDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## createUploadSession
+## listWebhookEndpoints
 
-Creates an upload session and returns presigned URLs for uploading the file in parts.
-
-This flow is intended for larger files where a single-request upload via the simpler `/media` endpoint is less practical.
-
-Upload the file in `partCount` parts, using the matching
-`parts[n].uploadUrl` for each part number.
-
-Every part except the last must be exactly `partSizeInBytes` bytes. The
-last part may be smaller. After all parts have been uploaded, call
-`/media/upload-sessions/{uploadSessionId}/complete` to finalize the upload
-and create the media item.
-
+Returns all registered webhook endpoints for the organization. The `signingSecret` field is omitted.
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="createUploadSession" method="post" path="/media/upload-sessions" -->
+<!-- UsageSnippet language="typescript" operationID="listWebhookEndpoints" method="get" path="/webhooks" -->
 ```typescript
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
@@ -122,10 +112,7 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.media.createUploadSession({
-    projectId: "<id>",
-    fileSizeInBytes: 793468,
-  });
+  const result = await woopSocial.webhooks.listWebhookEndpoints();
 
   console.log(result);
 }
@@ -139,7 +126,7 @@ The standalone function version of this method:
 
 ```typescript
 import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
-import { mediaCreateUploadSession } from "@woopsocial/typescript-sdk/funcs/media-create-upload-session.js";
+import { webhooksListWebhookEndpoints } from "@woopsocial/typescript-sdk/funcs/webhooks-list-webhook-endpoints.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -148,15 +135,12 @@ const woopSocial = new WoopSocialCore({
 });
 
 async function run() {
-  const res = await mediaCreateUploadSession(woopSocial, {
-    projectId: "<id>",
-    fileSizeInBytes: 793468,
-  });
+  const res = await webhooksListWebhookEndpoints(woopSocial);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("mediaCreateUploadSession failed:", res.error);
+    console.log("webhooksListWebhookEndpoints failed:", res.error);
   }
 }
 
@@ -167,14 +151,13 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [models.CreateUploadSessionRequest](../../models/create-upload-session-request.md)                                                                                             | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.UploadSession](../../models/upload-session.md)\>**
+**Promise\<[models.WebhookEndpoint[]](../../models/.md)\>**
 
 ### Errors
 
@@ -182,13 +165,13 @@ run();
 | ----------------------------- | ----------------------------- | ----------------------------- |
 | errors.WoopSocialDefaultError | 4XX, 5XX                      | \*/\*                         |
 
-## getUploadSession
+## deleteWebhookEndpoint
 
-Get media upload session status
+Delete webhook endpoint
 
 ### Example Usage
 
-<!-- UsageSnippet language="typescript" operationID="getUploadSession" method="get" path="/media/upload-sessions/{uploadSessionId}" -->
+<!-- UsageSnippet language="typescript" operationID="deleteWebhookEndpoint" method="delete" path="/webhooks/{webhookId}" -->
 ```typescript
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
@@ -197,11 +180,11 @@ const woopSocial = new WoopSocial({
 });
 
 async function run() {
-  const result = await woopSocial.media.getUploadSession({
-    uploadSessionId: "<id>",
+  await woopSocial.webhooks.deleteWebhookEndpoint({
+    webhookId: "<id>",
   });
 
-  console.log(result);
+
 }
 
 run();
@@ -213,7 +196,7 @@ The standalone function version of this method:
 
 ```typescript
 import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
-import { mediaGetUploadSession } from "@woopsocial/typescript-sdk/funcs/media-get-upload-session.js";
+import { webhooksDeleteWebhookEndpoint } from "@woopsocial/typescript-sdk/funcs/webhooks-delete-webhook-endpoint.js";
 
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -222,14 +205,14 @@ const woopSocial = new WoopSocialCore({
 });
 
 async function run() {
-  const res = await mediaGetUploadSession(woopSocial, {
-    uploadSessionId: "<id>",
+  const res = await webhooksDeleteWebhookEndpoint(woopSocial, {
+    webhookId: "<id>",
   });
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    
   } else {
-    console.log("mediaGetUploadSession failed:", res.error);
+    console.log("webhooksDeleteWebhookEndpoint failed:", res.error);
   }
 }
 
@@ -240,87 +223,14 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.GetUploadSessionRequest](../../models/operations/get-upload-session-request.md)                                                                                    | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `request`                                                                                                                                                                      | [operations.DeleteWebhookEndpointRequest](../../models/operations/delete-webhook-endpoint-request.md)                                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
 
 ### Response
 
-**Promise\<[models.UploadSessionStatus](../../models/upload-session-status.md)\>**
-
-### Errors
-
-| Error Type                    | Status Code                   | Content Type                  |
-| ----------------------------- | ----------------------------- | ----------------------------- |
-| errors.WoopSocialDefaultError | 4XX, 5XX                      | \*/\*                         |
-
-## completeUploadSession
-
-Complete media upload session
-
-### Example Usage
-
-<!-- UsageSnippet language="typescript" operationID="completeUploadSession" method="post" path="/media/upload-sessions/{uploadSessionId}/complete" -->
-```typescript
-import { WoopSocial } from "@woopsocial/typescript-sdk";
-
-const woopSocial = new WoopSocial({
-  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
-});
-
-async function run() {
-  const result = await woopSocial.media.completeUploadSession({
-    uploadSessionId: "<id>",
-  });
-
-  console.log(result);
-}
-
-run();
-```
-
-### Standalone function
-
-The standalone function version of this method:
-
-```typescript
-import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
-import { mediaCompleteUploadSession } from "@woopsocial/typescript-sdk/funcs/media-complete-upload-session.js";
-
-// Use `WoopSocialCore` for best tree-shaking performance.
-// You can create one instance of it to use across an application.
-const woopSocial = new WoopSocialCore({
-  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
-});
-
-async function run() {
-  const res = await mediaCompleteUploadSession(woopSocial, {
-    uploadSessionId: "<id>",
-  });
-  if (res.ok) {
-    const { value: result } = res;
-    console.log(result);
-  } else {
-    console.log("mediaCompleteUploadSession failed:", res.error);
-  }
-}
-
-run();
-```
-
-### Parameters
-
-| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `request`                                                                                                                                                                      | [operations.CompleteUploadSessionRequest](../../models/operations/complete-upload-session-request.md)                                                                          | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
-| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
-| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
-| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
-
-### Response
-
-**Promise\<[models.UploadSessionStatus](../../models/upload-session-status.md)\>**
+**Promise\<void\>**
 
 ### Errors
 

@@ -6,13 +6,13 @@ import * as z from "zod/v4-mini";
 import { dlv } from "./dlv.js";
 
 export interface Env {
-  WOOPSOCIAL_BEARER_AUTH?: string | undefined;
+  WOOPSOCIAL_API_KEY?: string | undefined;
 
   WOOPSOCIAL_DEBUG?: boolean | undefined;
 }
 
 export const envSchema: z.ZodMiniType<Env, unknown> = z.object({
-  WOOPSOCIAL_BEARER_AUTH: z.optional(z.string()),
+  WOOPSOCIAL_API_KEY: z.optional(z.string()),
 
   WOOPSOCIAL_DEBUG: z.optional(z.coerce.boolean()),
 });

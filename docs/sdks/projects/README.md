@@ -19,7 +19,7 @@ Returns projects that belong to the same organization as the API key. A project 
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -42,7 +42,7 @@ import { projectsListProjects } from "@woopsocial/typescript-sdk/funcs/projects-
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {

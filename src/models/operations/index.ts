@@ -5,6 +5,7 @@
 export * from "./complete-upload-session.js";
 export * from "./create-media.js";
 export * from "./delete-post.js";
+export * from "./delete-webhook-endpoint.js";
 export * from "./get-post.js";
 export * from "./get-social-account-platform-inputs.js";
 export * from "./get-upload-session.js";

@@ -22,7 +22,7 @@ Generates a browser authorization URL for connecting a new social account to a p
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -48,7 +48,7 @@ import { socialAccountsCreateOAuthAuthorization } from "@woopsocial/typescript-s
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -100,7 +100,7 @@ When `projectId` is provided, only social accounts usable within that project ar
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -123,7 +123,7 @@ import { socialAccountsListSocialAccounts } from "@woopsocial/typescript-sdk/fun
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -173,7 +173,7 @@ fields such as `pinterestBoardId` and `privacyLevel`.
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -198,7 +198,7 @@ import { socialAccountsGetSocialAccountPlatformInputs } from "@woopsocial/typesc
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {

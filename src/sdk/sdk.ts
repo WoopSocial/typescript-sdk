@@ -8,6 +8,7 @@ import { Media } from "./media.js";
 import { Posts } from "./posts.js";
 import { Projects } from "./projects.js";
 import { SocialAccounts } from "./social-accounts.js";
+import { Webhooks } from "./webhooks.js";
 
 export class WoopSocial extends ClientSDK {
   private _posts?: Posts;
@@ -28,6 +29,11 @@ export class WoopSocial extends ClientSDK {
   private _media?: Media;
   get media(): Media {
     return (this._media ??= new Media(this._options));
+  }
+
+  private _webhooks?: Webhooks;
+  get webhooks(): Webhooks {
+    return (this._webhooks ??= new Webhooks(this._options));
   }
 
   private _health?: Health;

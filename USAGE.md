@@ -3,7 +3,7 @@
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {

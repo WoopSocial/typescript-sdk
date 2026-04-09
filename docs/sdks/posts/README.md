@@ -27,7 +27,7 @@ validation, the post is not created.
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -56,7 +56,7 @@ import { postsCreatePost } from "@woopsocial/typescript-sdk/funcs/posts-create-p
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -111,7 +111,7 @@ Returns one post with its social-account children inline.
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -136,7 +136,7 @@ import { postsGetPost } from "@woopsocial/typescript-sdk/funcs/posts-get-post.js
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -190,7 +190,7 @@ still `NOT_STARTED`.
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -215,7 +215,7 @@ import { postsDeletePost } from "@woopsocial/typescript-sdk/funcs/posts-delete-p
 // Use `WoopSocialCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
 const woopSocial = new WoopSocialCore({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {

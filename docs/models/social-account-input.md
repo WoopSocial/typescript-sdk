@@ -1,4 +1,4 @@
-# SocialAccountTargetInput
+# SocialAccountInput
 
 
 ## Supported Types

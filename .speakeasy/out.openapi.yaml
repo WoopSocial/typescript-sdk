@@ -17,6 +17,8 @@ tags:
     description: Connected social account discovery endpoints.
   - name: Media
     description: Media upload endpoints.
+  - name: Webhooks
+    description: Webhook endpoint management.
   - name: Health
     description: Basic connectivity endpoints.
 paths:
@@ -26,7 +28,7 @@ paths:
       tags:
         - Posts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Create post
       description: |
         Creates one post resource with one or more social-account targets.
@@ -66,7 +68,7 @@ paths:
       tags:
         - Posts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Get post
       description: |
         Returns one post with its social-account children inline.
@@ -96,7 +98,7 @@ paths:
       tags:
         - Posts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Delete post
       description: |
         Deletes one scheduled post by post ID.
@@ -132,7 +134,7 @@ paths:
       tags:
         - Projects
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: List projects
       description: Returns projects that belong to the same organization as the API key. A project corresponds to a "Business Profile" in the UI.
       responses:
@@ -150,7 +152,7 @@ paths:
       tags:
         - Social Accounts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Generate OAuth URL
       description: |
         Generates a browser authorization URL for connecting a new social account to a project. Open the returned `url` in a browser to complete the platform-specific OAuth flow.
@@ -173,7 +175,7 @@ paths:
       tags:
         - Social Accounts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: List social accounts
       description: |
         Returns social accounts that can currently be used for publishing.
@@ -196,7 +198,7 @@ paths:
       tags:
         - Social Accounts
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Get platform-specific input options
       description: |
         Returns platform-specific input options for a connected social account.
@@ -218,7 +220,7 @@ paths:
       tags:
         - Media
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Upload media
       description: |
         Uploads a media file in a single request and creates a media item.
@@ -256,7 +258,7 @@ paths:
       tags:
         - Media
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Start media upload session
       description: |
         Creates an upload session and returns presigned URLs for uploading the file in parts.
@@ -289,7 +291,7 @@ paths:
       tags:
         - Media
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Get media upload session status
       parameters:
         - $ref: "#/components/parameters/UploadSessionId"
@@ -306,7 +308,7 @@ paths:
       tags:
         - Media
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Complete media upload session
       parameters:
         - $ref: "#/components/parameters/UploadSessionId"
@@ -317,13 +319,81 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UploadSessionStatus"
+  /webhooks:
+    post:
+      operationId: createWebhookEndpoint
+      tags:
+        - Webhooks
+      security:
+        - ApiKey: []
+      summary: Register webhook endpoint
+      description: |
+        Registers a URL to receive webhook events for the specified event types.
+
+        The response includes a `signingSecret` (base64-encoded, 32 bytes) that is
+        returned **once only**. Use it to verify the `X-Woop-Signature` header on
+        incoming webhook payloads.
+
+        **Signature format:** `t=<unix>,v1=<hmac-sha256-hex>`
+        **Signed payload:** `<unix>.<json-body>`
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateWebhookEndpointRequest"
+      responses:
+        "201":
+          description: Webhook endpoint registered.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WebhookEndpoint"
+        "422":
+          description: Validation error (unknown event type, empty url, etc.).
+    get:
+      operationId: listWebhookEndpoints
+      tags:
+        - Webhooks
+      security:
+        - ApiKey: []
+      summary: List webhook endpoints
+      description: Returns all registered webhook endpoints for the organization. The `signingSecret` field is omitted.
+      responses:
+        "200":
+          description: Webhook endpoints.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/WebhookEndpoint"
+  /webhooks/{webhookId}:
+    delete:
+      operationId: deleteWebhookEndpoint
+      tags:
+        - Webhooks
+      security:
+        - ApiKey: []
+      summary: Delete webhook endpoint
+      parameters:
+        - name: webhookId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Endpoint deleted.
+        "404":
+          description: Endpoint not found.
   /health:
     get:
       operationId: getHealth
       tags:
         - Health
       security:
-        - BearerAuth: []
+        - ApiKey: []
       summary: Health check 
       description: Returns a minimal response proving the WoopSocial API is reachable.
       responses:
@@ -371,11 +441,86 @@ components:
         type: string
       description: Media upload session identifier.
   securitySchemes:
-    BearerAuth:
+    ApiKey:
       type: http
       scheme: bearer
       bearerFormat: API key
   schemas:
+    WebhookEventType:
+      type: string
+      enum:
+        - socialAccountPost.delivery.succeeded
+        - socialAccountPost.delivery.failed
+    CreateWebhookEndpointRequest:
+      type: object
+      required:
+        - url
+        - eventTypes
+      properties:
+        url:
+          type: string
+          description: The HTTPS URL to POST webhook events to.
+        eventTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/WebhookEventType"
+          minItems: 1
+    WebhookEndpoint:
+      type: object
+      required:
+        - id
+        - url
+        - eventTypes
+        - createdAt
+      properties:
+        id:
+          type: string
+          description: Webhook endpoint identifier (int64 as string).
+        url:
+          type: string
+        eventTypes:
+          type: array
+          items:
+            $ref: "#/components/schemas/WebhookEventType"
+        createdAt:
+          type: string
+          format: date-time
+        signingSecret:
+          type: string
+          description: Base64-encoded 32-byte signing secret. Returned once on creation only.
+    WebhookEvent:
+      type: object
+      description: Payload delivered to registered webhook URLs.
+      required:
+        - eventType
+        - occurredAt
+        - postId
+        - accountPostId
+        - socialAccountId
+        - platform
+      properties:
+        eventType:
+          $ref: "#/components/schemas/WebhookEventType"
+        occurredAt:
+          type: string
+          format: date-time
+        postId:
+          type: string
+        accountPostId:
+          type: string
+        socialAccountId:
+          type: string
+        platform:
+          $ref: "#/components/schemas/SocialPlatform"
+        externalPostId:
+          type: string
+          description: Platform's own post identifier. Present on succeeded events.
+        externalPostUrl:
+          type: string
+          description: Public URL of the post on the platform. Present on succeeded events.
+        errorMessage:
+          type: string
+          description: Error detail. Present on failed events.
     Project:
       type: object
       additionalProperties: false
@@ -746,7 +891,7 @@ components:
             All referenced social accounts must belong to the same project.
             Duplicate `socialAccountId` values are invalid.
           items:
-            $ref: "#/components/schemas/SocialAccountTargetInput"
+            $ref: "#/components/schemas/SocialAccountInput"
     Post:
       type: object
       additionalProperties: false
@@ -960,7 +1105,7 @@ components:
           type: string
           enum:
             - ABORTED
-    SocialAccountTargetInput:
+    SocialAccountInput:
       oneOf:
         - $ref: "#/components/schemas/PinterestInput"
         - $ref: "#/components/schemas/InstagramInput"

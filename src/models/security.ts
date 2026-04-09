@@ -6,12 +6,12 @@ import * as z from "zod/v4-mini";
 import { remap as remap$ } from "../lib/primitives.js";
 
 export type Security = {
-  bearerAuth?: string | undefined;
+  apiKey?: string | undefined;
 };
 
 /** @internal */
 export type Security$Outbound = {
-  BearerAuth?: string | undefined;
+  ApiKey?: string | undefined;
 };
 
 /** @internal */
@@ -20,11 +20,11 @@ export const Security$outboundSchema: z.ZodMiniType<
   Security
 > = z.pipe(
   z.object({
-    bearerAuth: z.optional(z.string()),
+    apiKey: z.optional(z.string()),
   }),
   z.transform((v) => {
     return remap$(v, {
-      bearerAuth: "BearerAuth",
+      apiKey: "ApiKey",
     });
   }),
 );

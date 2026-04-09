@@ -84,7 +84,7 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -111,16 +111,16 @@ run();
 
 This SDK supports the following security scheme globally:
 
-| Name         | Type | Scheme      | Environment Variable     |
-| ------------ | ---- | ----------- | ------------------------ |
-| `bearerAuth` | http | HTTP Bearer | `WOOPSOCIAL_BEARER_AUTH` |
+| Name     | Type | Scheme      | Environment Variable |
+| -------- | ---- | ----------- | -------------------- |
+| `apiKey` | http | HTTP Bearer | `WOOPSOCIAL_API_KEY` |
 
-To authenticate with the API the `bearerAuth` parameter must be set when initializing the SDK client instance. For example:
+To authenticate with the API the `apiKey` parameter must be set when initializing the SDK client instance. For example:
 ```typescript
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -173,6 +173,12 @@ run();
 * [listSocialAccounts](docs/sdks/socialaccounts/README.md#listsocialaccounts) - List social accounts
 * [getSocialAccountPlatformInputs](docs/sdks/socialaccounts/README.md#getsocialaccountplatforminputs) - Get platform-specific input options
 
+### [Webhooks](docs/sdks/webhooks/README.md)
+
+* [createWebhookEndpoint](docs/sdks/webhooks/README.md#createwebhookendpoint) - Register webhook endpoint
+* [listWebhookEndpoints](docs/sdks/webhooks/README.md#listwebhookendpoints) - List webhook endpoints
+* [deleteWebhookEndpoint](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Delete webhook endpoint
+
 </details>
 <!-- End Available Resources and Operations [operations] -->
 
@@ -203,6 +209,9 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`socialAccountsCreateOAuthAuthorization`](docs/sdks/socialaccounts/README.md#createoauthauthorization) - Generate OAuth URL
 - [`socialAccountsGetSocialAccountPlatformInputs`](docs/sdks/socialaccounts/README.md#getsocialaccountplatforminputs) - Get platform-specific input options
 - [`socialAccountsListSocialAccounts`](docs/sdks/socialaccounts/README.md#listsocialaccounts) - List social accounts
+- [`webhooksCreateWebhookEndpoint`](docs/sdks/webhooks/README.md#createwebhookendpoint) - Register webhook endpoint
+- [`webhooksDeleteWebhookEndpoint`](docs/sdks/webhooks/README.md#deletewebhookendpoint) - Delete webhook endpoint
+- [`webhooksListWebhookEndpoints`](docs/sdks/webhooks/README.md#listwebhookendpoints) - List webhook endpoints
 
 </details>
 <!-- End Standalone functions [standalone-funcs] -->
@@ -226,7 +235,7 @@ import { WoopSocial } from "@woopsocial/typescript-sdk";
 import { openAsBlob } from "node:fs";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -253,7 +262,7 @@ To change the default retry strategy for a single API call, simply provide a ret
 import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -298,7 +307,7 @@ const woopSocial = new WoopSocial({
     },
     retryConnectionErrors: false,
   },
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -338,7 +347,7 @@ import { WoopSocial } from "@woopsocial/typescript-sdk";
 import * as errors from "@woopsocial/typescript-sdk/models/errors";
 
 const woopSocial = new WoopSocial({
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {
@@ -392,9 +401,9 @@ run();
 
 
 **Inherit from [`WoopSocialError`](./src/models/errors/woop-social-error.ts)**:
-* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 12 methods.*
-* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 12 methods.*
-* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 12 methods.*
+* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 15 methods.*
+* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 15 methods.*
+* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 15 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
@@ -413,7 +422,7 @@ import { WoopSocial } from "@woopsocial/typescript-sdk";
 
 const woopSocial = new WoopSocial({
   serverURL: "https://api.woopsocial.com/v1",
-  bearerAuth: process.env["WOOPSOCIAL_BEARER_AUTH"] ?? "",
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
 });
 
 async function run() {

@@ -247,7 +247,7 @@ export function resolveGlobalSecurity(
       {
         fieldName: "Authorization",
         type: "http:bearer",
-        value: security?.bearerAuth ?? env().WOOPSOCIAL_BEARER_AUTH,
+        value: security?.apiKey ?? env().WOOPSOCIAL_API_KEY,
       },
     ],
   ];

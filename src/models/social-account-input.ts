@@ -40,7 +40,7 @@ import {
   YouTubeInput$outboundSchema,
 } from "./you-tube-input.js";
 
-export type SocialAccountTargetInput =
+export type SocialAccountInput =
   | PinterestInput
   | InstagramInput
   | FacebookInput
@@ -51,7 +51,7 @@ export type SocialAccountTargetInput =
   | LinkedInPagesInput;
 
 /** @internal */
-export type SocialAccountTargetInput$Outbound =
+export type SocialAccountInput$Outbound =
   | PinterestInput$Outbound
   | InstagramInput$Outbound
   | FacebookInput$Outbound
@@ -62,9 +62,9 @@ export type SocialAccountTargetInput$Outbound =
   | LinkedInPagesInput$Outbound;
 
 /** @internal */
-export const SocialAccountTargetInput$outboundSchema: z.ZodMiniType<
-  SocialAccountTargetInput$Outbound,
-  SocialAccountTargetInput
+export const SocialAccountInput$outboundSchema: z.ZodMiniType<
+  SocialAccountInput$Outbound,
+  SocialAccountInput
 > = z.union([
   PinterestInput$outboundSchema,
   InstagramInput$outboundSchema,
@@ -76,10 +76,10 @@ export const SocialAccountTargetInput$outboundSchema: z.ZodMiniType<
   LinkedInPagesInput$outboundSchema,
 ]);
 
-export function socialAccountTargetInputToJSON(
-  socialAccountTargetInput: SocialAccountTargetInput,
+export function socialAccountInputToJSON(
+  socialAccountInput: SocialAccountInput,
 ): string {
   return JSON.stringify(
-    SocialAccountTargetInput$outboundSchema.parse(socialAccountTargetInput),
+    SocialAccountInput$outboundSchema.parse(socialAccountInput),
   );
 }
