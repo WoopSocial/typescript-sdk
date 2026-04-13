@@ -1,12 +1,12 @@
-# ValidationError
+# ValidationWarning
 
 ## Example Usage
 
 ```typescript
-import { ValidationError } from "@woopsocial/typescript-sdk/models";
+import { ValidationWarning } from "@woopsocial/typescript-sdk/models";
 
-let value: ValidationError = {
-  path: "/usr/X11R6",
+let value: ValidationWarning = {
+  path: "/usr/libexec",
   message: "<value>",
 };
 ```
@@ -15,6 +15,6 @@ let value: ValidationError = {
 
 | Field                                                   | Type                                                    | Required                                                | Description                                             |
 | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- | ------------------------------------------------------- |
-| `path`                                                  | *string*                                                | :heavy_check_mark:                                      | JSON path to the invalid input.                         |
+| `path`                                                  | *string*                                                | :heavy_check_mark:                                      | JSON path related to the warning.                       |
 | `field`                                                 | [models.ValidationField](../models/validation-field.md) | :heavy_minus_sign:                                      | N/A                                                     |
 | `message`                                               | *string*                                                | :heavy_check_mark:                                      | N/A                                                     |

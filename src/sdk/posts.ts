@@ -6,6 +6,7 @@ import { postsCreatePost } from "../funcs/posts-create-post.js";
 import { postsDeletePost } from "../funcs/posts-delete-post.js";
 import { postsGetPost } from "../funcs/posts-get-post.js";
 import { postsListSocialAccountPosts } from "../funcs/posts-list-social-account-posts.js";
+import { postsValidatePost } from "../funcs/posts-validate-post.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -28,6 +29,27 @@ export class Posts extends ClientSDK {
     options?: RequestOptions,
   ): Promise<models.Post> {
     return unwrapAsync(postsCreatePost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * Validate post
+   *
+   * @remarks
+   * Validates a post request without creating a post.
+   *
+   * This endpoint applies the same validation rules as `POST /posts`,
+   * including social-account resolution, platform-specific validation, and
+   * media validation for referenced media library items.
+   */
+  async validatePost(
+    request: models.CreatePostRequest,
+    options?: RequestOptions,
+  ): Promise<models.ValidatePostResponse> {
+    return unwrapAsync(postsValidatePost(
       this,
       request,
       options,

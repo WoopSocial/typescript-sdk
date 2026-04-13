@@ -62,6 +62,39 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CreatePostErrorResponse"
+  /posts/validate:
+    post:
+      operationId: validatePost
+      tags:
+        - Posts
+      security:
+        - ApiKey: []
+      summary: Validate post
+      description: |
+        Validates a post request without creating a post.
+
+        This endpoint applies the same validation rules as `POST /posts`,
+        including social-account resolution, platform-specific validation, and
+        media validation for referenced media library items.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePostRequest"
+      responses:
+        "200":
+          description: Validation result.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ValidatePostResponse"
+        "500":
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CreatePostErrorResponse"
   /posts/{postId}:
     get:
       operationId: getPost
@@ -1605,8 +1638,43 @@ components:
         path:
           type: string
           description: JSON path to the invalid input.
+        field:
+          $ref: "#/components/schemas/ValidationField"
+          description: |
+            Machine-readable validation field identifier.
         message:
           type: string
+    ValidationWarning:
+      type: object
+      additionalProperties: false
+      required:
+        - path
+        - message
+      properties:
+        path:
+          type: string
+          description: JSON path related to the warning.
+        field:
+          $ref: "#/components/schemas/ValidationField"
+          description: |
+            Machine-readable validation field identifier.
+        message:
+          type: string
+    ValidationField:
+      type: string
+      enum:
+        - DESCRIPTION
+        - MEDIA
+        - PINTEREST_BOARD
+        - CONTENT
+        - TITLE
+        - FIRST_COMMENT
+        - TIKTOK_PRIVACY_LEVEL
+        - TIKTOK_CONTENT_DISCLOSURE
+        - YOUTUBE_PRIVACY
+        - YOUTUBE_CATEGORY
+        - YOUTUBE_TAGS
+        - SCHEDULE
     CreatePostErrorCode:
       type: string
       enum:
@@ -1645,6 +1713,27 @@ components:
             `SOCIAL_ACCOUNTS_MUST_BELONG_TO_SAME_PROJECT`.
           items:
             type: string
+    ValidatePostResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - isValid
+        - errors
+        - warnings
+      properties:
+        isValid:
+          type: boolean
+          description: Whether the request passed validation.
+        errors:
+          type: array
+          description: Blocking validation errors. Empty when the request is valid.
+          items:
+            $ref: "#/components/schemas/ValidationError"
+        warnings:
+          type: array
+          description: Non-blocking validation warnings. Empty when there are no warnings.
+          items:
+            $ref: "#/components/schemas/ValidationWarning"
     GetPostErrorCode:
       type: string
       enum:

@@ -7,6 +7,7 @@ Post scheduling endpoints.
 ### Available Operations
 
 * [createPost](#createpost) - Create post
+* [validatePost](#validatepost) - Validate post
 * [getPost](#getpost) - Get post
 * [deletePost](#deletepost) - Delete post
 * [listSocialAccountPosts](#listsocialaccountposts) - List social account posts
@@ -97,6 +98,93 @@ run();
 | Error Type                     | Status Code                    | Content Type                   |
 | ------------------------------ | ------------------------------ | ------------------------------ |
 | errors.CreatePostErrorResponse | 422                            | application/json               |
+| errors.CreatePostErrorResponse | 500                            | application/json               |
+| errors.WoopSocialDefaultError  | 4XX, 5XX                       | \*/\*                          |
+
+## validatePost
+
+Validates a post request without creating a post.
+
+This endpoint applies the same validation rules as `POST /posts`,
+including social-account resolution, platform-specific validation, and
+media validation for referenced media library items.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="validatePost" method="post" path="/posts/validate" -->
+```typescript
+import { WoopSocial } from "@woopsocial/typescript-sdk";
+
+const woopSocial = new WoopSocial({
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await woopSocial.posts.validatePost({
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsValidatePost } from "@woopsocial/typescript-sdk/funcs/posts-validate-post.js";
+
+// Use `WoopSocialCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const woopSocial = new WoopSocialCore({
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await postsValidatePost(woopSocial, {
+    content: [],
+    schedule: {
+      type: "DRAFT",
+    },
+    socialAccounts: [],
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("postsValidatePost failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [models.CreatePostRequest](../../models/create-post-request.md)                                                                                                                | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ValidatePostResponse](../../models/validate-post-response.md)\>**
+
+### Errors
+
+| Error Type                     | Status Code                    | Content Type                   |
+| ------------------------------ | ------------------------------ | ------------------------------ |
 | errors.CreatePostErrorResponse | 500                            | application/json               |
 | errors.WoopSocialDefaultError  | 4XX, 5XX                       | \*/\*                          |
 

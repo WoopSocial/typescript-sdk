@@ -12,9 +12,9 @@ import {
   ValidationField$inboundSchema,
 } from "./validation-field.js";
 
-export type ValidationError = {
+export type ValidationWarning = {
   /**
-   * JSON path to the invalid input.
+   * JSON path related to the warning.
    */
   path: string;
   field?: ValidationField | undefined;
@@ -22,8 +22,8 @@ export type ValidationError = {
 };
 
 /** @internal */
-export const ValidationError$inboundSchema: z.ZodMiniType<
-  ValidationError,
+export const ValidationWarning$inboundSchema: z.ZodMiniType<
+  ValidationWarning,
   unknown
 > = z.object({
   path: types.string(),
@@ -31,12 +31,12 @@ export const ValidationError$inboundSchema: z.ZodMiniType<
   message: types.string(),
 });
 
-export function validationErrorFromJSON(
+export function validationWarningFromJSON(
   jsonString: string,
-): SafeParseResult<ValidationError, SDKValidationError> {
+): SafeParseResult<ValidationWarning, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ValidationError$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ValidationError' from JSON`,
+    (x) => ValidationWarning$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ValidationWarning' from JSON`,
   );
 }

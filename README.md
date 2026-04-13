@@ -157,6 +157,7 @@ run();
 ### [Posts](docs/sdks/posts/README.md)
 
 * [createPost](docs/sdks/posts/README.md#createpost) - Create post
+* [validatePost](docs/sdks/posts/README.md#validatepost) - Validate post
 * [getPost](docs/sdks/posts/README.md#getpost) - Get post
 * [deletePost](docs/sdks/posts/README.md#deletepost) - Delete post
 * [listSocialAccountPosts](docs/sdks/posts/README.md#listsocialaccountposts) - List social account posts
@@ -204,6 +205,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`postsDeletePost`](docs/sdks/posts/README.md#deletepost) - Delete post
 - [`postsGetPost`](docs/sdks/posts/README.md#getpost) - Get post
 - [`postsListSocialAccountPosts`](docs/sdks/posts/README.md#listsocialaccountposts) - List social account posts
+- [`postsValidatePost`](docs/sdks/posts/README.md#validatepost) - Validate post
 - [`projectsListProjects`](docs/sdks/projects/README.md#listprojects) - List projects
 - [`socialAccountsCreateOAuthAuthorization`](docs/sdks/socialaccounts/README.md#createoauthauthorization) - Generate OAuth URL
 - [`socialAccountsGetSocialAccountPlatformInputs`](docs/sdks/socialaccounts/README.md#getsocialaccountplatforminputs) - Get platform-specific input options
@@ -400,9 +402,9 @@ run();
 
 
 **Inherit from [`WoopSocialError`](./src/models/errors/woop-social-error.ts)**:
-* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 16 methods.*
-* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 16 methods.*
-* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 16 methods.*
+* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Applicable to 2 of 17 methods.*
+* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 17 methods.*
+* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 17 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>
