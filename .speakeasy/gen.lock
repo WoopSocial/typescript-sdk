@@ -5,13 +5,13 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.761.3
   generationVersion: 2.879.11
-  releaseVersion: 0.2.3
-  configChecksum: 16d53f86f1be6b5870b8c2a2aaa3536b
+  releaseVersion: 0.2.4
+  configChecksum: 1309c367073a69ad411afa3c18bc8dfd
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: 7eb439f6-c759-47aa-bd16-e3fafc783815
-  pristine_commit_hash: fd62103cf498f41db5b270a3a13fb390060a3d0b
-  pristine_tree_hash: a5e23657d91a51f8426b5371a43969f67a43c4b5
+  generation_id: 57f02407-9615-4012-b96b-7ee9db813406
+  pristine_commit_hash: 84b2a4e2a01b3f671ee4219752dd052ec401e428
+  pristine_tree_hash: d79e6315dd175cb807f319f2876b95ae24b2576c
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -446,12 +446,12 @@ trackedFiles:
     pristine_git_object: e2ed9533543f9707f4d0a58a940b87e7333380a0
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:276869ed2a4d77e9876bf7ad25467fdff1f4a053
-    pristine_git_object: 82147839cbbdf4c4775c090e0ae22e9b8255a95e
+    last_write_checksum: sha1:6e41c0d68666c29d017802ee95e29d036bbfb679
+    pristine_git_object: cec06084732dd4c08d7a8aa6f5cb66f77d5a8f41
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f3ac5020843320632850dad0c65bdc2fdad2391f
-    pristine_git_object: a37595c85680a61d333d9359794e02f2c5a6a233
+    last_write_checksum: sha1:7979a9f35992f9bccab1668389dbe3d8088a7bd5
+    pristine_git_object: 1018e5c5e057f03a54103b689679ffb0703c4de9
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -546,8 +546,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:120fa79d2bdc0a6d3df74b19ff8984c522b11145
-    pristine_git_object: 9708457c8e65ef633316e9cef43eafb8788467a1
+    last_write_checksum: sha1:dde55f1d5a00e9d36f3463a7953c9c68ca9bb298
+    pristine_git_object: f29cac151bbf7c8c5ac5e3d19ca2da68fb8c5685
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -1054,8 +1054,8 @@ trackedFiles:
     pristine_git_object: b7a2a13f3dff50663429df24ae2f55b647ff1084
   tsconfig.json:
     id: 61ebb9fd6e8c
-    last_write_checksum: sha1:4f9c4daf3281a9be06591b2814e5bbcf98b5c803
-    pristine_git_object: e6cd950ad724815ee1ed48ef2e52389cbd3a9143
+    last_write_checksum: sha1:79dc1550d921fefec69f8632ed3b24dad41ca2f6
+    pristine_git_object: 76110f883cac40bb04fb2f376cd69ea8c8d6d215
 examples:
   listPosts:
     speakeasy-default-list-posts:
