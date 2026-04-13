@@ -1,0 +1,21 @@
+# ListSocialAccountPostsRequest
+
+## Example Usage
+
+```typescript
+import { ListSocialAccountPostsRequest } from "@woopsocial/typescript-sdk/models/operations";
+
+let value: ListSocialAccountPostsRequest = {};
+```
+
+## Fields
+
+| Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
+| ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
+| `projectId`                                                                                            | *string*[]                                                                                             | :heavy_minus_sign:                                                                                     | Filter to one or more projects. Provide a comma-separated list of project IDs.                         |
+| `socialAccountId`                                                                                      | *string*[]                                                                                             | :heavy_minus_sign:                                                                                     | Filter to one or more connected social accounts. Provide a comma-separated list of social account IDs. |
+| `postId`                                                                                               | *string*[]                                                                                             | :heavy_minus_sign:                                                                                     | Filter to one or more parent posts. Provide a comma-separated list of post IDs.                        |
+| `platform`                                                                                             | [models.SocialPlatform](../../models/social-platform.md)[]                                             | :heavy_minus_sign:                                                                                     | Filter to one or more social platforms. Provide a comma-separated list of platform values.             |
+| `deliveryStatus`                                                                                       | [models.DeliveryStatus](../../models/delivery-status.md)[]                                             | :heavy_minus_sign:                                                                                     | Filter to one or more delivery statuses. Provide a comma-separated list of delivery status values.     |
+| `limit`                                                                                                | *number*                                                                                               | :heavy_minus_sign:                                                                                     | Number of items to return.                                                                             |
+| `cursor`                                                                                               | *string*                                                                                               | :heavy_minus_sign:                                                                                     | Opaque cursor for the next page of results.                                                            |

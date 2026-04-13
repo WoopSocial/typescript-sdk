@@ -19,9 +19,22 @@ import {
   PostContentItem,
   PostContentItem$inboundSchema,
 } from "./post-content-item.js";
+import { PostSchedule, PostSchedule$inboundSchema } from "./post-schedule.js";
 
 export type FacebookPost = {
   platform: "FACEBOOK";
+  /**
+   * Social account post identifier.
+   */
+  socialAccountPostId: string;
+  /**
+   * Parent post identifier.
+   */
+  postId: string;
+  /**
+   * Project identifier.
+   */
+  projectId: string;
   /**
    * Connected social account identifier.
    */
@@ -45,8 +58,20 @@ export type FacebookPost = {
    * The array exists for future thread support. Currently exactly one item
    * is returned.
    */
-  contentOverride?: Array<PostContentItem> | undefined;
-  sentAt?: Date | undefined;
+  content: Array<PostContentItem>;
+  schedule: PostSchedule;
+  /**
+   * UTC time when the social account post was created.
+   */
+  createdAt: Date;
+  /**
+   * UTC time when the social account post was last updated.
+   */
+  updatedAt: Date;
+  /**
+   * UTC time when the latest delivery attempt for this social account post completed both for successful (`SENT`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
+   */
+  deliveryCompletedAt?: Date | undefined;
   externalPostId?: string | undefined;
   externalPostUrl?: string | undefined;
   errorMessage?: string | undefined;
@@ -58,10 +83,16 @@ export type FacebookPost = {
 export const FacebookPost$inboundSchema: z.ZodMiniType<FacebookPost, unknown> =
   z.object({
     platform: types.literal("FACEBOOK"),
+    socialAccountPostId: types.string(),
+    postId: types.string(),
+    projectId: types.string(),
     socialAccountId: types.string(),
     deliveryStatus: DeliveryStatus$inboundSchema,
-    contentOverride: types.optional(z.array(PostContentItem$inboundSchema)),
-    sentAt: types.optional(types.date()),
+    content: z.array(PostContentItem$inboundSchema),
+    schedule: PostSchedule$inboundSchema,
+    createdAt: types.date(),
+    updatedAt: types.date(),
+    deliveryCompletedAt: types.optional(types.date()),
     externalPostId: types.optional(types.string()),
     externalPostUrl: types.optional(types.string()),
     errorMessage: types.optional(types.string()),

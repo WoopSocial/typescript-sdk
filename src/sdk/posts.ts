@@ -5,6 +5,7 @@
 import { postsCreatePost } from "../funcs/posts-create-post.js";
 import { postsDeletePost } from "../funcs/posts-delete-post.js";
 import { postsGetPost } from "../funcs/posts-get-post.js";
+import { postsListSocialAccountPosts } from "../funcs/posts-list-social-account-posts.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import * as operations from "../models/operations/index.js";
@@ -37,7 +38,7 @@ export class Posts extends ClientSDK {
    * Get post
    *
    * @remarks
-   * Returns one post with its social-account children inline.
+   * Returns one post with its social account posts inline.
    */
   async getPost(
     request: operations.GetPostRequest,
@@ -64,6 +65,26 @@ export class Posts extends ClientSDK {
     options?: RequestOptions,
   ): Promise<void> {
     return unwrapAsync(postsDeletePost(
+      this,
+      request,
+      options,
+    ));
+  }
+
+  /**
+   * List social account posts
+   *
+   * @remarks
+   * Returns standalone social account posts for the API key's organization.
+   *
+   * Each item includes the materialized content and schedule for that
+   * social-account target.
+   */
+  async listSocialAccountPosts(
+    request?: operations.ListSocialAccountPostsRequest | undefined,
+    options?: RequestOptions,
+  ): Promise<models.ListSocialAccountPostsResponse> {
+    return unwrapAsync(postsListSocialAccountPosts(
       this,
       request,
       options,

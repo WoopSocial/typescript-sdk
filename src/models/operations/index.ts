@@ -9,4 +9,5 @@ export * from "./delete-webhook-endpoint.js";
 export * from "./get-post.js";
 export * from "./get-social-account-platform-inputs.js";
 export * from "./get-upload-session.js";
+export * from "./list-social-account-posts.js";
 export * from "./list-social-accounts.js";

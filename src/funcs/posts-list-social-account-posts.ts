@@ -4,7 +4,7 @@
 
 import * as z from "zod/v4-mini";
 import { WoopSocialCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
+import { encodeFormQuery, queryJoin } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -18,7 +18,6 @@ import {
   RequestTimeoutError,
   UnexpectedClientError,
 } from "../models/errors/http-client-errors.js";
-import * as errors from "../models/errors/index.js";
 import { ResponseValidationError } from "../models/errors/response-validation-error.js";
 import { SDKValidationError } from "../models/errors/sdk-validation-error.js";
 import { WoopSocialError } from "../models/errors/woop-social-error.js";
@@ -28,19 +27,21 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Get post
+ * List social account posts
  *
  * @remarks
- * Returns one post with its social account posts inline.
+ * Returns standalone social account posts for the API key's organization.
+ *
+ * Each item includes the materialized content and schedule for that
+ * social-account target.
  */
-export function postsGetPost(
+export function postsListSocialAccountPosts(
   client: WoopSocialCore,
-  request: operations.GetPostRequest,
+  request?: operations.ListSocialAccountPostsRequest | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.Post,
-    | errors.GetPostErrorResponse
+    models.ListSocialAccountPostsResponse,
     | WoopSocialError
     | ResponseValidationError
     | ConnectionError
@@ -60,13 +61,12 @@ export function postsGetPost(
 
 async function $do(
   client: WoopSocialCore,
-  request: operations.GetPostRequest,
+  request?: operations.ListSocialAccountPostsRequest | undefined,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.Post,
-      | errors.GetPostErrorResponse
+      models.ListSocialAccountPostsResponse,
       | WoopSocialError
       | ResponseValidationError
       | ConnectionError
@@ -81,7 +81,11 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => z.parse(operations.GetPostRequest$outboundSchema, value),
+    (value) =>
+      z.parse(
+        z.optional(operations.ListSocialAccountPostsRequest$outboundSchema),
+        value,
+      ),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -90,13 +94,21 @@ async function $do(
   const payload = parsed.value;
   const body = null;
 
-  const pathParams = {
-    postId: encodeSimple("postId", payload.postId, {
-      explode: false,
-      charEncoding: "percent",
+  const path = pathToFunc("/social-account-posts")();
+
+  const query = queryJoin(
+    encodeFormQuery({
+      "deliveryStatus": payload?.deliveryStatus,
+      "platform": payload?.platform,
+      "postId": payload?.postId,
+      "projectId": payload?.projectId,
+      "socialAccountId": payload?.socialAccountId,
+    }, { explode: false }),
+    encodeFormQuery({
+      "cursor": payload?.cursor,
+      "limit": payload?.limit,
     }),
-  };
-  const path = pathToFunc("/posts/{postId}")(pathParams);
+  );
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -109,7 +121,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "getPost",
+    operationID: "listSocialAccountPosts",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -127,6 +139,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    query: query,
     body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
@@ -138,7 +151,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["404", "4XX", "500", "5XX"],
+    errorCodes: ["4XX", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -147,13 +160,8 @@ async function $do(
   }
   const response = doResult.value;
 
-  const responseFields = {
-    HttpMeta: { Response: response, Request: req },
-  };
-
   const [result] = await M.match<
-    models.Post,
-    | errors.GetPostErrorResponse
+    models.ListSocialAccountPostsResponse,
     | WoopSocialError
     | ResponseValidationError
     | ConnectionError
@@ -163,12 +171,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.Post$inboundSchema),
-    M.jsonErr(404, errors.GetPostErrorResponse$inboundSchema),
-    M.jsonErr(500, errors.GetPostErrorResponse$inboundSchema),
+    M.json(200, models.ListSocialAccountPostsResponse$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),
-  )(response, req, { extraFields: responseFields });
+  )(response, req);
   if (!result.ok) {
     return [result, { status: "complete", request: req, response }];
   }

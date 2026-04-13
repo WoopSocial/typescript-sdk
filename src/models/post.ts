@@ -36,7 +36,10 @@ export type Post = {
    */
   content: Array<PostContentItem>;
   schedule: PostSchedule;
-  socialAccounts: Array<SocialAccountPost>;
+  /**
+   * Social account posts for this parent post.
+   */
+  socialAccountPosts: Array<SocialAccountPost>;
   /**
    * UTC time when the post was created.
    */
@@ -53,7 +56,7 @@ export const Post$inboundSchema: z.ZodMiniType<Post, unknown> = z.object({
   projectId: types.string(),
   content: z.array(PostContentItem$inboundSchema),
   schedule: PostSchedule$inboundSchema,
-  socialAccounts: z.array(SocialAccountPost$inboundSchema),
+  socialAccountPosts: z.array(SocialAccountPost$inboundSchema),
   createdAt: types.date(),
   updatedAt: types.date(),
 });

@@ -24,6 +24,7 @@ export * from "./linked-in-input.js";
 export * from "./linked-in-pages-input.js";
 export * from "./linked-in-pages-post.js";
 export * from "./linked-in-post.js";
+export * from "./list-social-account-posts-response.js";
 export * from "./media-library-post-content-media-input.js";
 export * from "./media-library-post-content-media.js";
 export * from "./pinterest-board-option.js";

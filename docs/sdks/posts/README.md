@@ -9,6 +9,7 @@ Post scheduling endpoints.
 * [createPost](#createpost) - Create post
 * [getPost](#getpost) - Get post
 * [deletePost](#deletepost) - Delete post
+* [listSocialAccountPosts](#listsocialaccountposts) - List social account posts
 
 ## createPost
 
@@ -101,7 +102,7 @@ run();
 
 ## getPost
 
-Returns one post with its social-account children inline.
+Returns one post with its social account posts inline.
 
 
 ### Example Usage
@@ -253,3 +254,76 @@ run();
 | errors.DeletePostErrorResponse | 404, 409                       | application/json               |
 | errors.DeletePostErrorResponse | 500                            | application/json               |
 | errors.WoopSocialDefaultError  | 4XX, 5XX                       | \*/\*                          |
+
+## listSocialAccountPosts
+
+Returns standalone social account posts for the API key's organization.
+
+Each item includes the materialized content and schedule for that
+social-account target.
+
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="listSocialAccountPosts" method="get" path="/social-account-posts" -->
+```typescript
+import { WoopSocial } from "@woopsocial/typescript-sdk";
+
+const woopSocial = new WoopSocial({
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
+});
+
+async function run() {
+  const result = await woopSocial.posts.listSocialAccountPosts({});
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { WoopSocialCore } from "@woopsocial/typescript-sdk/core.js";
+import { postsListSocialAccountPosts } from "@woopsocial/typescript-sdk/funcs/posts-list-social-account-posts.js";
+
+// Use `WoopSocialCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const woopSocial = new WoopSocialCore({
+  apiKey: process.env["WOOPSOCIAL_API_KEY"] ?? "",
+});
+
+async function run() {
+  const res = await postsListSocialAccountPosts(woopSocial, {});
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("postsListSocialAccountPosts failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `request`                                                                                                                                                                      | [operations.ListSocialAccountPostsRequest](../../models/operations/list-social-account-posts-request.md)                                                                       | :heavy_check_mark:                                                                                                                                                             | The request object to use for the request.                                                                                                                                     |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.ListSocialAccountPostsResponse](../../models/list-social-account-posts-response.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.WoopSocialDefaultError | 4XX, 5XX                      | \*/\*                         |

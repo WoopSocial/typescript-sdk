@@ -1,6 +1,10 @@
-# @woopsocial/typescript-sdk
+<p align="center">
+  <img src="https://woopsocial.com/logo.svg" alt="WoopSocial logo" width="96" />
+</p>
 
-Developer-friendly & type-safe Typescript SDK specifically catered to leverage *woopsocial* API.
+<h1 align="center">WoopSocial TypeScript SDK</h1>
+
+One API to post to Facebook, Instagram, LinkedIn, LinkedIn Pages, Pinterest, TikTok, X (formerly Twitter) and YouTube. This SDK offers a convenient and type-safe wrapper for WoopSocial's <a href="https://docs.woopsocial.com/api-reference/overview">OpenAPI specification</a>.
 
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=woopsocial&utm_campaign=typescript)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
@@ -16,7 +20,6 @@ This is the public-facing OpenAPI contract for WoopSocial. It supports schedulin
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
 <!-- $toc-max-depth=2 -->
-* [@woopsocial/typescript-sdk](#woopsocialtypescript-sdk)
   * [SDK Installation](#sdk-installation)
   * [Requirements](#requirements)
   * [SDK Example Usage](#sdk-example-usage)
@@ -162,6 +165,7 @@ run();
 * [createPost](docs/sdks/posts/README.md#createpost) - Create post
 * [getPost](docs/sdks/posts/README.md#getpost) - Get post
 * [deletePost](docs/sdks/posts/README.md#deletepost) - Delete post
+* [listSocialAccountPosts](docs/sdks/posts/README.md#listsocialaccountposts) - List social account posts
 
 ### [Projects](docs/sdks/projects/README.md)
 
@@ -205,6 +209,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`postsCreatePost`](docs/sdks/posts/README.md#createpost) - Create post
 - [`postsDeletePost`](docs/sdks/posts/README.md#deletepost) - Delete post
 - [`postsGetPost`](docs/sdks/posts/README.md#getpost) - Get post
+- [`postsListSocialAccountPosts`](docs/sdks/posts/README.md#listsocialaccountposts) - List social account posts
 - [`projectsListProjects`](docs/sdks/projects/README.md#listprojects) - List projects
 - [`socialAccountsCreateOAuthAuthorization`](docs/sdks/socialaccounts/README.md#createoauthauthorization) - Generate OAuth URL
 - [`socialAccountsGetSocialAccountPlatformInputs`](docs/sdks/socialaccounts/README.md#getsocialaccountplatforminputs) - Get platform-specific input options
@@ -401,9 +406,9 @@ run();
 
 
 **Inherit from [`WoopSocialError`](./src/models/errors/woop-social-error.ts)**:
-* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 15 methods.*
-* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 15 methods.*
-* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 15 methods.*
+* [`DeletePostErrorResponse`](./src/models/errors/delete-post-error-response.ts): Post not found. Applicable to 1 of 16 methods.*
+* [`GetPostErrorResponse`](./src/models/errors/get-post-error-response.ts): Post not found. Applicable to 1 of 16 methods.*
+* [`CreatePostErrorResponse`](./src/models/errors/create-post-error-response.ts): Request validation failed. Applicable to 1 of 16 methods.*
 * [`ResponseValidationError`](./src/models/errors/response-validation-error.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
 
 </details>

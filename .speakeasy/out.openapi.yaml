@@ -71,7 +71,7 @@ paths:
         - ApiKey: []
       summary: Get post
       description: |
-        Returns one post with its social-account children inline.
+        Returns one post with its social account posts inline.
       parameters:
         - $ref: "#/components/parameters/PostId"
       responses:
@@ -128,6 +128,34 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/DeletePostErrorResponse"
+  /social-account-posts:
+    get:
+      operationId: listSocialAccountPosts
+      tags:
+        - Posts
+      security:
+        - ApiKey: []
+      summary: List social account posts
+      description: |
+        Returns standalone social account posts for the API key's organization.
+
+        Each item includes the materialized content and schedule for that
+        social-account target.
+      parameters:
+        - $ref: "#/components/parameters/ProjectIdsFilter"
+        - $ref: "#/components/parameters/SocialAccountIdsFilter"
+        - $ref: "#/components/parameters/PostIdsFilter"
+        - $ref: "#/components/parameters/SocialPlatformFilter"
+        - $ref: "#/components/parameters/DeliveryStatusFilter"
+        - $ref: "#/components/parameters/Limit"
+        - $ref: "#/components/parameters/Cursor"
+      responses:
+        "200":
+          description: Social account posts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListSocialAccountPostsResponse"
   /projects:
     get:
       operationId: listProjects
@@ -412,6 +440,79 @@ components:
       schema:
         type: string
       description: Filter to resources that belong to a specific project.
+    ProjectIdsFilter:
+      name: projectId
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+      description: Filter to one or more projects. Provide a comma-separated list of project IDs.
+    SocialAccountIdsFilter:
+      name: socialAccountId
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+      description: Filter to one or more connected social accounts. Provide a comma-separated list of social account IDs.
+    PostIdsFilter:
+      name: postId
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
+      description: Filter to one or more parent posts. Provide a comma-separated list of post IDs.
+    SocialPlatformFilter:
+      name: platform
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: "#/components/schemas/SocialPlatform"
+      description: Filter to one or more social platforms. Provide a comma-separated list of platform values.
+    DeliveryStatusFilter:
+      name: deliveryStatus
+      in: query
+      required: false
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          $ref: "#/components/schemas/DeliveryStatus"
+      description: Filter to one or more delivery statuses. Provide a comma-separated list of delivery status values.
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        maximum: 100
+        default: 50
+      description: Number of items to return.
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        type: string
+      description: Opaque cursor for the next page of results.
     ProjectId:
       name: projectId
       in: query
@@ -495,7 +596,7 @@ components:
         - eventType
         - occurredAt
         - postId
-        - accountPostId
+        - socialAccountPostId
         - socialAccountId
         - platform
       properties:
@@ -900,7 +1001,7 @@ components:
         - projectId
         - content
         - schedule
-        - socialAccounts
+        - socialAccountPosts
         - createdAt
         - updatedAt
       properties:
@@ -914,9 +1015,10 @@ components:
           $ref: "#/components/schemas/PostContent"
         schedule:
           $ref: "#/components/schemas/PostSchedule"
-        socialAccounts:
+        socialAccountPosts:
           type: array
           minItems: 1
+          description: Social account posts for this parent post.
           items:
             $ref: "#/components/schemas/SocialAccountPost"
         createdAt:
@@ -927,6 +1029,19 @@ components:
           type: string
           format: date-time
           description: UTC time when the post was last updated.
+    ListSocialAccountPostsResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - socialAccountPosts
+      properties:
+        socialAccountPosts:
+          type: array
+          items:
+            $ref: "#/components/schemas/SocialAccountPost"
+        nextCursor:
+          type: string
+          description: Opaque cursor for the next page of results. Omitted when there are no more results.
     CreateMediaResponse:
       type: object
       additionalProperties: false
@@ -1138,20 +1253,50 @@ components:
           $ref: "#/components/schemas/PostContentInput"
     SocialAccountPostBase:
       type: object
+      additionalProperties: false
       required:
+        - socialAccountPostId
+        - postId
+        - projectId
         - socialAccountId
         - deliveryStatus
+        - content
+        - schedule
+        - createdAt
+        - updatedAt
       properties:
+        socialAccountPostId:
+          type: string
+          description: Social account post identifier.
+        postId:
+          type: string
+          description: Parent post identifier.
+        projectId:
+          type: string
+          description: Project identifier.
         socialAccountId:
           type: string
           description: Connected social account identifier.
         deliveryStatus:
           $ref: "#/components/schemas/DeliveryStatus"
-        contentOverride:
+        content:
           $ref: "#/components/schemas/PostContent"
-        sentAt:
+          description: Content for this social account post.
+        schedule:
+          $ref: "#/components/schemas/PostSchedule"
+          description: Schedule for this social account post.
+        createdAt:
           type: string
           format: date-time
+          description: UTC time when the social account post was created.
+        updatedAt:
+          type: string
+          format: date-time
+          description: UTC time when the social account post was last updated.
+        deliveryCompletedAt:
+          type: string
+          format: date-time
+          description: UTC time when the latest delivery attempt for this social account post completed both for successful (`SENT`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
         externalPostId:
           type: string
         externalPostUrl:
