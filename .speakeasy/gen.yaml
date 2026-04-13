@@ -44,7 +44,7 @@ typescript:
     bugs:
       url: https://github.com/WoopSocial/typescript-sdk/issues
     files:
-      - esm
+      - dist
       - src
       - README.md
       - FUNCTIONS.md
