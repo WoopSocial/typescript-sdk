@@ -9,13 +9,7 @@ One API to post to Facebook, Instagram, LinkedIn, LinkedIn Pages, Pinterest, Tik
 [![Built by Speakeasy](https://img.shields.io/badge/Built_by-SPEAKEASY-374151?style=for-the-badge&labelColor=f3f4f6)](https://www.speakeasy.com/?utm_source=woopsocial&utm_campaign=typescript)
 [![License: MIT](https://img.shields.io/badge/LICENSE_//_MIT-3b5bdb?style=for-the-badge&labelColor=eff6ff)](https://opensource.org/licenses/MIT)
 
-<!-- Start Summary [summary] -->
-## Summary
-
-WoopSocial API: API for WoopSocial integrations.
-
-This is the public-facing OpenAPI contract for WoopSocial. It supports scheduling posts for various social media platforms such as Facebook, Instagram, LinkedIn, LinkedIn Pages, Pinterest, TikTok, X (formerly Twitter) and YouTube.
-<!-- End Summary [summary] -->
+<!-- No Summary [summary] -->
 
 <!-- Start Table of Contents [toc] -->
 ## Table of Contents
