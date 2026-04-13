@@ -1,12 +1,12 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Speakeasy",
   "bugs": {
     "url": "https://github.com/WoopSocial/typescript-sdk/issues"
   },
   "files": [
-    "esm",
+    "dist",
     "src",
     "README.md",
     "FUNCTIONS.md",
