@@ -1432,6 +1432,8 @@ components:
       properties:
         pinterestBoardId:
           type: string
+        title:
+          type: string
     InstagramFields:
       type: object
       required:
@@ -1506,7 +1508,12 @@ components:
             but is not used by TikTok.
     YouTubeFields:
       type: object
+      required:
+        - title
+        - privacy
       properties:
+        title:
+          type: string
         privacy:
           $ref: "#/components/schemas/YouTubePrivacy"
         category:

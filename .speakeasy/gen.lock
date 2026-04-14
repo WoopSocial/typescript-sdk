@@ -1,22 +1,22 @@
 lockVersion: 2.0.0
 id: 90d0e465-4638-4110-9f8d-cad0dfd43e38
 management:
-  docChecksum: 789f40ecf55f8fdf483e0a10f058aa52
+  docChecksum: 5ee07744c9ae4241e9e700870e4e4ac6
   docVersion: 1.0.0
-  speakeasyVersion: 1.761.3
-  generationVersion: 2.879.11
-  releaseVersion: 0.2.5
-  configChecksum: ad419d5e4842a9621b81aded85ee9df0
+  speakeasyVersion: 1.761.4
+  generationVersion: 2.879.13
+  releaseVersion: 0.2.6
+  configChecksum: 74504b02a57252f39b035546f27961cd
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: e2b0e0f5-d6d2-4ca1-9464-31b85b0d7e03
-  pristine_commit_hash: f99508fed5eba984ef69fc10ef149755eaf83dd1
-  pristine_tree_hash: ecacacae5c5359d2ae737d0ec79b034089d593f0
+  generation_id: 41892b43-618f-4cd7-bafb-1f0089dc431f
+  pristine_commit_hash: 33f16b9544255f52326d1cd20b306022194d913f
+  pristine_tree_hash: 4e1744b313b22bedb88a60870269407b7c98916e
 features:
   typescript:
     additionalDependencies: 0.1.0
     constsAndDefaults: 0.1.14
-    core: 3.26.47
+    core: 3.26.48
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.1
     enumUnions: 0.1.0
@@ -230,12 +230,12 @@ trackedFiles:
     pristine_git_object: 918d520cb7866337d2b06e053054dad316bc6231
   docs/models/pinterest-input.md:
     id: 7191f39fc878
-    last_write_checksum: sha1:cc631f38f0045d6ee10fde8d2af6e80ed351bb80
-    pristine_git_object: 5209c2ef677f24c53e88e68778f03aa3f82f9791
+    last_write_checksum: sha1:fb8479754ae50012ca85e92e32e41073ae84e547
+    pristine_git_object: 145cfb5894ff33c33626bef9a82fba3d0772eec1
   docs/models/pinterest-post.md:
     id: cb69b2ba2c34
-    last_write_checksum: sha1:5ab5df4b7e3b05f86dba4cb68e0c3f2ef67ccaf5
-    pristine_git_object: 886fe39390f5dba3d4ec1c9b023282499d92ebd8
+    last_write_checksum: sha1:f3609927dd4d5e4daaa08e6cb741fdf447fa0aa5
+    pristine_git_object: 68f75c474f0e7e4d5bd9a7017dc86503a9ddf3f6
   docs/models/pinterest-social-account-platform-specific-inputs.md:
     id: 7f013d28e88f
     last_write_checksum: sha1:03442896e9381d2cc442efd8f09f6e818f666f81
@@ -282,8 +282,8 @@ trackedFiles:
     pristine_git_object: a56e67995330db44e58a18604c7b3cb739a08bfe
   docs/models/social-account-input.md:
     id: 91c7ad986647
-    last_write_checksum: sha1:e9c5711c68a15f5374110b2f3660b5df59351b96
-    pristine_git_object: dcbfe8c1b2a783bbb38db0fc23e90809c8129b79
+    last_write_checksum: sha1:c8996bcf67ad87c64131c81a016e3c24bbcdd3ec
+    pristine_git_object: 23434e04527278838b081e42fdcb5e01ece7e22a
   docs/models/social-account-platform-inputs.md:
     id: c11a26b22e14
     last_write_checksum: sha1:e8bff89b21828e62f933a493f272c32fa981a63d
@@ -294,8 +294,8 @@ trackedFiles:
     pristine_git_object: a95ee0606e6a9034240345078ae08aa6669bec6b
   docs/models/social-account-post.md:
     id: 2e240de47ac0
-    last_write_checksum: sha1:38a9e934fd2e9c917e5ac71c705574a52116544a
-    pristine_git_object: 3c69272fc527683496acae04790ba55d94080e44
+    last_write_checksum: sha1:51401126d39127de607f10f18e47af4a3d572e90
+    pristine_git_object: f2dcca222b5bb1dfa238a05f9683217f8baa13dc
   docs/models/social-account-status.md:
     id: b4b63458e353
     last_write_checksum: sha1:9b2b00723e90aa621f6603d9f5eb758d745696c2
@@ -394,12 +394,12 @@ trackedFiles:
     pristine_git_object: a9ed88a81a0b783f7f92ae9dffc548af686f0330
   docs/models/you-tube-input.md:
     id: 17116e1f80be
-    last_write_checksum: sha1:2dd1f7329b0d68bdf2d2de1b0ea80866c9fc2223
-    pristine_git_object: 1121126bbc65a048290b7e6738f466e58771bf65
+    last_write_checksum: sha1:6fe874752697581a7dad29e9859eba39e3cdc0c8
+    pristine_git_object: 272b86dc4442d101eef09d5529bb11528773e992
   docs/models/you-tube-post.md:
     id: 437f6e111b52
-    last_write_checksum: sha1:75c745882c324eb847fab0eceb81e468284eb046
-    pristine_git_object: 4f50b222e55f8318f751fa24f3d068fd59362067
+    last_write_checksum: sha1:a9ead73eae4ceeff4e9563c1af9a62d0a3c34101
+    pristine_git_object: 595f52655d354c0a224b673acc3f62081c70069f
   docs/models/you-tube-privacy.md:
     id: a5d23490b617
     last_write_checksum: sha1:b2bccc55da9868df5a2251dd9fefc7741a4e5d8e
@@ -446,12 +446,12 @@ trackedFiles:
     pristine_git_object: e2ed9533543f9707f4d0a58a940b87e7333380a0
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:f6d29d671f28396c1d53bdcb157b47c563d2c849
-    pristine_git_object: d6bada456954121e7d05e79b0d83611be4516577
+    last_write_checksum: sha1:de2e3b962829b6348dacabdfb9de416a8090a986
+    pristine_git_object: b7c39a6d33afce8a84e6b77b94949b31febaa322
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:a6ca87e11dc6da615b0df979e0ef84a5eb44d1e5
-    pristine_git_object: c97071083d4eec39630f8dece3e2d3508d8dd1bc
+    last_write_checksum: sha1:69a1208da1d822a87ee8c500c22c65f19a8f6ece
+    pristine_git_object: 394e8246b4ff3e3e2aa09a0f20b18fed90772a74
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -546,8 +546,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:3ac4ab09059c15a833908cd451a7834480c626b8
-    pristine_git_object: 7ccc50341bc7368ea9cb988586a8530966f3adec
+    last_write_checksum: sha1:bca053a47e9d87161e093ed89a7f27731467ba91
+    pristine_git_object: bab3129be7873ebd8e435296243a52816406c50a
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -790,12 +790,12 @@ trackedFiles:
     pristine_git_object: 121e9d01245a048bd7809326d55ad729b73ddfce
   src/models/pinterest-input.ts:
     id: 47a34363eafc
-    last_write_checksum: sha1:eb905fb11b5cd8bd49bb517c4301d114ebafdcdf
-    pristine_git_object: c9701372f1066668d4b3746acd136d5fdb1c18f1
+    last_write_checksum: sha1:c84c01faefd634c665e60590465a747e533f6b4b
+    pristine_git_object: 45d0c7cea2e828854c7f0ac85f2077b9069e111e
   src/models/pinterest-post.ts:
     id: fc9b22c0470f
-    last_write_checksum: sha1:2a165bdd87d3d3b0d1915c371bc6504457831a64
-    pristine_git_object: 8747bedca284920d73d0c13769372c9043a1673d
+    last_write_checksum: sha1:31cc7fce223458fe99d95afb83aeb8d41a2ff5cf
+    pristine_git_object: 05c7e399b78a846757ad9276a196398395798370
   src/models/pinterest-social-account-platform-specific-inputs.ts:
     id: 2d5aadfeffd9
     last_write_checksum: sha1:509c2897cf115724cd6f185c4c0a2bf169ef567a
@@ -954,12 +954,12 @@ trackedFiles:
     pristine_git_object: d9e2a20e8a0140c4fa07daccb78012517fbafff9
   src/models/you-tube-input.ts:
     id: 9163ebe6ce3e
-    last_write_checksum: sha1:3c4d910c3459885878bf0cfe1c4bd8092f5ce66c
-    pristine_git_object: 832fac62a74a9b0d1fbc42fa5a2fbfa364b05490
+    last_write_checksum: sha1:d7448ae9e4b09f10f29c44f5132dffc293baff03
+    pristine_git_object: a72460517dcb52dd70a72072cf42a707d6c770a4
   src/models/you-tube-post.ts:
     id: df012d541537
-    last_write_checksum: sha1:c7b21c2c3f2a30c0ab26d58de497d0713a6aee07
-    pristine_git_object: 10d781966f3766e7f4d9f062fad81472902e9605
+    last_write_checksum: sha1:2e7359e7ce2e4f64da554e22bbdb586338f1c655
+    pristine_git_object: 7cde25d2b8e9a7df7e99dc5b17ec724708a7da65
   src/models/you-tube-privacy.ts:
     id: b1ab1ff47a5e
     last_write_checksum: sha1:0b5d13aa697fd27ed76caae5582479b97f02f71f

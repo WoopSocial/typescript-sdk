@@ -75,7 +75,8 @@ export type YouTubePost = {
   externalPostId?: string | undefined;
   externalPostUrl?: string | undefined;
   errorMessage?: string | undefined;
-  privacy?: YouTubePrivacy | undefined;
+  title: string;
+  privacy: YouTubePrivacy;
   category?: string | undefined;
   tags?: Array<string> | undefined;
   madeForKids?: boolean | undefined;
@@ -98,7 +99,8 @@ export const YouTubePost$inboundSchema: z.ZodMiniType<YouTubePost, unknown> = z
     externalPostId: types.optional(types.string()),
     externalPostUrl: types.optional(types.string()),
     errorMessage: types.optional(types.string()),
-    privacy: types.optional(YouTubePrivacy$inboundSchema),
+    title: types.string(),
+    privacy: YouTubePrivacy$inboundSchema,
     category: types.optional(types.string()),
     tags: types.optional(z.array(types.string())),
     madeForKids: types.optional(types.boolean()),

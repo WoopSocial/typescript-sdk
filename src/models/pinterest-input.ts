@@ -25,6 +25,7 @@ export type PinterestInput = {
    */
   contentOverride?: Array<PostContentItemInput> | undefined;
   pinterestBoardId: string;
+  title?: string | undefined;
 };
 
 /** @internal */
@@ -33,6 +34,7 @@ export type PinterestInput$Outbound = {
   socialAccountId: string;
   contentOverride?: Array<PostContentItemInput$Outbound> | undefined;
   pinterestBoardId: string;
+  title?: string | undefined;
 };
 
 /** @internal */
@@ -44,6 +46,7 @@ export const PinterestInput$outboundSchema: z.ZodMiniType<
   socialAccountId: z.string(),
   contentOverride: z.optional(z.array(PostContentItemInput$outboundSchema)),
   pinterestBoardId: z.string(),
+  title: z.optional(z.string()),
 });
 
 export function pinterestInputToJSON(pinterestInput: PinterestInput): string {

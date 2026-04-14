@@ -72,6 +72,7 @@ export type PinterestPost = {
   externalPostUrl?: string | undefined;
   errorMessage?: string | undefined;
   pinterestBoardId: string;
+  title?: string | undefined;
 };
 
 /** @internal */
@@ -94,6 +95,7 @@ export const PinterestPost$inboundSchema: z.ZodMiniType<
   externalPostUrl: types.optional(types.string()),
   errorMessage: types.optional(types.string()),
   pinterestBoardId: types.string(),
+  title: types.optional(types.string()),
 });
 
 export function pinterestPostFromJSON(

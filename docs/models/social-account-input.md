@@ -57,6 +57,8 @@ const value: models.TikTokInput = {
 const value: models.YouTubeInput = {
   platform: "YOUTUBE",
   socialAccountId: "<id>",
+  title: "<value>",
+  privacy: "private",
 };
 ```
 

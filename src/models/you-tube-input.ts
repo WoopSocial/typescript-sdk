@@ -28,7 +28,8 @@ export type YouTubeInput = {
    * is supported.
    */
   contentOverride?: Array<PostContentItemInput> | undefined;
-  privacy?: YouTubePrivacy | undefined;
+  title: string;
+  privacy: YouTubePrivacy;
   category?: string | undefined;
   tags?: Array<string> | undefined;
   madeForKids?: boolean | undefined;
@@ -39,7 +40,8 @@ export type YouTubeInput$Outbound = {
   platform: "YOUTUBE";
   socialAccountId: string;
   contentOverride?: Array<PostContentItemInput$Outbound> | undefined;
-  privacy?: string | undefined;
+  title: string;
+  privacy: string;
   category?: string | undefined;
   tags?: Array<string> | undefined;
   madeForKids?: boolean | undefined;
@@ -53,7 +55,8 @@ export const YouTubeInput$outboundSchema: z.ZodMiniType<
   platform: z.literal("YOUTUBE"),
   socialAccountId: z.string(),
   contentOverride: z.optional(z.array(PostContentItemInput$outboundSchema)),
-  privacy: z.optional(YouTubePrivacy$outboundSchema),
+  title: z.string(),
+  privacy: YouTubePrivacy$outboundSchema,
   category: z.optional(z.string()),
   tags: z.optional(z.array(z.string())),
   madeForKids: z.optional(z.boolean()),

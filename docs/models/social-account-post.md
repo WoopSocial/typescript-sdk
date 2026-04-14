@@ -113,6 +113,8 @@ const value: models.YouTubePost = {
   },
   createdAt: new Date("2026-03-20T06:03:22.522Z"),
   updatedAt: new Date("2026-07-02T00:09:05.823Z"),
+  title: "<value>",
+  privacy: "public",
 };
 ```
 
