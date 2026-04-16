@@ -14,7 +14,7 @@ targets:
         sourceRevisionDigest: sha256:f1b0b154ec2ea433a8875ddcca0855d2e8efed41242fbdc2eab484d730618b5a
         sourceBlobDigest: sha256:bc2c8e47f0128af1166293cb6b6b1dc9ea75e0c73115df09cda5be4e925bf6ec
         codeSamplesNamespace: woop-social-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:f51696639cc5c44900bb49c01f907ab66fcaf726b9f34ded4ac2b4bba0300510
+        codeSamplesRevisionDigest: sha256:36a8f0eabf9094248c061a99070014ddfadd492736d134b1f48dee95c1b54636
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

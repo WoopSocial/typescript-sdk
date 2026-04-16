@@ -5,13 +5,13 @@ management:
   docVersion: 1.0.0
   speakeasyVersion: 1.761.6
   generationVersion: 2.879.13
-  releaseVersion: 0.2.7
-  configChecksum: c2687c85f105dd8945e5144d1ebd9777
+  releaseVersion: 0.2.8
+  configChecksum: 0db8118b0d04c383267c23b2ee0f41ed
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: fa12e204-cc5a-4a3d-877c-4bc733cdd629
-  pristine_commit_hash: 18b59ab3e3ae5c32c712087f110f6fb2d53f2071
-  pristine_tree_hash: b859d2ab671487b0ad6d133ae90810d523c80731
+  generation_id: 3841d33e-9916-4119-9c32-0a7cc9e62da0
+  pristine_commit_hash: 3c7926e6aa845e259de0c4cd1ac977e3f23c0a0d
+  pristine_tree_hash: dea5ddb4efcce6118c371acae7d1bfefe408794b
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -454,12 +454,12 @@ trackedFiles:
     pristine_git_object: e2ed9533543f9707f4d0a58a940b87e7333380a0
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:44ce8ee4b478b779347ab1561abfe335df4e4b43
-    pristine_git_object: 925e6656c670cdf4efa14b51f08a44f503d326c5
+    last_write_checksum: sha1:cc36246b4462eb13e2c6d442025edcf0243023e9
+    pristine_git_object: 426af99b96c20e16ab39ef06edd4fd940d2a6cb1
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:103b41b344852929f09d2ea927b5a1fd2f7f8efc
-    pristine_git_object: 8d1e172bb4b4e16243fb6fa5b748380cfb74c45f
+    last_write_checksum: sha1:f903f7160d8baf19d7ef2c2817cf8b9b7dee0df9
+    pristine_git_object: 54a019e7b156e8df25ae8dc2287686c49476cc3f
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -554,8 +554,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:0646646700203092e5c17581a7685d18ad8e6676
-    pristine_git_object: b3399773868a610db05617bc62eab32ca6f4199c
+    last_write_checksum: sha1:47241977f78519625d617aad9ed01e445ee1608e
+    pristine_git_object: d284d3e224a365f98493ff78f6e2f06e89ad8da9
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
