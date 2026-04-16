@@ -24,6 +24,14 @@ export type WoopTestInput = {
    * is supported.
    */
   contentOverride?: Array<PostContentItemInput> | undefined;
+  /**
+   * Whether the simulated delivery should succeed or fail.
+   *
+   * @remarks
+   *
+   * Defaults to `true`. Set to `false` to simulate a delivery failure.
+   */
+  shouldSucceed?: boolean | undefined;
 };
 
 /** @internal */
@@ -31,6 +39,7 @@ export type WoopTestInput$Outbound = {
   platform: "WOOPTEST";
   socialAccountId: string;
   contentOverride?: Array<PostContentItemInput$Outbound> | undefined;
+  shouldSucceed: boolean;
 };
 
 /** @internal */
@@ -41,6 +50,7 @@ export const WoopTestInput$outboundSchema: z.ZodMiniType<
   platform: z.literal("WOOPTEST"),
   socialAccountId: z.string(),
   contentOverride: z.optional(z.array(PostContentItemInput$outboundSchema)),
+  shouldSucceed: z._default(z.boolean(), true),
 });
 
 export function woopTestInputToJSON(woopTestInput: WoopTestInput): string {

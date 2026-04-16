@@ -2,8 +2,8 @@ speakeasyVersion: 1.761.6
 sources:
     WoopSocial API:
         sourceNamespace: woop-social-api
-        sourceRevisionDigest: sha256:f1b0b154ec2ea433a8875ddcca0855d2e8efed41242fbdc2eab484d730618b5a
-        sourceBlobDigest: sha256:bc2c8e47f0128af1166293cb6b6b1dc9ea75e0c73115df09cda5be4e925bf6ec
+        sourceRevisionDigest: sha256:5eea91bc73c9f062616fbabee69b6b1a2c2baaf2e50b1337a84f76f1220f7d4c
+        sourceBlobDigest: sha256:37e73f0df0dabcd5de64c78374c4cee9e201c48744f402d53a6595ce1fb5c1da
         tags:
             - latest
             - 1.0.0
@@ -11,10 +11,10 @@ targets:
     woop-social:
         source: WoopSocial API
         sourceNamespace: woop-social-api
-        sourceRevisionDigest: sha256:f1b0b154ec2ea433a8875ddcca0855d2e8efed41242fbdc2eab484d730618b5a
-        sourceBlobDigest: sha256:bc2c8e47f0128af1166293cb6b6b1dc9ea75e0c73115df09cda5be4e925bf6ec
+        sourceRevisionDigest: sha256:5eea91bc73c9f062616fbabee69b6b1a2c2baaf2e50b1337a84f76f1220f7d4c
+        sourceBlobDigest: sha256:37e73f0df0dabcd5de64c78374c4cee9e201c48744f402d53a6595ce1fb5c1da
         codeSamplesNamespace: woop-social-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:36a8f0eabf9094248c061a99070014ddfadd492736d134b1f48dee95c1b54636
+        codeSamplesRevisionDigest: sha256:a75bf94e61fce0a515d6197080bc0a58bfd5ddb6ebf22497778bd2971201fe4d
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

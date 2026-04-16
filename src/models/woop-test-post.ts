@@ -71,6 +71,14 @@ export type WoopTestPost = {
   externalPostId?: string | undefined;
   externalPostUrl?: string | undefined;
   errorMessage?: string | undefined;
+  /**
+   * Whether the simulated delivery should succeed or fail.
+   *
+   * @remarks
+   *
+   * Defaults to `true`. Set to `false` to simulate a delivery failure.
+   */
+  shouldSucceed: boolean;
 };
 
 /** @internal */
@@ -90,6 +98,7 @@ export const WoopTestPost$inboundSchema: z.ZodMiniType<WoopTestPost, unknown> =
     externalPostId: types.optional(types.string()),
     externalPostUrl: types.optional(types.string()),
     errorMessage: types.optional(types.string()),
+    shouldSucceed: z._default(types.boolean(), true),
   });
 
 export function woopTestPostFromJSON(

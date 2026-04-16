@@ -1,17 +1,17 @@
 lockVersion: 2.0.0
 id: 90d0e465-4638-4110-9f8d-cad0dfd43e38
 management:
-  docChecksum: 424d2bb35f8ef2eb7f599a2c484ae111
+  docChecksum: 411c03618854e971ed908d569117a5ae
   docVersion: 1.0.0
   speakeasyVersion: 1.761.6
   generationVersion: 2.879.13
-  releaseVersion: 0.2.8
-  configChecksum: 0db8118b0d04c383267c23b2ee0f41ed
+  releaseVersion: 0.2.9
+  configChecksum: 1e20bd803cace4fc1d053a60ab7b60a5
   installationURL: '@woopsocial/typescript-sdk'
 persistentEdits:
-  generation_id: 3841d33e-9916-4119-9c32-0a7cc9e62da0
-  pristine_commit_hash: 3c7926e6aa845e259de0c4cd1ac977e3f23c0a0d
-  pristine_tree_hash: dea5ddb4efcce6118c371acae7d1bfefe408794b
+  generation_id: e11c38f1-ad44-49f6-a6f9-39e967285817
+  pristine_commit_hash: 7d38fada0b3837d882fd63d0404d81b2bd6fbe2b
+  pristine_tree_hash: 9405ad87b4ff842093787939676339baad4fa901
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -386,12 +386,12 @@ trackedFiles:
     pristine_git_object: ba7cc4dabcae4d18005354eb3d0b56d1d395fcb4
   docs/models/woop-test-input.md:
     id: c74c2001fbd3
-    last_write_checksum: sha1:30d2ab8b758c77af401be804430e4b715ac664c1
-    pristine_git_object: 88e511d033c0009b5c5dfae1fb951f9a71d2ec6b
+    last_write_checksum: sha1:305ac1da3b6dde1d796c7d7ecb4224745fbd1940
+    pristine_git_object: 7fb9a322ab8aa8e1d018e9da8ca5fe144f17915a
   docs/models/woop-test-post.md:
     id: 044fde27becb
-    last_write_checksum: sha1:c470f54e6c18a2520e6aef9182297efe0b435c63
-    pristine_git_object: 1c2da04a226609eb2830417e1c55d399dd4170a0
+    last_write_checksum: sha1:a95f59a60688e8081baa759b9bb110b527c592f3
+    pristine_git_object: c01e0390d77cd9aa45748d47436fe9bfa6f40edf
   docs/models/x-input.md:
     id: 42ac75253862
     last_write_checksum: sha1:f658d8e766b82c1050220d84fbf9603566492e0e
@@ -454,12 +454,12 @@ trackedFiles:
     pristine_git_object: e2ed9533543f9707f4d0a58a940b87e7333380a0
   jsr.json:
     id: 7f6ab7767282
-    last_write_checksum: sha1:cc36246b4462eb13e2c6d442025edcf0243023e9
-    pristine_git_object: 426af99b96c20e16ab39ef06edd4fd940d2a6cb1
+    last_write_checksum: sha1:58165a73b80cdfdf8c93c7876e56c738c6648e82
+    pristine_git_object: 8cab82499bfd9ab57817561dd0f81b2b46f7a7d6
   package.json:
     id: 7030d0b2f71b
-    last_write_checksum: sha1:f903f7160d8baf19d7ef2c2817cf8b9b7dee0df9
-    pristine_git_object: 54a019e7b156e8df25ae8dc2287686c49476cc3f
+    last_write_checksum: sha1:ba2d5208480604da627b112df5165a907ad425d9
+    pristine_git_object: cf83c4d7c71cbbc79422c2c4c2206f80e6414741
   src/core.ts:
     id: f431fdbcd144
     last_write_checksum: sha1:ec603df213ae42ac5da173971107a547ad82cf5a
@@ -554,8 +554,8 @@ trackedFiles:
     pristine_git_object: 44be0eae8246521b230e8e711a88eff738fc015d
   src/lib/config.ts:
     id: 320761608fb3
-    last_write_checksum: sha1:47241977f78519625d617aad9ed01e445ee1608e
-    pristine_git_object: d284d3e224a365f98493ff78f6e2f06e89ad8da9
+    last_write_checksum: sha1:8d3602c1c8bf7da63282d495439d388d63a00a9a
+    pristine_git_object: dddc2916bb8a9f8033ba6c37d9d0998c63ed20ea
   src/lib/dlv.ts:
     id: b1988214835a
     last_write_checksum: sha1:1dd3e3fbb4550c4bf31f5ef997faff355d6f3250
@@ -954,12 +954,12 @@ trackedFiles:
     pristine_git_object: b76deb4b6f26875b99509ce28df17145309a6996
   src/models/woop-test-input.ts:
     id: 5a4e6b770ac5
-    last_write_checksum: sha1:4402114f8c904f3d296f23cd2020dedd792fe458
-    pristine_git_object: 607579d61e0c8e8d112d7f4395abfe8a98c13d56
+    last_write_checksum: sha1:64b48c140c2528baaa6609df6948e4888041aa16
+    pristine_git_object: a98e7505505129e8adbabd993f18095e3c8defa2
   src/models/woop-test-post.ts:
     id: dc38a9535c21
-    last_write_checksum: sha1:bd130cb58cb14ccb134cf100c30923df2ef10702
-    pristine_git_object: 647e2b2878e34eb6a81e68cd5baa19f449b65141
+    last_write_checksum: sha1:03dc06c60f3b0321f7120fc37582f91cc173753d
+    pristine_git_object: 5bfbc7ab0222c6d8aa19be9a590608355d669ea3
   src/models/x-input.ts:
     id: 3fcead4bfc7e
     last_write_checksum: sha1:52747bd51e8ca8e43711663b2cc44e32498edeb8

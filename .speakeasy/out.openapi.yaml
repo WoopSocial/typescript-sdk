@@ -1652,16 +1652,28 @@ components:
             - type: string
               enum:
                 - WOOPTEST
+    WoopTestFields:
+      type: object
+      properties:
+        shouldSucceed:
+          type: boolean
+          default: true
+          description: |
+            Whether the simulated delivery should succeed or fail.
+
+            Defaults to `true`. Set to `false` to simulate a delivery failure.
     WoopTestInput:
       title: WoopTest
       allOf:
         - $ref: "#/components/schemas/WoopTestPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"
+        - $ref: "#/components/schemas/WoopTestFields"
     WoopTestPost:
       title: WoopTest
       allOf:
         - $ref: "#/components/schemas/WoopTestPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
+        - $ref: "#/components/schemas/WoopTestFields"
     ValidationError:
       type: object
       additionalProperties: false
