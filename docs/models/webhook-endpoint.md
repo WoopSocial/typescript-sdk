@@ -9,7 +9,7 @@ let value: WebhookEndpoint = {
   id: "<id>",
   url: "https://stiff-retention.info",
   eventTypes: [
-    "socialAccountPost.delivery.succeeded",
+    "socialAccountPost.delivery.published",
   ],
   createdAt: new Date("2025-08-10T10:58:08.426Z"),
 };

@@ -12,7 +12,7 @@ const value: models.PinterestPost = {
   postId: "<id>",
   projectId: "<id>",
   socialAccountId: "<id>",
-  deliveryStatus: "SENT",
+  deliveryStatus: "PUBLISHED",
   content: [
     {},
   ],
@@ -34,7 +34,7 @@ const value: models.InstagramPost = {
   postId: "<id>",
   projectId: "<id>",
   socialAccountId: "<id>",
-  deliveryStatus: "SENT",
+  deliveryStatus: "PUBLISHED",
   content: [
     {},
   ],
@@ -149,7 +149,7 @@ const value: models.LinkedInPost = {
   postId: "<id>",
   projectId: "<id>",
   socialAccountId: "<id>",
-  deliveryStatus: "SENT",
+  deliveryStatus: "PUBLISHED",
   content: [],
   schedule: {
     type: "DRAFT",

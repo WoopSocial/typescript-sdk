@@ -7,7 +7,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 export const WebhookEventType = {
-  SocialAccountPostDeliverySucceeded: "socialAccountPost.delivery.succeeded",
+  SocialAccountPostDeliveryPublished: "socialAccountPost.delivery.published",
   SocialAccountPostDeliveryFailed: "socialAccountPost.delivery.failed",
 } as const;
 export type WebhookEventType = OpenEnum<typeof WebhookEventType>;

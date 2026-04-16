@@ -583,7 +583,7 @@ components:
     WebhookEventType:
       type: string
       enum:
-        - socialAccountPost.delivery.succeeded
+        - socialAccountPost.delivery.published
         - socialAccountPost.delivery.failed
     CreateWebhookEndpointRequest:
       type: object
@@ -840,12 +840,12 @@ components:
 
         `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
         `SENDING`: Delivery is currently in progress.
-        `SENT`: Delivery completed successfully.
+        `PUBLISHED`: Delivery completed successfully.
         `FAILED`: Delivery completed unsuccessfully.
       enum:
         - NOT_STARTED
         - SENDING
-        - SENT
+        - PUBLISHED
         - FAILED
     PostContentMediaInput:
       description: |
@@ -1333,7 +1333,7 @@ components:
         deliveryCompletedAt:
           type: string
           format: date-time
-          description: UTC time when the latest delivery attempt for this social account post completed both for successful (`SENT`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
+          description: UTC time when the latest delivery attempt for this social account post completed both for successful (`PUBLISHED`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
         externalPostId:
           type: string
         externalPostUrl:

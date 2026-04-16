@@ -13,13 +13,13 @@ import { OpenEnum } from "../types/enums.js";
  *
  * `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
  * `SENDING`: Delivery is currently in progress.
- * `SENT`: Delivery completed successfully.
+ * `PUBLISHED`: Delivery completed successfully.
  * `FAILED`: Delivery completed unsuccessfully.
  */
 export const DeliveryStatus = {
   NotStarted: "NOT_STARTED",
   Sending: "SENDING",
-  Sent: "SENT",
+  Published: "PUBLISHED",
   Failed: "FAILED",
 } as const;
 /**
@@ -29,7 +29,7 @@ export const DeliveryStatus = {
  *
  * `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
  * `SENDING`: Delivery is currently in progress.
- * `SENT`: Delivery completed successfully.
+ * `PUBLISHED`: Delivery completed successfully.
  * `FAILED`: Delivery completed unsuccessfully.
  */
 export type DeliveryStatus = OpenEnum<typeof DeliveryStatus>;

@@ -50,7 +50,7 @@ export type TikTokPost = {
    *
    * `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
    * `SENDING`: Delivery is currently in progress.
-   * `SENT`: Delivery completed successfully.
+   * `PUBLISHED`: Delivery completed successfully.
    * `FAILED`: Delivery completed unsuccessfully.
    */
   deliveryStatus: DeliveryStatus;
@@ -73,7 +73,7 @@ export type TikTokPost = {
    */
   updatedAt: Date;
   /**
-   * UTC time when the latest delivery attempt for this social account post completed both for successful (`SENT`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
+   * UTC time when the latest delivery attempt for this social account post completed both for successful (`PUBLISHED`) and unsuccessful (`FAILED`) terminal `deliveryStatus` values.
    */
   deliveryCompletedAt?: Date | undefined;
   externalPostId?: string | undefined;

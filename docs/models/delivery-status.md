@@ -4,7 +4,7 @@ Delivery lifecycle status for a post.
 
 `NOT_STARTED`: The post exists and is scheduled, but delivery has not started yet.
 `SENDING`: Delivery is currently in progress.
-`SENT`: Delivery completed successfully.
+`PUBLISHED`: Delivery completed successfully.
 `FAILED`: Delivery completed unsuccessfully.
 
 
@@ -21,5 +21,5 @@ let value: DeliveryStatus = "NOT_STARTED";
 ## Values
 
 ```typescript
-"NOT_STARTED" | "SENDING" | "SENT" | "FAILED" | Unrecognized<string>
+"NOT_STARTED" | "SENDING" | "PUBLISHED" | "FAILED" | Unrecognized<string>
 ```

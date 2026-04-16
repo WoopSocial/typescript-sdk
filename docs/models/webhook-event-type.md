@@ -5,7 +5,7 @@
 ```typescript
 import { WebhookEventType } from "@woopsocial/typescript-sdk/models";
 
-let value: WebhookEventType = "socialAccountPost.delivery.succeeded";
+let value: WebhookEventType = "socialAccountPost.delivery.published";
 
 // Open enum: unrecognized values are captured as Unrecognized<string>
 ```
@@ -13,5 +13,5 @@ let value: WebhookEventType = "socialAccountPost.delivery.succeeded";
 ## Values
 
 ```typescript
-"socialAccountPost.delivery.succeeded" | "socialAccountPost.delivery.failed" | Unrecognized<string>
+"socialAccountPost.delivery.published" | "socialAccountPost.delivery.failed" | Unrecognized<string>
 ```

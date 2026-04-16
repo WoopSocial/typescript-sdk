@@ -36,7 +36,7 @@ async function run() {
   const result = await woopSocial.webhooks.createWebhookEndpoint({
     url: "https://cautious-litter.net/",
     eventTypes: [
-      "socialAccountPost.delivery.succeeded",
+      "socialAccountPost.delivery.published",
     ],
   });
 
@@ -64,7 +64,7 @@ async function run() {
   const res = await webhooksCreateWebhookEndpoint(woopSocial, {
     url: "https://cautious-litter.net/",
     eventTypes: [
-      "socialAccountPost.delivery.succeeded",
+      "socialAccountPost.delivery.published",
     ],
   });
   if (res.ok) {
