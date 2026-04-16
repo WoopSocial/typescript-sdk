@@ -7,7 +7,9 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * Social platform supported by WoopSocial.
+ * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+ *
+ * @remarks
  */
 export const SocialPlatform = {
   Pinterest: "PINTEREST",
@@ -18,9 +20,12 @@ export const SocialPlatform = {
   Tiktok: "TIKTOK",
   X: "X",
   Youtube: "YOUTUBE",
+  Wooptest: "WOOPTEST",
 } as const;
 /**
- * Social platform supported by WoopSocial.
+ * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+ *
+ * @remarks
  */
 export type SocialPlatform = OpenEnum<typeof SocialPlatform>;
 

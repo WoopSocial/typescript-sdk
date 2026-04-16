@@ -67,6 +67,8 @@ export * from "./validation-field.js";
 export * from "./validation-warning.js";
 export * from "./webhook-endpoint.js";
 export * from "./webhook-event-type.js";
+export * from "./woop-test-input.js";
+export * from "./woop-test-post.js";
 export * from "./x-input.js";
 export * from "./x-post.js";
 export * from "./you-tube-input.js";

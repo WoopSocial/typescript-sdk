@@ -89,3 +89,12 @@ const value: models.LinkedInPagesInput = {
 };
 ```
 
+### `models.WoopTestInput`
+
+```typescript
+const value: models.WoopTestInput = {
+  platform: "WOOPTEST",
+  socialAccountId: "<id>",
+};
+```
+

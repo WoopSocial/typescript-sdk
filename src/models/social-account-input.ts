@@ -33,6 +33,11 @@ import {
   TikTokInput$Outbound,
   TikTokInput$outboundSchema,
 } from "./tik-tok-input.js";
+import {
+  WoopTestInput,
+  WoopTestInput$Outbound,
+  WoopTestInput$outboundSchema,
+} from "./woop-test-input.js";
 import { XInput, XInput$Outbound, XInput$outboundSchema } from "./x-input.js";
 import {
   YouTubeInput,
@@ -48,7 +53,8 @@ export type SocialAccountInput =
   | YouTubeInput
   | XInput
   | LinkedInInput
-  | LinkedInPagesInput;
+  | LinkedInPagesInput
+  | WoopTestInput;
 
 /** @internal */
 export type SocialAccountInput$Outbound =
@@ -59,7 +65,8 @@ export type SocialAccountInput$Outbound =
   | YouTubeInput$Outbound
   | XInput$Outbound
   | LinkedInInput$Outbound
-  | LinkedInPagesInput$Outbound;
+  | LinkedInPagesInput$Outbound
+  | WoopTestInput$Outbound;
 
 /** @internal */
 export const SocialAccountInput$outboundSchema: z.ZodMiniType<
@@ -74,6 +81,7 @@ export const SocialAccountInput$outboundSchema: z.ZodMiniType<
   XInput$outboundSchema,
   LinkedInInput$outboundSchema,
   LinkedInPagesInput$outboundSchema,
+  WoopTestInput$outboundSchema,
 ]);
 
 export function socialAccountInputToJSON(

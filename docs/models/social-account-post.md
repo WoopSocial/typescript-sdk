@@ -180,3 +180,22 @@ const value: models.LinkedInPagesPost = {
 };
 ```
 
+### `models.WoopTestPost`
+
+```typescript
+const value: models.WoopTestPost = {
+  platform: "WOOPTEST",
+  socialAccountPostId: "<id>",
+  postId: "<id>",
+  projectId: "<id>",
+  socialAccountId: "<id>",
+  deliveryStatus: "SENDING",
+  content: [],
+  schedule: {
+    type: "PUBLISH_NOW",
+  },
+  createdAt: new Date("2024-06-04T14:13:37.858Z"),
+  updatedAt: new Date("2026-12-08T23:36:33.367Z"),
+};
+```
+

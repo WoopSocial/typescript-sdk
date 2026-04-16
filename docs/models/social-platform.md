@@ -1,6 +1,7 @@
 # SocialPlatform
 
-Social platform supported by WoopSocial.
+`WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+
 
 ## Example Usage
 
@@ -15,5 +16,5 @@ let value: SocialPlatform = "PINTEREST";
 ## Values
 
 ```typescript
-"PINTEREST" | "LINKEDIN" | "LINKEDIN_PAGES" | "INSTAGRAM" | "FACEBOOK" | "TIKTOK" | "X" | "YOUTUBE" | Unrecognized<string>
+"PINTEREST" | "LINKEDIN" | "LINKEDIN_PAGES" | "INSTAGRAM" | "FACEBOOK" | "TIKTOK" | "X" | "YOUTUBE" | "WOOPTEST" | Unrecognized<string>
 ```

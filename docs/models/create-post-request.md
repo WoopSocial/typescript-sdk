@@ -12,17 +12,10 @@ let value: CreatePostRequest = {
   },
   socialAccounts: [
     {
-      platform: "TIKTOK",
+      platform: "YOUTUBE",
       socialAccountId: "<id>",
-      postType: "VIDEO",
-      privacyLevel: "SELF_ONLY",
-      allowComment: false,
-      allowDuet: false,
-      allowStitch: true,
-      contentDisclosureEnabled: true,
-      isYourBrand: true,
-      isBrandedContent: true,
-      autoAddMusic: false,
+      title: "<value>",
+      privacy: "private",
     },
   ],
 };

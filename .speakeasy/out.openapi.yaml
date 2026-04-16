@@ -640,7 +640,7 @@ components:
           format: date-time
         postId:
           type: string
-        accountPostId:
+        socialAccountPostId:
           type: string
         socialAccountId:
           type: string
@@ -684,7 +684,9 @@ components:
         - TIKTOK
         - X
         - YOUTUBE
-      description: Social platform supported by WoopSocial.
+        - WOOPTEST
+      description: |
+        `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
     CreateOAuthAuthorizationRequest:
       type: object
       additionalProperties: false
@@ -1263,6 +1265,7 @@ components:
         - $ref: "#/components/schemas/XInput"
         - $ref: "#/components/schemas/LinkedInInput"
         - $ref: "#/components/schemas/LinkedInPagesInput"
+        - $ref: "#/components/schemas/WoopTestInput"
       discriminator:
         propertyName: platform
         mapping:
@@ -1274,6 +1277,7 @@ components:
           X: "#/components/schemas/XInput"
           LINKEDIN: "#/components/schemas/LinkedInInput"
           LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesInput"
+          WOOPTEST: "#/components/schemas/WoopTestInput"
     SocialAccountInputBase:
       type: object
       required:
@@ -1579,6 +1583,7 @@ components:
         - $ref: "#/components/schemas/XPost"
         - $ref: "#/components/schemas/LinkedInPost"
         - $ref: "#/components/schemas/LinkedInPagesPost"
+        - $ref: "#/components/schemas/WoopTestPost"
       discriminator:
         propertyName: platform
         mapping:
@@ -1590,6 +1595,7 @@ components:
           X: "#/components/schemas/XPost"
           LINKEDIN: "#/components/schemas/LinkedInPost"
           LINKEDIN_PAGES: "#/components/schemas/LinkedInPagesPost"
+          WOOPTEST: "#/components/schemas/WoopTestPost"
     PinterestPost:
       title: Pinterest
       allOf:
@@ -1634,6 +1640,27 @@ components:
       title: LinkedIn Pages
       allOf:
         - $ref: "#/components/schemas/LinkedInPagesPlatform"
+        - $ref: "#/components/schemas/SocialAccountPostBase"
+    WoopTestPlatform:
+      type: object
+      required:
+        - platform
+      properties:
+        platform:
+          allOf:
+            - $ref: "#/components/schemas/SocialPlatform"
+            - type: string
+              enum:
+                - WOOPTEST
+    WoopTestInput:
+      title: WoopTest
+      allOf:
+        - $ref: "#/components/schemas/WoopTestPlatform"
+        - $ref: "#/components/schemas/SocialAccountInputBase"
+    WoopTestPost:
+      title: WoopTest
+      allOf:
+        - $ref: "#/components/schemas/WoopTestPlatform"
         - $ref: "#/components/schemas/SocialAccountPostBase"
     ValidationError:
       type: object

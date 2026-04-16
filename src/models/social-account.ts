@@ -22,7 +22,9 @@ export type SocialAccount = {
    */
   id: string;
   /**
-   * Social platform supported by WoopSocial.
+   * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+   *
+   * @remarks
    */
   platform: SocialPlatform;
   /**

@@ -23,6 +23,7 @@ import {
   PinterestPost$inboundSchema,
 } from "./pinterest-post.js";
 import { TikTokPost, TikTokPost$inboundSchema } from "./tik-tok-post.js";
+import { WoopTestPost, WoopTestPost$inboundSchema } from "./woop-test-post.js";
 import { XPost, XPost$inboundSchema } from "./x-post.js";
 import { YouTubePost, YouTubePost$inboundSchema } from "./you-tube-post.js";
 
@@ -35,6 +36,7 @@ export type SocialAccountPost =
   | XPost
   | LinkedInPost
   | LinkedInPagesPost
+  | WoopTestPost
   | discriminatedUnionTypes.Unknown<"platform">;
 
 /** @internal */
@@ -50,6 +52,7 @@ export const SocialAccountPost$inboundSchema: z.ZodMiniType<
   X: XPost$inboundSchema,
   LINKEDIN: LinkedInPost$inboundSchema,
   LINKEDIN_PAGES: LinkedInPagesPost$inboundSchema,
+  WOOPTEST: WoopTestPost$inboundSchema,
 });
 
 export function socialAccountPostFromJSON(
