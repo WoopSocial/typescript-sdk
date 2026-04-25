@@ -7,7 +7,7 @@ import * as z from "zod/v4-mini";
 export type MediaLibraryPostContentMediaInput = {
   type: "MEDIA_LIBRARY";
   /**
-   * Media identifier from the media library.
+   * Media identifier create by calling [`POST /media/upload-sessions`](/api-reference/media/start-media-upload-session) or [`POST /media`](/api-reference/media/upload-media).
    */
   mediaId: string;
 };

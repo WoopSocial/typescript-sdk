@@ -5,6 +5,7 @@
 import * as z from "zod/v4-mini";
 import { WoopSocialCore } from "../core.js";
 import { encodeJSON } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -30,12 +31,11 @@ import { Result } from "../types/fp.js";
  * Create post
  *
  * @remarks
- * Creates one post resource with one or more social-account targets.
+ * Creates a post with one or more social-account targets.
  *
  * All referenced social accounts must belong to the same project.
  *
- * The request is validated atomically. If any social-account target fails
- * validation, the post is not created.
+ * The request is validated atomically. If any social-account fails validation, the post is not created.
  */
 export function postsCreatePost(
   client: WoopSocialCore,
@@ -137,7 +137,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["422", "4XX", "500", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

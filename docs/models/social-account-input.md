@@ -44,9 +44,8 @@ const value: models.TikTokInput = {
   allowComment: true,
   allowDuet: true,
   allowStitch: true,
-  contentDisclosureEnabled: false,
   isYourBrand: false,
-  isBrandedContent: true,
+  isBrandedContent: false,
   autoAddMusic: true,
 };
 ```

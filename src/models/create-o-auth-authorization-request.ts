@@ -14,7 +14,7 @@ export type CreateOAuthAuthorizationRequest = {
    */
   projectId: string;
   /**
-   * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+   * Identifies which social media platform this data structure targets.
    *
    * @remarks
    */

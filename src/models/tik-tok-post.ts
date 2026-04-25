@@ -108,10 +108,6 @@ export type TikTokPost = {
    */
   allowStitch: boolean;
   /**
-   * Whether TikTok content disclosure should be enabled for this post.
-   */
-  contentDisclosureEnabled: boolean;
-  /**
    * Whether the post should be disclosed as "Your brand" content on TikTok.
    */
   isYourBrand: boolean;
@@ -154,7 +150,6 @@ export const TikTokPost$inboundSchema: z.ZodMiniType<TikTokPost, unknown> = z
     allowComment: types.boolean(),
     allowDuet: types.boolean(),
     allowStitch: types.boolean(),
-    contentDisclosureEnabled: types.boolean(),
     isYourBrand: types.boolean(),
     isBrandedContent: types.boolean(),
     autoAddMusic: types.boolean(),

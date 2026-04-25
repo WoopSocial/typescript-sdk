@@ -7,7 +7,7 @@ import * as openEnums from "../types/enums.js";
 import { OpenEnum } from "../types/enums.js";
 
 /**
- * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+ * Identifies which social media platform this data structure targets.
  *
  * @remarks
  */
@@ -23,7 +23,7 @@ export const SocialPlatform = {
   Wooptest: "WOOPTEST",
 } as const;
 /**
- * `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+ * Identifies which social media platform this data structure targets.
  *
  * @remarks
  */

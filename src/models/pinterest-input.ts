@@ -24,6 +24,9 @@ export type PinterestInput = {
    * is supported.
    */
   contentOverride?: Array<PostContentItemInput> | undefined;
+  /**
+   * Identifier of the board to pin to.
+   */
   pinterestBoardId: string;
   title?: string | undefined;
 };

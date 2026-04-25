@@ -5,6 +5,7 @@
 import * as z from "zod/v4-mini";
 import { WoopSocialCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -28,6 +29,9 @@ import { Result } from "../types/fp.js";
 
 /**
  * Complete media upload session
+ *
+ * @remarks
+ * Call this to finalize the upload started by calling [`/media/upload-sessions`](/api-reference/media/start-media-upload-session).
  */
 export function mediaCompleteUploadSession(
   client: WoopSocialCore,
@@ -135,7 +139,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

@@ -17,12 +17,11 @@ export class Posts extends ClientSDK {
    * Create post
    *
    * @remarks
-   * Creates one post resource with one or more social-account targets.
+   * Creates a post with one or more social-account targets.
    *
    * All referenced social accounts must belong to the same project.
    *
-   * The request is validated atomically. If any social-account target fails
-   * validation, the post is not created.
+   * The request is validated atomically. If any social-account fails validation, the post is not created.
    */
   async createPost(
     request: models.CreatePostRequest,

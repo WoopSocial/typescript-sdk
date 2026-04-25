@@ -5,6 +5,7 @@
 import * as z from "zod/v4-mini";
 import { WoopSocialCore } from "../core.js";
 import { encodeFormQuery } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -34,7 +35,7 @@ import { Result } from "../types/fp.js";
  *
  * The server determines the media MIME type from the uploaded file.
  *
- * Use this endpoint for straightforward uploads up to 600 MB.
+ * Use this endpoint for straightforward uploads up to 100 MB.
  *
  * For larger files, or when you need presigned part URLs, use the upload
  * session flow under `/media/upload-sessions`.
@@ -144,7 +145,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });

@@ -71,6 +71,9 @@ export type PinterestPost = {
   externalPostId?: string | undefined;
   externalPostUrl?: string | undefined;
   errorMessage?: string | undefined;
+  /**
+   * Identifier of the board to pin to.
+   */
   pinterestBoardId: string;
   title?: string | undefined;
 };

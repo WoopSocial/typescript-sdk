@@ -88,10 +88,9 @@ const value: models.TikTokPost = {
   allowComment: true,
   allowDuet: false,
   allowStitch: true,
-  contentDisclosureEnabled: true,
-  isYourBrand: false,
-  isBrandedContent: true,
-  autoAddMusic: false,
+  isYourBrand: true,
+  isBrandedContent: false,
+  autoAddMusic: true,
 };
 ```
 

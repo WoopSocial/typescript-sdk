@@ -31,12 +31,11 @@ paths:
         - ApiKey: []
       summary: Create post
       description: |
-        Creates one post resource with one or more social-account targets.
+        Creates a post with one or more social-account targets.
 
         All referenced social accounts must belong to the same project.
 
-        The request is validated atomically. If any social-account target fails
-        validation, the post is not created.
+        The request is validated atomically. If any social-account fails validation, the post is not created.
       requestBody:
         required: true
         content:
@@ -278,6 +277,7 @@ paths:
   /media:
     post:
       operationId: createMedia
+      x-woopsocial-mcp-exclude: true
       tags:
         - Media
       security:
@@ -288,7 +288,7 @@ paths:
 
         The server determines the media MIME type from the uploaded file.
 
-        Use this endpoint for straightforward uploads up to 600 MB.
+        Use this endpoint for straightforward uploads up to 100 MB.
 
         For larger files, or when you need presigned part URLs, use the upload
         session flow under `/media/upload-sessions`.
@@ -302,7 +302,7 @@ paths:
               type: string
               format: binary
               description: |
-                Media file to upload. Maximum size is 600 MB.
+                Media file to upload. Maximum size is 100 MB.
 
                 The `Content-Type` header is ignored — the server determines the
                 actual media MIME type from the file contents.
@@ -322,9 +322,8 @@ paths:
         - ApiKey: []
       summary: Start media upload session
       description: |
-        Creates an upload session and returns presigned URLs for uploading the file in parts.
-
-        This flow is intended for larger files where a single-request upload via the simpler `/media` endpoint is less practical.
+        This endpoint can be used to upload both smaller and larger files (up to 5GB) in a chunked manner.
+        Calling this creates an upload session and returns presigned URLs for uploading the file in parts.
 
         Upload the file in `partCount` parts, using the matching
         `parts[n].uploadUrl` for each part number.
@@ -371,6 +370,7 @@ paths:
       security:
         - ApiKey: []
       summary: Complete media upload session
+      description: Call this to finalize the upload started by calling [`/media/upload-sessions`](/api-reference/media/start-media-upload-session).
       parameters:
         - $ref: "#/components/parameters/UploadSessionId"
       responses:
@@ -686,7 +686,7 @@ components:
         - YOUTUBE
         - WOOPTEST
       description: |
-        `WOOPTEST` is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+        Identifies which social media platform this data structure targets.
     CreateOAuthAuthorizationRequest:
       type: object
       additionalProperties: false
@@ -870,7 +870,7 @@ components:
             - MEDIA_LIBRARY
         mediaId:
           type: string
-          description: Media identifier from the media library.
+          description: Media identifier create by calling [`POST /media/upload-sessions`](/api-reference/media/start-media-upload-session) or [`POST /media`](/api-reference/media/upload-media).
     PostContentMedia:
       description: |
         Resolved content media.
@@ -1045,7 +1045,7 @@ components:
           description: Post identifier.
         projectId:
           type: string
-          description: Project identifier derived from the selected social accounts.
+          description: Project identifier that the selected social accounts belong to.
         content:
           $ref: "#/components/schemas/PostContent"
         schedule:
@@ -1053,7 +1053,7 @@ components:
         socialAccountPosts:
           type: array
           minItems: 1
-          description: Social account posts for this parent post.
+          description: Platform-specific post instances.
           items:
             $ref: "#/components/schemas/SocialAccountPost"
         createdAt:
@@ -1100,6 +1100,7 @@ components:
           type: integer
           format: int64
           minimum: 1
+          maximum: 5368709120
           description: Total size of the file that will be uploaded.
     UploadSessionPart:
       type: object
@@ -1257,15 +1258,15 @@ components:
             - ABORTED
     SocialAccountInput:
       oneOf:
-        - $ref: "#/components/schemas/PinterestInput"
-        - $ref: "#/components/schemas/InstagramInput"
         - $ref: "#/components/schemas/FacebookInput"
-        - $ref: "#/components/schemas/TikTokInput"
-        - $ref: "#/components/schemas/YouTubeInput"
-        - $ref: "#/components/schemas/XInput"
+        - $ref: "#/components/schemas/InstagramInput"
         - $ref: "#/components/schemas/LinkedInInput"
         - $ref: "#/components/schemas/LinkedInPagesInput"
+        - $ref: "#/components/schemas/PinterestInput"
+        - $ref: "#/components/schemas/TikTokInput"
         - $ref: "#/components/schemas/WoopTestInput"
+        - $ref: "#/components/schemas/XInput"
+        - $ref: "#/components/schemas/YouTubeInput"
       discriminator:
         propertyName: platform
         mapping:
@@ -1436,6 +1437,7 @@ components:
       properties:
         pinterestBoardId:
           type: string
+          description: Identifier of the board to pin to.
         title:
           type: string
     InstagramFields:
@@ -1462,7 +1464,6 @@ components:
         - allowComment
         - allowDuet
         - allowStitch
-        - contentDisclosureEnabled
         - isYourBrand
         - isBrandedContent
         - autoAddMusic
@@ -1492,9 +1493,6 @@ components:
 
             When `postType=PHOTO`, this field is required by the API contract
             but is not used by TikTok.
-        contentDisclosureEnabled:
-          type: boolean
-          description: Whether TikTok content disclosure should be enabled for this post.
         isYourBrand:
           type: boolean
           description: Whether the post should be disclosed as "Your brand" content on TikTok.
@@ -1664,6 +1662,7 @@ components:
             Defaults to `true`. Set to `false` to simulate a delivery failure.
     WoopTestInput:
       title: WoopTest
+      description: WoopTest is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
       allOf:
         - $ref: "#/components/schemas/WoopTestPlatform"
         - $ref: "#/components/schemas/SocialAccountInputBase"

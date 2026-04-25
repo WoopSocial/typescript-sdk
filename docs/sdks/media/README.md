@@ -17,7 +17,7 @@ Uploads a media file in a single request and creates a media item.
 
 The server determines the media MIME type from the uploaded file.
 
-Use this endpoint for straightforward uploads up to 600 MB.
+Use this endpoint for straightforward uploads up to 100 MB.
 
 For larger files, or when you need presigned part URLs, use the upload
 session flow under `/media/upload-sessions`.
@@ -98,9 +98,8 @@ run();
 
 ## createUploadSession
 
-Creates an upload session and returns presigned URLs for uploading the file in parts.
-
-This flow is intended for larger files where a single-request upload via the simpler `/media` endpoint is less practical.
+This endpoint can be used to upload both smaller and larger files (up to 5GB) in a chunked manner.
+Calling this creates an upload session and returns presigned URLs for uploading the file in parts.
 
 Upload the file in `partCount` parts, using the matching
 `parts[n].uploadUrl` for each part number.
@@ -257,7 +256,7 @@ run();
 
 ## completeUploadSession
 
-Complete media upload session
+Call this to finalize the upload started by calling [`/media/upload-sessions`](/api-reference/media/start-media-upload-session).
 
 ### Example Usage
 

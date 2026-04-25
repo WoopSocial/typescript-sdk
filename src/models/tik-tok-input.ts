@@ -61,10 +61,6 @@ export type TikTokInput = {
    */
   allowStitch: boolean;
   /**
-   * Whether TikTok content disclosure should be enabled for this post.
-   */
-  contentDisclosureEnabled: boolean;
-  /**
    * Whether the post should be disclosed as "Your brand" content on TikTok.
    */
   isYourBrand: boolean;
@@ -95,7 +91,6 @@ export type TikTokInput$Outbound = {
   allowComment: boolean;
   allowDuet: boolean;
   allowStitch: boolean;
-  contentDisclosureEnabled: boolean;
   isYourBrand: boolean;
   isBrandedContent: boolean;
   autoAddMusic: boolean;
@@ -114,7 +109,6 @@ export const TikTokInput$outboundSchema: z.ZodMiniType<
   allowComment: z.boolean(),
   allowDuet: z.boolean(),
   allowStitch: z.boolean(),
-  contentDisclosureEnabled: z.boolean(),
   isYourBrand: z.boolean(),
   isBrandedContent: z.boolean(),
   autoAddMusic: z.boolean(),

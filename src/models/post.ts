@@ -23,7 +23,7 @@ export type Post = {
    */
   id: string;
   /**
-   * Project identifier derived from the selected social accounts.
+   * Project identifier that the selected social accounts belong to.
    */
   projectId: string;
   /**
@@ -37,7 +37,7 @@ export type Post = {
   content: Array<PostContentItem>;
   schedule: PostSchedule;
   /**
-   * Social account posts for this parent post.
+   * Platform-specific post instances.
    */
   socialAccountPosts: Array<SocialAccountPost>;
   /**

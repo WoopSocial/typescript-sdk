@@ -1,6 +1,6 @@
 {
   "name": "@woopsocial/typescript-sdk",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "author": "Speakeasy",
   "bugs": {
     "url": "https://github.com/WoopSocial/typescript-sdk/issues"
@@ -20,8 +20,8 @@
     "access": "public"
   },
   "repository": {
-    "type": "git",
-    "url": "git+https://github.com/WoopSocial/typescript-sdk.git"
+    "url": "git+https://github.com/WoopSocial/typescript-sdk.git",
+    "type": "git"
   },
   "type": "module",
   "tshy": {

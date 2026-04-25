@@ -9,6 +9,9 @@ import {
   PostContentItemInput$outboundSchema,
 } from "./post-content-item-input.js";
 
+/**
+ * WoopTest is a sandbox platform for testing and debugging. Posts targeting `WOOPTEST` go through the full scheduling pipeline but are never published to any real social network.
+ */
 export type WoopTestInput = {
   platform: "WOOPTEST";
   /**
